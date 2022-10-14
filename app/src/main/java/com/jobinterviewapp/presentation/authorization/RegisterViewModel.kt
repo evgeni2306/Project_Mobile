@@ -37,21 +37,25 @@ class RegisterViewModel @Inject constructor(
                 _state.update { it.copy(userName = event.value) }
                 val validationResult = validateUserName(event.value)
                 _state.update { it.copy(userNameError = validationResult.errorMessage) }
+                _state.update { it.copy(isValidForm = isValidForm()) }
             }
             is AuthUiEvent.SignUpSurnameChanged -> {
                 _state.update { it.copy(userSurname = event.value) }
                 val validationResult = validateSurname(event.value)
                 _state.update { it.copy(userSurnameError = validationResult.errorMessage) }
+                _state.update { it.copy(isValidForm = isValidForm()) }
             }
             is AuthUiEvent.SignUpLoginChanged -> {
                 _state.update { it.copy(login = event.value) }
                 val validationResult = validateLogin(event.value)
                 _state.update { it.copy(loginError = validationResult.errorMessage) }
+                _state.update { it.copy(isValidForm = isValidForm()) }
             }
             is AuthUiEvent.SignUpPasswordChanged -> {
                 _state.update { it.copy(password = event.value) }
                 val validationResult = validatePassword(event.value)
                 _state.update { it.copy(passwordError = validationResult.errorMessage) }
+                _state.update { it.copy(isValidForm = isValidForm()) }
             }
             is AuthUiEvent.SignUp -> {
                 signUp()
@@ -59,19 +63,24 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
+    private fun isValidForm(): Boolean {
+        val stateValue = state.value
+
+        return (stateValue.loginError == null
+                && stateValue.passwordError == null
+                && stateValue.userNameError == null
+                && stateValue.userSurnameError == null)
+    }
+
     private var signUpJob: Job? = null
 
     private fun signUp() {
+        if(!isValidForm())
+            return
+
         signUpJob?.cancel()
         signUpJob = viewModelScope.launch {
             val stateValue = state.value
-
-            if(stateValue.loginError != null
-                || stateValue.passwordError != null
-                || stateValue.userNameError != null
-                || stateValue.userSurnameError != null)
-                return@launch
-
             _state.update { it.copy(isLoading = true) }
 
             val credential = Credential(

@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">JobInterviewApp</string>
 
+    <!--    Errors    -->
     <string name="unknown_exception">An unknown error occurred</string>
     <string name="io_exception">Couldn\'t reach server. Check your internet connection.</string>
     <string name="empty_field_error">Empty field</string>
+    <string name="field_required_error">Required field</string>
     <string name="invalid_format_error">Invalid input format</string>
     <string name="name_field_hint">Name</string>
     <string name="surname_field_hint">Surname</string>
@@ -14,4 +16,5 @@
     <string name="register_button_text">Register</string>
     <string name="login_field_hint">Login</string>
     <string name="password_field_hint">Password</string>
+
 </resources>

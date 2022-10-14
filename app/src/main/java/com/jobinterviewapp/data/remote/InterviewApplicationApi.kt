@@ -12,7 +12,7 @@ interface InterviewApplicationApi {
         @Query("surname") surname: String,
         @Query("login") login: String,
         @Query("password") password: String,
-    ): Response<Int>
+    ): Int
 
     companion object {
         const val BASE_URL = "https://server2306.site/"
