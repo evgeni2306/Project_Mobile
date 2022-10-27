@@ -22,9 +22,9 @@ import com.jobinterviewapp.presentation.components.CustomTextField
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun RegisterScreen(
+fun SignInScreen(
     navController: NavController,
-    viewModel: RegisterViewModel = hiltViewModel()
+    viewModel: SignInViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsState().value
 
@@ -59,33 +59,9 @@ fun RegisterScreen(
         ) {
             CustomTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = state.userName,
-                onValueChange = { viewModel.onEvent(AuthUiEvent.SignUpNameChanged(it)) },
-                label = { Text(text = stringResource(R.string.name_field_hint)) },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text
-                ),
-                singleLine = true,
-                helper = state.userNameError
-            )
-            CustomTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = state.userSurname,
-                onValueChange = {
-                    viewModel.onEvent(AuthUiEvent.SignUpSurnameChanged(it))
-                },
-                label = { Text(text = stringResource(R.string.surname_field_hint)) },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text
-                ),
-                singleLine = true,
-                helper = state.userSurnameError
-            )
-            CustomTextField(
-                modifier = Modifier.fillMaxWidth(),
                 value = state.login,
                 onValueChange = {
-                    viewModel.onEvent(AuthUiEvent.SignUpLoginChanged(it))
+                    viewModel.onEvent(AuthUiEvent.SignInLoginChanged(it))
                 },
                 label = { Text(stringResource(R.string.login_field_hint)) },
                 keyboardOptions = KeyboardOptions(
@@ -99,7 +75,7 @@ fun RegisterScreen(
                 label = { Text(stringResource(R.string.password_field_hint)) },
                 value = state.password,
                 onValueChange = {
-                    viewModel.onEvent(AuthUiEvent.SignUpPasswordChanged(it))
+                    viewModel.onEvent(AuthUiEvent.SignInPasswordChanged(it))
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password
@@ -111,24 +87,24 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { viewModel.onEvent(AuthUiEvent.SignUp) },
+                onClick = { viewModel.signInUser() },
                 enabled = state.isValidForm,
             ) {
-                Text(text = stringResource(R.string.register_button_text))
+                Text(text = stringResource(R.string.sign_in_button_text))
             }
             TextButton(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { navController.navigate(Screen.SignInScreen.route) },
+                onClick = { navController.navigate(Screen.RegistrationScreen.route) },
             ) {
                 Row(
                 ) {
                     Text(
-                        text = stringResource(R.string.navigate_to_sign_in_hint),
+                        text = stringResource(R.string.navigate_to_registration_hint),
                         color = MaterialTheme.colors.onBackground,
                     )
                     Spacer(Modifier.width(4.dp))
                     Text(
-                        text = stringResource(R.string.sign_in_button_text),
+                        text = stringResource(R.string.register_button_text),
                         color = MaterialTheme.colors.primary,
                         fontWeight = FontWeight.SemiBold
                     )

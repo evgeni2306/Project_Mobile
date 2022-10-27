@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jobinterviewapp.domain.models.Credential
 import com.jobinterviewapp.domain.use_case.user.RegisterUserUseCase
-import com.jobinterviewapp.domain.use_case.user.authorization.ValidateLogin
+import com.jobinterviewapp.domain.use_case.user.authorization.ValidateTextField
 import com.jobinterviewapp.domain.use_case.user.authorization.ValidatePassword
 import com.jobinterviewapp.domain.use_case.user.authorization.ValidateUserName
 import com.jobinterviewapp.domain.use_case.user.authorization.ValidateUserSurname
@@ -22,7 +22,7 @@ class RegisterViewModel @Inject constructor(
     private val registerUserUseCase: RegisterUserUseCase,
     private val validateUserName: ValidateUserName,
     private val validateSurname: ValidateUserSurname,
-    private val validateLogin: ValidateLogin,
+    private val validateLogin: ValidateTextField,
     private val validatePassword: ValidatePassword,
 ): ViewModel() {
     private val _state = MutableStateFlow(RegistrationState())
@@ -60,6 +60,7 @@ class RegisterViewModel @Inject constructor(
             is AuthUiEvent.SignUp -> {
                 signUp()
             }
+            else -> {}
         }
     }
 
@@ -98,9 +99,9 @@ class RegisterViewModel @Inject constructor(
                         _authResults.emit(result.message)
                     }
                 }
-
-                _state.update { it.copy(isLoading = false) }
             }
+
+            _state.update { it.copy(isLoading = false) }
         }
     }
 }

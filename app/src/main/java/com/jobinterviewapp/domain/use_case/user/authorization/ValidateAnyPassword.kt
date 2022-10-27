@@ -4,9 +4,9 @@ import com.jobinterviewapp.R
 import com.weatherapp.core.util.UiText
 import javax.inject.Inject
 
-class ValidateLogin @Inject constructor() {
+class ValidateAnyPassword @Inject constructor() {
     operator fun invoke(login: String): ValidationResult {
-        if(login.isBlank()) {
+        if(login.isEmpty()) {
             return ValidationResult(
                 successful = false,
                 errorMessage = UiText.StringResource(R.string.empty_field_error)

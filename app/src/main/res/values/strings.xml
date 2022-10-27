@@ -2,19 +2,24 @@
     <string name="app_name">JobInterviewApp</string>
 
     <!--    Errors    -->
-    <string name="unknown_exception">An unknown error occurred</string>
-    <string name="io_exception">Couldn\'t reach server. Check your internet connection.</string>
-    <string name="empty_field_error">Empty field</string>
-    <string name="field_required_error">Required field</string>
-    <string name="invalid_format_error">Invalid input format</string>
-    <string name="name_field_hint">Name</string>
-    <string name="surname_field_hint">Surname</string>
-    <string name="short_password_error">Password must contain at least 8 characters</string>
-    <string name="password_capital_letters_error">Password must contain at least 1 capital letter</string>
-    <string name="password_lower_letters_error">Password must contain at least 1 lowercase letter</string>
-    <string name="password_digits_error">Password must contain at least 1 digit</string>
-    <string name="register_button_text">Register</string>
-    <string name="login_field_hint">Login</string>
-    <string name="password_field_hint">Password</string>
+    <string name="unknown_exception">Возникла неизвестная ошибка</string>
+    <string name="io_exception">Ошибка загрузки. Проверьте подключение к сети и повторите попытку.</string>
+    <string name="empty_field_error">Пустое ввод</string>
+    <string name="field_required_error">Поле обязательно для заполнения</string>
+    <string name="invalid_format_error">Неправильный формат ввода</string>
+    <string name="name_field_hint">Имя</string>
+    <string name="surname_field_hint">Фамилия</string>
+    <string name="short_password_error">Пароль должен содержать минимум 8 символов</string>
+    <string name="password_capital_letters_error">Пароль должен содержать хотя бы 1 заглавную букву</string>
+    <string name="password_lower_letters_error">Пароль должен содержать хотя бы 1 строчную букву</string>
+    <string name="password_digits_error">Пароль должен содержать хотя бы 1 символ</string>
+    <string name="register_button_text">Зарегистрироваться</string>
+    <string name="sign_in_button_text">Войти</string>
+    <string name="navigate_to_sign_in_hint">Уже есть аккаунт?</string>
+    <string name="navigate_to_registration_hint">Ещё нет аккаунта?</string>
+    <string name="login_field_hint">Логин</string>
+    <string name="password_field_hint">Пароль</string>
+    <string name="registration_screen_name">Регистрация</string>
+    <string name="sign_in_screen_name">Вход в аккаунт</string>
 
 </resources>

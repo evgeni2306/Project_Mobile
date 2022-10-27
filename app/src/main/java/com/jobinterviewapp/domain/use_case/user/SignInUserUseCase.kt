@@ -6,10 +6,10 @@ import com.weatherapp.core.util.Resource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class RegisterUserUseCase @Inject constructor(
+class SignInUserUseCase @Inject constructor(
     private val repository: UserRepository,
 ) {
-    operator fun invoke(credential: Credential): Flow<Resource<String>> {
-        return repository.registerUser(credential)
+    operator fun invoke(login: String, password: String): Flow<Resource<String>> {
+        return repository.signInUser(login, password)
     }
 }

@@ -18,7 +18,7 @@
         android:theme="@style/Theme.JobInterviewApp"
         tools:targetApi="31">
         <activity
-            android:name=".core.presentation.MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize"
             android:label="@string/app_name"
