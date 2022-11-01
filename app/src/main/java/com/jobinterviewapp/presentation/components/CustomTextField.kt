@@ -3,11 +3,9 @@ package com.jobinterviewapp.presentation.components
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import com.weatherapp.core.util.UiText
 
 @Composable
-fun CustomTextField(
+fun AuthTextField(
     value: String,
     helper: UiText?,
     modifier: Modifier,
@@ -26,26 +24,30 @@ fun CustomTextField(
     keyboardOptions: KeyboardOptions,
     singleLine: Boolean,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    helperColor: Color = MaterialTheme.colors.secondary,
+    helperColor: Color = MaterialTheme.colors.primary,
 ) {
     Column(
         modifier = modifier,
     ) {
 
-        TextField(
+        OutlinedTextField(
             modifier = modifier,
             value = value,
             onValueChange = onValueChange,
             label = label,
             keyboardOptions = keyboardOptions,
+            keyboardActions = KeyboardActions.Companion.Default,
             singleLine = singleLine,
             visualTransformation = visualTransformation,
+            colors = TextFieldDefaults.textFieldColors(
+                backgroundColor = MaterialTheme.colors.background,
+                unfocusedIndicatorColor = Color.LightGray),
         )
 
         helper?.let {
             Text(
                 text = helper.asString(),
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 color = helperColor,
                 modifier = Modifier.align(Alignment.End)
             )

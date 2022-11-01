@@ -4,8 +4,8 @@
     <!--    Errors    -->
     <string name="unknown_exception">Возникла неизвестная ошибка</string>
     <string name="io_exception">Ошибка загрузки. Проверьте подключение к сети и повторите попытку.</string>
-    <string name="empty_field_error">Пустое ввод</string>
-    <string name="field_required_error">Поле обязательно для заполнения</string>
+    <string name="empty_field_error">Пустой ввод</string>
+    <string name="field_required_error" />
     <string name="invalid_format_error">Неправильный формат ввода</string>
     <string name="name_field_hint">Имя</string>
     <string name="surname_field_hint">Фамилия</string>

@@ -1,36 +1,44 @@
 package com.jobinterviewapp.presentation
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.WindowCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobinterviewapp.presentation.authorization.RegisterScreen
 import com.jobinterviewapp.presentation.authorization.SignInScreen
-import com.jobinterviewapp.ui.theme.JobInterviewAppTheme
+import com.jobinterviewapp.core.presentation.ui.theme.JobInterviewAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             JobInterviewAppTheme {
                 // A surface container using the 'background' color from the theme
                 val navController = rememberNavController()
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .navigationBarsPadding()
+                        .systemBarsPadding()
+                        .fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+                    val systemUiController = rememberSystemUiController()
+                    systemUiController.setSystemBarsColor(color = MaterialTheme.colors.background)
                     Navigation(navController, Modifier)
                 }
             }

@@ -56,6 +56,7 @@ class UserRepositoryImpl @Inject constructor(
             )
 
             emit(Resource.Success(data = data.key))
+            //emit(Resource.Success(data = data.toString()))
         }
         catch(e: HttpException) {
             if(e.localizedMessage.isNullOrEmpty()) {

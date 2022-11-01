@@ -1,4 +1,4 @@
-package com.jobinterviewapp.ui.theme
+package com.jobinterviewapp.core.presentation.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
