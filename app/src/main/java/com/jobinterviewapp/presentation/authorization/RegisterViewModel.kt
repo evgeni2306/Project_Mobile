@@ -28,11 +28,35 @@ class RegisterViewModel @Inject constructor(
     private val _state = MutableStateFlow(RegistrationState())
     val state = _state.asStateFlow()
 
-    private val _authResults = MutableSharedFlow<UiText>()
-    val authResults = _authResults.asSharedFlow()
+    private val _authError = MutableSharedFlow<UiText?>()
+    val authError = _authError.asSharedFlow()
 
     fun onEvent(event: AuthUiEvent) {
         when(event) {
+            is AuthUiEvent.SignUpNameClear -> {
+                _state.update { it.copy(userName = "") }
+                val validationResult = validateUserName("")
+                _state.update { it.copy(userNameError = validationResult.errorMessage) }
+                _state.update { it.copy(isValidForm = isValidForm()) }
+            }
+            is AuthUiEvent.SignUpSurnameClear -> {
+                _state.update { it.copy(userSurname = "") }
+                val validationResult = validateSurname("")
+                _state.update { it.copy(userSurnameError = validationResult.errorMessage) }
+                _state.update { it.copy(isValidForm = isValidForm()) }
+            }
+            is AuthUiEvent.SignUpLoginClear -> {
+                _state.update { it.copy(login = "") }
+                val validationResult = validateLogin("")
+                _state.update { it.copy(loginError = validationResult.errorMessage) }
+                _state.update { it.copy(isValidForm = isValidForm()) }
+            }
+            is AuthUiEvent.SignUpPasswordClear -> {
+                _state.update { it.copy(password = "") }
+                val validationResult = validatePassword("")
+                _state.update { it.copy(passwordError = validationResult.errorMessage) }
+                _state.update { it.copy(isValidForm = isValidForm()) }
+            }
             is AuthUiEvent.SignUpNameChanged -> {
                 _state.update { it.copy(userName = event.value) }
                 val validationResult = validateUserName(event.value)
@@ -70,7 +94,11 @@ class RegisterViewModel @Inject constructor(
         return (stateValue.loginError == null
                 && stateValue.passwordError == null
                 && stateValue.userNameError == null
-                && stateValue.userSurnameError == null)
+                && stateValue.userSurnameError == null
+                && stateValue.login.isNotEmpty()
+                && stateValue.password.isNotEmpty()
+                && stateValue.userName.isNotEmpty()
+                && stateValue.userSurname.isNotEmpty())
     }
 
     private var signUpJob: Job? = null
@@ -93,10 +121,11 @@ class RegisterViewModel @Inject constructor(
             registerUserUseCase(credential).collectLatest { result ->
                 when(result) {
                     is Resource.Success -> {
+                        _authError.emit(null)
                         _state.update { it.copy(userId = result.data) }
                     }
                     is Resource.Error -> {
-                        _authResults.emit(result.message)
+                        _authError.emit(result.message)
                     }
                 }
             }

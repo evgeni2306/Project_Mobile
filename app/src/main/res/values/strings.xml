@@ -21,5 +21,6 @@
     <string name="password_field_hint">Пароль</string>
     <string name="registration_screen_name">Регистрация</string>
     <string name="sign_in_screen_name">Вход в аккаунт</string>
+    <string name="home_screen_name">Главная</string>
 
 </resources>

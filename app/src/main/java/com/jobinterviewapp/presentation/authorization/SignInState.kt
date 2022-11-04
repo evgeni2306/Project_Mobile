@@ -8,6 +8,6 @@ data class SignInState(
     val password: String = "",
     val isValidForm: Boolean = false,
     val isLoading: Boolean = false,
-    val loginError: UiText? = UiText.StringResource(R.string.field_required_error),
-    val passwordError: UiText? = UiText.StringResource(R.string.field_required_error),
+    val loginError: UiText? = null,
+    val passwordError: UiText? = null,
 )

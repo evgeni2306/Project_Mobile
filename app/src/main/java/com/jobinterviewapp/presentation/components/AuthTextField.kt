@@ -1,8 +1,7 @@
 package com.jobinterviewapp.presentation.components
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -11,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.weatherapp.core.util.UiText
 
@@ -21,17 +21,18 @@ fun AuthTextField(
     modifier: Modifier,
     onValueChange: (String) -> Unit,
     label: @Composable (() -> Unit)?,
+    trailingIcon: @Composable (() -> Unit)?,
     keyboardOptions: KeyboardOptions,
     singleLine: Boolean,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    helperColor: Color = MaterialTheme.colors.primary,
+    helperColor: Color = MaterialTheme.colors.error,
 ) {
     Column(
         modifier = modifier,
     ) {
 
         OutlinedTextField(
-            modifier = modifier,
+            modifier = modifier.height(61.dp),
             value = value,
             onValueChange = onValueChange,
             label = label,
@@ -42,6 +43,7 @@ fun AuthTextField(
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = MaterialTheme.colors.background,
                 unfocusedIndicatorColor = Color.LightGray),
+            trailingIcon = trailingIcon,
         )
 
         helper?.let {

@@ -29,6 +29,18 @@ class SignInViewModel @Inject constructor(
 
     fun onEvent(event: AuthUiEvent) {
         when(event) {
+            is AuthUiEvent.SignInLoginClear -> {
+                _state.update { it.copy(login = "") }
+                val validationResult = validateTextField("")
+                _state.update { it.copy(loginError = validationResult.errorMessage) }
+                _state.update { it.copy(isValidForm = isValidForm()) }
+            }
+            is AuthUiEvent.SignInPasswordClear -> {
+                _state.update { it.copy(password = "") }
+                val validationResult = validateAnyPassword("")
+                _state.update { it.copy(passwordError = validationResult.errorMessage) }
+                _state.update { it.copy(isValidForm = isValidForm()) }
+            }
             is AuthUiEvent.SignInLoginChanged -> {
                 _state.update { it.copy(login = event.value) }
                 val validationResult = validateTextField(event.value)
@@ -52,7 +64,9 @@ class SignInViewModel @Inject constructor(
         val stateValue = state.value
 
         return (stateValue.loginError == null
-                && stateValue.passwordError == null)
+                && stateValue.passwordError == null
+                && stateValue.login.isNotEmpty()
+                && stateValue.password.isNotEmpty())
     }
 
     private var signInJob: Job? = null

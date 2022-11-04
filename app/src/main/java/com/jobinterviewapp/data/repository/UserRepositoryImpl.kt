@@ -30,18 +30,20 @@ class UserRepositoryImpl @Inject constructor(
             emit(Resource.Success(data = data.key))
         }
         catch(e: HttpException) {
-            if(e.localizedMessage.isNullOrEmpty()) {
-                emit(Resource.Error(UiText.StringResource(R.string.unknown_exception)))
-                return@flow
-            }
-            val errorBody = e.response()?.errorBody()
-            if (errorBody == null) {
-                emit(Resource.Error(UiText.DynamicString(e.localizedMessage!!)))
+            val errorMessage = if(e.localizedMessage.isNullOrEmpty()) {
+                UiText.StringResource(R.string.unknown_exception)
             }
             else {
-                val errorMessage = Gson().fromJson(errorBody.charStream(), ErrorDto::class.java).message
-                emit(Resource.Error(UiText.DynamicString(errorMessage)))
+                val errorBody = e.response()?.errorBody()
+                if (errorBody == null) {
+                    UiText.DynamicString(e.localizedMessage!!)
+                }
+                else {
+                    val errorMessage = Gson().fromJson(errorBody.charStream(), ErrorDto::class.java).message
+                    UiText.DynamicString(errorMessage)
+                }
             }
+            emit(Resource.Error(errorMessage))
         }
         catch(e: IOException) {
             emit(Resource.Error(UiText.StringResource(R.string.io_exception)))
@@ -56,21 +58,22 @@ class UserRepositoryImpl @Inject constructor(
             )
 
             emit(Resource.Success(data = data.key))
-            //emit(Resource.Success(data = data.toString()))
         }
         catch(e: HttpException) {
-            if(e.localizedMessage.isNullOrEmpty()) {
-                emit(Resource.Error(UiText.StringResource(R.string.unknown_exception)))
-                return@flow
-            }
-            val errorBody = e.response()?.errorBody()
-            if (errorBody == null) {
-                emit(Resource.Error(UiText.DynamicString(e.localizedMessage!!)))
+            val errorMessage = if(e.localizedMessage.isNullOrEmpty()) {
+                UiText.StringResource(R.string.unknown_exception)
             }
             else {
-                val errorMessage = Gson().fromJson(errorBody.charStream(), ErrorDto::class.java).message
-                emit(Resource.Error(UiText.DynamicString(errorMessage)))
+                val errorBody = e.response()?.errorBody()
+                if (errorBody == null) {
+                    UiText.DynamicString(e.localizedMessage!!)
+                }
+                else {
+                    val errorMessage = Gson().fromJson(errorBody.charStream(), ErrorDto::class.java).message
+                    UiText.DynamicString(errorMessage)
+                }
             }
+            emit(Resource.Error(errorMessage))
         }
         catch(e: IOException) {
             emit(Resource.Error(UiText.StringResource(R.string.io_exception)))

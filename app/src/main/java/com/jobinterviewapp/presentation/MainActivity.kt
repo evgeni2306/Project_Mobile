@@ -1,12 +1,10 @@
 package com.jobinterviewapp.presentation
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,9 +14,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.jobinterviewapp.presentation.authorization.RegisterScreen
+import com.jobinterviewapp.presentation.authorization.RegistrationScreen
 import com.jobinterviewapp.presentation.authorization.SignInScreen
 import com.jobinterviewapp.core.presentation.ui.theme.JobInterviewAppTheme
+import com.jobinterviewapp.presentation.home.HomeScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -54,10 +53,13 @@ fun Navigation(navController: NavHostController, modifier: Modifier) {
         modifier = modifier
     ) {
         composable(Screen.RegistrationScreen.route) {
-            RegisterScreen(navController)
+            RegistrationScreen(navController)
         }
         composable(Screen.SignInScreen.route) {
             SignInScreen(navController)
+        }
+        composable(Screen.HomeScreen.route) {
+            HomeScreen()
         }
     }
 }

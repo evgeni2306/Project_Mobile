@@ -1,20 +1,27 @@
 package com.jobinterviewapp.presentation.authorization
 
-import android.util.Log
-import androidx.compose.foundation.background
+import android.app.Activity
+import android.content.pm.ActivityInfo
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.*
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -25,7 +32,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun RegisterScreen(
+fun RegistrationScreen(
     navController: NavController,
     viewModel: RegisterViewModel = hiltViewModel()
 ) {
@@ -35,12 +42,19 @@ fun RegisterScreen(
     val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
-        viewModel.authResults.collectLatest { authResult ->
-            scaffoldState.snackbarHostState.showSnackbar(
-                message = authResult.asString(context)
-            )
+        viewModel.authError.collectLatest { authError ->
+            if(authError == null) {
+                navController.navigate(Screen.HomeScreen.route)
+            }
+            else {
+                scaffoldState.snackbarHostState.showSnackbar(
+                    message = authError.asString(context)
+                )
+            }
         }
     }
+
+    (context as? Activity)?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -59,126 +73,183 @@ fun RegisterScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 22.dp),
-                verticalArrangement = Arrangement.Top,
+                verticalArrangement = Arrangement.SpaceBetween,
             ) {
-                val logoPadding = if(keyboardMode) 21.dp else 46.dp
-                Text(
-                    text = "ЛОГОТИП",
-                    style = MaterialTheme.typography.h5,
-                    modifier = Modifier
-                        .padding(vertical = logoPadding)
-                        .align(Alignment.CenterHorizontally),
-                    color = MaterialTheme.colors.primary,
-                    fontWeight = FontWeight.Bold,
-                )
-                AuthTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = state.userName,
-                    onValueChange = { viewModel.onEvent(AuthUiEvent.SignUpNameChanged(it)) },
-                    label = {
-                        Text(
-                            text = stringResource(R.string.name_field_hint),
-                        )
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text
-                    ),
-                    singleLine = true,
-                    helper = state.userNameError
-                )
-                AuthTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = state.userSurname,
-                    onValueChange = {
-                        viewModel.onEvent(AuthUiEvent.SignUpSurnameChanged(it))
-                    },
-                    label = {
-                        Text(
-                            text = stringResource(R.string.surname_field_hint),
-                        )
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text
-                    ),
-                    singleLine = true,
-                    helper = state.userSurnameError
-                )
-                AuthTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = state.login,
-                    onValueChange = {
-                        viewModel.onEvent(AuthUiEvent.SignUpLoginChanged(it))
-                    },
-                    label = {
-                        Text(
-                            text = stringResource(R.string.login_field_hint),
-                        )
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text
-                    ),
-                    singleLine = true,
-                    helper = state.loginError
-                )
-                AuthTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = {
-                        Text(
-                            text = stringResource(R.string.password_field_hint),
-                        )
-                    },
-                    value = state.password,
-                    onValueChange = {
-                        viewModel.onEvent(AuthUiEvent.SignUpPasswordChanged(it))
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Password
-                    ),
-                    singleLine = true,
-                    helper = state.passwordError,
-                    visualTransformation = PasswordVisualTransformation(),
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(48.dp),
-                    onClick = { viewModel.onEvent(AuthUiEvent.SignUp) },
-                    enabled = state.isValidForm,
-                    colors = ButtonDefaults.buttonColors(
-                        disabledBackgroundColor = MaterialTheme.colors.primary,
-                        disabledContentColor = MaterialTheme.colors.primaryVariant
-                    ),
-                ) {
+                Column() {
+                    val logoPadding = if(keyboardMode) 15.dp else 46.dp
                     Text(
-                        text = stringResource(R.string.register_button_text),
-                        style = MaterialTheme.typography.body1,
-                        fontWeight = FontWeight.Bold,
-                    )
-                }
-            }
-            TextButton(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(vertical = 40.dp, horizontal = 22.dp)
-                    .fillMaxWidth()
-                    .height(48.dp),
-                onClick = { navController.navigate(Screen.SignInScreen.route) },
-            ) {
-                Row(
-                ) {
-                    Text(
-                        text = stringResource(R.string.navigate_to_sign_in_hint),
-                        color = MaterialTheme.colors.onBackground,
-                        style = MaterialTheme.typography.body1,
-                    )
-                    Spacer(Modifier.width(3.dp))
-                    Text(
-                        text = stringResource(R.string.sign_in_button_text),
+                        text = "ЛОГОТИП",
+                        style = MaterialTheme.typography.h5,
+                        modifier = Modifier
+                            .padding(vertical = logoPadding)
+                            .align(Alignment.CenterHorizontally),
                         color = MaterialTheme.colors.primary,
                         fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.body1,
                     )
+                    AuthTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = state.userName,
+                        onValueChange = { viewModel.onEvent(AuthUiEvent.SignUpNameChanged(it)) },
+                        label = {
+                            Text(
+                                text = stringResource(R.string.name_field_hint),
+                            )
+                        },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text
+                        ),
+                        singleLine = true,
+                        helper = state.userNameError,
+                        trailingIcon = {
+                            if(state.userName != "") {
+                                IconButton(onClick = { viewModel.onEvent(AuthUiEvent.SignUpNameClear) }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Clear,
+                                        contentDescription = "Clear Icon",
+                                        tint = MaterialTheme.colors.primary,
+                                    )
+                                }
+                            }
+                        },
+                    )
+                    AuthTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = state.userSurname,
+                        onValueChange = {
+                            viewModel.onEvent(AuthUiEvent.SignUpSurnameChanged(it))
+                        },
+                        label = {
+                            Text(
+                                text = stringResource(R.string.surname_field_hint),
+                            )
+                        },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text
+                        ),
+                        trailingIcon = {
+                            if(state.userSurname != "") {
+                                IconButton(onClick = { viewModel.onEvent(AuthUiEvent.SignUpSurnameClear) }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Clear,
+                                        contentDescription = "Clear Icon",
+                                        tint = MaterialTheme.colors.primary,
+                                    )
+                                }
+                            }
+                        },
+                        singleLine = true,
+                        helper = state.userSurnameError,
+                    )
+                    AuthTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = state.login,
+                        onValueChange = {
+                            viewModel.onEvent(AuthUiEvent.SignUpLoginChanged(it))
+                        },
+                        label = {
+                            Text(
+                                text = stringResource(R.string.login_field_hint),
+                            )
+                        },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Text
+                        ),
+                        singleLine = true,
+                        helper = state.loginError,
+                        trailingIcon = {
+                            if(state.login != "") {
+                                IconButton(onClick = { viewModel.onEvent(AuthUiEvent.SignUpLoginClear) }) {
+                                    Icon(
+                                        imageVector = Icons.Default.Clear,
+                                        contentDescription = "Clear Icon",
+                                        tint = MaterialTheme.colors.primary,
+                                    )
+                                }
+                            }
+                        },
+                    )
+
+                    var passwordVisualTransformation: VisualTransformation
+                        by remember { mutableStateOf(PasswordVisualTransformation()) }
+                    AuthTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        label = {
+                            Text(
+                                text = stringResource(R.string.password_field_hint),
+                            )
+                        },
+                        value = state.password,
+                        onValueChange = {
+                            viewModel.onEvent(AuthUiEvent.SignUpPasswordChanged(it))
+                        },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Password
+                        ),
+                        singleLine = true,
+                        helper = state.passwordError,
+                        visualTransformation = passwordVisualTransformation,
+                        trailingIcon = {
+                            Row() {
+                                IconButton(onClick = {
+                                    passwordVisualTransformation = if(passwordVisualTransformation != VisualTransformation.None)
+                                        VisualTransformation.None
+                                    else
+                                        PasswordVisualTransformation()
+                                }) {
+                                    Icon(
+                                        painter = if(passwordVisualTransformation == VisualTransformation.None)
+                                            painterResource(R.drawable.ic_visibility_24)
+                                        else
+                                            painterResource(R.drawable.ic_visibility_off_24),
+                                        contentDescription = "Clear Icon",
+                                        tint = MaterialTheme.colors.primary,
+                                    )
+                                }
+                            }
+                        },
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(40.dp),
+                        onClick = { viewModel.onEvent(AuthUiEvent.SignUp) },
+                        enabled = state.isValidForm,
+                        colors = ButtonDefaults.buttonColors(
+                            disabledBackgroundColor = MaterialTheme.colors.primary,
+                            disabledContentColor = MaterialTheme.colors.primaryVariant
+                        ),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.register_button_text),
+                            style = MaterialTheme.typography.body1,
+                            fontWeight = FontWeight.Bold,
+                        )
+                    }
+                }
+                TextButton(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .padding(vertical = 40.dp)
+                        .fillMaxWidth()
+                        .height(40.dp),
+                    onClick = { navController.navigate(Screen.SignInScreen.route) },
+                ) {
+                    Row(
+                    ) {
+                        Text(
+                            text = stringResource(R.string.navigate_to_sign_in_hint),
+                            color = MaterialTheme.colors.onBackground,
+                            style = MaterialTheme.typography.body1,
+                        )
+                        Spacer(Modifier.width(3.dp))
+                        Text(
+                            text = stringResource(R.string.sign_in_button_text),
+                            color = MaterialTheme.colors.primary,
+                            fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.body1,
+                        )
+                    }
                 }
             }
         }
