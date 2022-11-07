@@ -6,5 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface InterviewConfigurationRepository {
 
-    fun getFieldOfActivity(): Flow<Resource<FieldOfActivityDto>>
+    fun getFieldOfActivity(): Flow<Resource<List<FieldOfActivityDto>>>
+
+    fun getDirectionsOfField(sphereId: Int): Flow<Resource<List<FieldOfActivityDto>>>
 }

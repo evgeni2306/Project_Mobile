@@ -4,10 +4,9 @@ import com.jobinterviewapp.data.remote.dto.FieldOfActivityDto
 import com.jobinterviewapp.domain.repository.InterviewConfigurationRepository
 import com.weatherapp.core.util.Resource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class GetFieldOfActivityUseCase @Inject constructor(
+class GetProfessionsOfTechnologyUseCase @Inject constructor(
     private val repository: InterviewConfigurationRepository
 ) {
 

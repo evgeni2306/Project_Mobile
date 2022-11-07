@@ -2,6 +2,9 @@ package com.jobinterviewapp.presentation.authorization
 
 import android.app.Activity
 import android.content.pm.ActivityInfo
+import androidx.activity.compose.BackHandler
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -30,7 +33,7 @@ import com.jobinterviewapp.presentation.Screen
 import com.jobinterviewapp.presentation.components.AuthTextField
 import kotlinx.coroutines.flow.collectLatest
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun RegistrationScreen(
     navController: NavController,
@@ -60,12 +63,15 @@ fun RegistrationScreen(
         scaffoldState = scaffoldState,
     ) {
         val keyboardMode = WindowInsets.isImeVisible
+        val keyboardController = LocalSoftwareKeyboardController.current
         Box(
             modifier = Modifier.fillMaxSize(),
         ) {
             if(state.isLoading) {
                 CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .background(Color.Black)
                 )
             }
 
@@ -75,12 +81,13 @@ fun RegistrationScreen(
                     .padding(horizontal = 22.dp),
                 verticalArrangement = Arrangement.SpaceBetween,
             ) {
-                Column() {
-                    val logoPadding = if(keyboardMode) 15.dp else 46.dp
+                Column {
+                    val logoPadding = if(keyboardMode) 23.dp else 46.dp
                     Text(
                         text = "ЛОГОТИП",
                         style = MaterialTheme.typography.h5,
                         modifier = Modifier
+                            .animateContentSize()
                             .padding(vertical = logoPadding)
                             .align(Alignment.CenterHorizontally),
                         color = MaterialTheme.colors.primary,
@@ -106,7 +113,6 @@ fun RegistrationScreen(
                                     Icon(
                                         imageVector = Icons.Default.Clear,
                                         contentDescription = "Clear Icon",
-                                        tint = MaterialTheme.colors.primary,
                                     )
                                 }
                             }
@@ -132,7 +138,6 @@ fun RegistrationScreen(
                                     Icon(
                                         imageVector = Icons.Default.Clear,
                                         contentDescription = "Clear Icon",
-                                        tint = MaterialTheme.colors.primary,
                                     )
                                 }
                             }
@@ -162,7 +167,6 @@ fun RegistrationScreen(
                                     Icon(
                                         imageVector = Icons.Default.Clear,
                                         contentDescription = "Clear Icon",
-                                        tint = MaterialTheme.colors.primary,
                                     )
                                 }
                             }
@@ -202,7 +206,6 @@ fun RegistrationScreen(
                                         else
                                             painterResource(R.drawable.ic_visibility_off_24),
                                         contentDescription = "Clear Icon",
-                                        tint = MaterialTheme.colors.primary,
                                     )
                                 }
                             }
@@ -213,42 +216,55 @@ fun RegistrationScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(40.dp),
-                        onClick = { viewModel.onEvent(AuthUiEvent.SignUp) },
+                        onClick = { viewModel.onEvent(AuthUiEvent.SignUp); keyboardController?.hide() },
                         enabled = state.isValidForm,
                         colors = ButtonDefaults.buttonColors(
                             disabledBackgroundColor = MaterialTheme.colors.primary,
                             disabledContentColor = MaterialTheme.colors.primaryVariant
                         ),
                     ) {
-                        Text(
-                            text = stringResource(R.string.register_button_text),
-                            style = MaterialTheme.typography.body1,
-                            fontWeight = FontWeight.Bold,
-                        )
+                        if(state.isLoading) {
+                            CircularProgressIndicator(
+                                color = MaterialTheme.colors.onPrimary,
+                                modifier = Modifier
+                                    .size(18.dp)
+                                    .align(Alignment.CenterVertically),
+                                strokeWidth = 3.dp
+                            )
+                        }
+                        else {
+                            Text(
+                                text = stringResource(R.string.register_button_text),
+                                style = MaterialTheme.typography.body1,
+                                fontWeight = FontWeight.Bold,
+                            )
+                        }
                     }
                 }
-                TextButton(
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(vertical = 40.dp)
-                        .fillMaxWidth()
-                        .height(40.dp),
-                    onClick = { navController.navigate(Screen.SignInScreen.route) },
-                ) {
-                    Row(
+                Column() {
+                    TextButton(
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(vertical = 30.dp)
+                            .fillMaxWidth()
+                            .height(40.dp),
+                        onClick = { navController.navigate(Screen.SignInScreen.route) },
                     ) {
-                        Text(
-                            text = stringResource(R.string.navigate_to_sign_in_hint),
-                            color = MaterialTheme.colors.onBackground,
-                            style = MaterialTheme.typography.body1,
-                        )
-                        Spacer(Modifier.width(3.dp))
-                        Text(
-                            text = stringResource(R.string.sign_in_button_text),
-                            color = MaterialTheme.colors.primary,
-                            fontWeight = FontWeight.Bold,
-                            style = MaterialTheme.typography.body1,
-                        )
+                        Row(
+                        ) {
+                            Text(
+                                text = stringResource(R.string.navigate_to_sign_in_hint),
+                                color = MaterialTheme.colors.onBackground,
+                                style = MaterialTheme.typography.body1,
+                            )
+                            Spacer(Modifier.width(3.dp))
+                            Text(
+                                text = stringResource(R.string.sign_in_button_text),
+                                color = MaterialTheme.colors.primary,
+                                fontWeight = FontWeight.Bold,
+                                style = MaterialTheme.typography.body1,
+                            )
+                        }
                     }
                 }
             }

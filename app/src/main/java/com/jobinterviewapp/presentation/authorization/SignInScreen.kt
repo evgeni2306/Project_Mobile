@@ -2,6 +2,8 @@ package com.jobinterviewapp.presentation.authorization
 
 import android.app.Activity
 import android.content.pm.ActivityInfo
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -9,9 +11,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,35 +30,49 @@ import com.jobinterviewapp.presentation.Screen
 import com.jobinterviewapp.presentation.components.AuthTextField
 import kotlinx.coroutines.flow.collectLatest
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SignInScreen(
     navController: NavController,
     viewModel: SignInViewModel = hiltViewModel()
 ) {
+
     val state = viewModel.state.collectAsState().value
 
     val scaffoldState = rememberScaffoldState()
     val context = LocalContext.current
 
+    BackHandler(
+        enabled = true,
+        onBack  = {
+            navController.navigate(Screen.RegistrationScreen.route) {
+                popUpTo(Screen.RegistrationScreen.route) {
+                    inclusive = true
+                }
+            }
+        }
+    )
+
     LaunchedEffect(key1 = true) {
-        viewModel.authResults.collectLatest { authResult ->
-            scaffoldState.snackbarHostState.showSnackbar(
-                message = authResult.asString(context)
-            )
+        viewModel.authError.collectLatest { authError ->
+            if(authError == null) {
+                navController.navigate(Screen.HomeScreen.route)
+            }
+            else {
+                scaffoldState.snackbarHostState.showSnackbar(
+                    message = authError.asString(context)
+                )
+            }
         }
     }
 
     Scaffold(
         scaffoldState = scaffoldState,
     ) {
+        val keyboardController = LocalSoftwareKeyboardController.current
         Box(
             modifier = Modifier.fillMaxSize(),
         ) {
-            if(state.isLoading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -93,7 +111,6 @@ fun SignInScreen(
                                     Icon(
                                         imageVector = Icons.Default.Clear,
                                         contentDescription = "Clear Icon",
-                                        tint = MaterialTheme.colors.primary,
                                     )
                                 }
                             }
@@ -134,7 +151,6 @@ fun SignInScreen(
                                         else
                                             painterResource(R.drawable.ic_visibility_off_24),
                                         contentDescription = "Show password",
-                                        tint = MaterialTheme.colors.primary,
                                     )
                                 }
                             }
@@ -145,27 +161,44 @@ fun SignInScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(40.dp),
-                        onClick = { viewModel.signInUser() },
+                        onClick = { viewModel.signInUser(); keyboardController?.hide() },
                         enabled = state.isValidForm,
                         colors = ButtonDefaults.buttonColors(
                             disabledBackgroundColor = MaterialTheme.colors.primary,
                             disabledContentColor = MaterialTheme.colors.primaryVariant
                         ),
                     ) {
-                        Text(
-                            text = stringResource(R.string.sign_in_button_text),
-                            style = MaterialTheme.typography.body1,
-                            fontWeight = FontWeight.Bold,
-                        )
+                        if(state.isLoading) {
+                            CircularProgressIndicator(
+                                color = MaterialTheme.colors.onPrimary,
+                                modifier = Modifier
+                                    .size(18.dp)
+                                    .align(Alignment.CenterVertically),
+                                strokeWidth = 3.dp
+                            )
+                        }
+                        else {
+                            Text(
+                                text = stringResource(R.string.sign_in_button_text),
+                                style = MaterialTheme.typography.body1,
+                                fontWeight = FontWeight.Bold,
+                            )
+                        }
                     }
                 }
                 TextButton(
                     modifier = Modifier
-                        .padding(vertical = 40.dp)
+                        .padding(vertical = 30.dp)
                         .fillMaxWidth()
                         .height(40.dp)
                         .align(Alignment.CenterHorizontally),
-                    onClick = { navController.navigate(Screen.RegistrationScreen.route) },
+                    onClick = {
+                        navController.navigate(Screen.RegistrationScreen.route) {
+                            popUpTo(Screen.RegistrationScreen.route) {
+                                inclusive = true
+                            }
+                        }
+                    },
                 ) {
                     Row(
                     ) {

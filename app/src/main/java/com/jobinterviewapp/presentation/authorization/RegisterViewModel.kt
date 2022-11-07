@@ -11,10 +11,8 @@ import com.jobinterviewapp.domain.use_case.user.authorization.ValidateUserSurnam
 import com.weatherapp.core.util.Resource
 import com.weatherapp.core.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-
 import javax.inject.Inject
 
 @HiltViewModel
@@ -101,14 +99,11 @@ class RegisterViewModel @Inject constructor(
                 && stateValue.userSurname.isNotEmpty())
     }
 
-    private var signUpJob: Job? = null
-
     private fun signUp() {
         if(!isValidForm())
             return
 
-        signUpJob?.cancel()
-        signUpJob = viewModelScope.launch {
+        viewModelScope.launch {
             val stateValue = state.value
             _state.update { it.copy(isLoading = true) }
 

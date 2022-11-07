@@ -41,4 +41,30 @@ class InterviewConfigurationRepositoryImpl @Inject constructor(
             emit(Resource.Error(UiText.StringResource(R.string.io_exception)))
         }
     }
+
+    override fun getDirectionsOfField(sphereId: Int) = flow {
+        try {
+            val data = api.getDirectionsOfField(sphereId)
+            emit(Resource.Success(data = data))
+        }
+        catch(e: HttpException) {
+            val errorMessage = if(e.localizedMessage.isNullOrEmpty()) {
+                UiText.StringResource(R.string.unknown_exception)
+            }
+            else {
+                val errorBody = e.response()?.errorBody()
+                if (errorBody == null) {
+                    UiText.DynamicString(e.localizedMessage!!)
+                }
+                else {
+                    val errorMessage = Gson().fromJson(errorBody.charStream(), ErrorDto::class.java).message
+                    UiText.DynamicString(errorMessage)
+                }
+            }
+            emit(Resource.Error(errorMessage))
+        }
+        catch(e: IOException) {
+            emit(Resource.Error(UiText.StringResource(R.string.io_exception)))
+        }
+    }
 }

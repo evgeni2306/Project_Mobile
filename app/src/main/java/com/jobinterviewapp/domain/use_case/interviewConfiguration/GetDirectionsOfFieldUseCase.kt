@@ -4,14 +4,13 @@ import com.jobinterviewapp.data.remote.dto.FieldOfActivityDto
 import com.jobinterviewapp.domain.repository.InterviewConfigurationRepository
 import com.weatherapp.core.util.Resource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class GetFieldOfActivityUseCase @Inject constructor(
+class GetDirectionsOfFieldUseCase @Inject constructor(
     private val repository: InterviewConfigurationRepository
 ) {
 
-    operator fun invoke(): Flow<Resource<List<FieldOfActivityDto>>> {
-        return repository.getFieldOfActivity()
+    operator fun invoke(sphereId: Int): Flow<Resource<List<FieldOfActivityDto>>> {
+        return repository.getDirectionsOfField(sphereId)
     }
 }

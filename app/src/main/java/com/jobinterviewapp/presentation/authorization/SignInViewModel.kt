@@ -24,8 +24,8 @@ class SignInViewModel @Inject constructor(
     private val _state = MutableStateFlow(SignInState())
     val state = _state.asStateFlow()
 
-    private val _authResults = MutableSharedFlow<UiText>()
-    val authResults = _authResults.asSharedFlow()
+    private val _authError = MutableSharedFlow<UiText?>()
+    val authError = _authError.asSharedFlow()
 
     fun onEvent(event: AuthUiEvent) {
         when(event) {
@@ -69,20 +69,18 @@ class SignInViewModel @Inject constructor(
                 && stateValue.password.isNotEmpty())
     }
 
-    private var signInJob: Job? = null
-
     fun signInUser() {
-        signInJob?.cancel()
-        signInJob = viewModelScope.launch {
+        viewModelScope.launch {
             val stateValue = state.value
             _state.update { it.copy(isLoading = true) }
 
             signInUseCase(stateValue.login, stateValue.password).collectLatest { result ->
                 when(result) {
                     is Resource.Success -> {
+                        _authError.emit(null)
                     }
                     is Resource.Error -> {
-                        _authResults.emit(result.message)
+                        _authError.emit(result.message)
                     }
                 }
             }
