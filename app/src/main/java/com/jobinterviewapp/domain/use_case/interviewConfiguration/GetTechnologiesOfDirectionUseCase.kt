@@ -11,6 +11,6 @@ class GetTechnologiesOfDirectionUseCase @Inject constructor(
 ) {
 
     operator fun invoke(): Flow<Resource<List<FieldOfActivityDto>>> {
-        return repository.getFieldOfActivity()
+        return repository.getFieldsOfActivity()
     }
 }

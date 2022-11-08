@@ -2,17 +2,13 @@ package com.jobinterviewapp.presentation.authorization
 
 import android.app.Activity
 import android.content.pm.ActivityInfo
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -30,7 +26,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jobinterviewapp.R
 import com.jobinterviewapp.presentation.Screen
+import com.jobinterviewapp.presentation.authorization.registration.RegisterViewModel
 import com.jobinterviewapp.presentation.components.AuthTextField
+import com.jobinterviewapp.presentation.dataStore
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalComposeUiApi::class)
@@ -47,6 +45,9 @@ fun RegistrationScreen(
     LaunchedEffect(key1 = true) {
         viewModel.authError.collectLatest { authError ->
             if(authError == null) {
+                context.dataStore.updateData {
+                    it.copy(authorized = true)
+                }
                 navController.navigate(Screen.HomeScreen.route)
             }
             else {
@@ -216,7 +217,10 @@ fun RegistrationScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(40.dp),
-                        onClick = { viewModel.onEvent(AuthUiEvent.SignUp); keyboardController?.hide() },
+                        onClick = {
+                            viewModel.onEvent(AuthUiEvent.SignUp)
+                            keyboardController?.hide()
+                        },
                         enabled = state.isValidForm,
                         colors = ButtonDefaults.buttonColors(
                             disabledBackgroundColor = MaterialTheme.colors.primary,
@@ -271,3 +275,4 @@ fun RegistrationScreen(
         }
     }
 }
+

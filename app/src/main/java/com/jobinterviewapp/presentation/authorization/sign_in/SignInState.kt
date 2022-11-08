@@ -1,4 +1,4 @@
-package com.jobinterviewapp.presentation.authorization
+package com.jobinterviewapp.presentation.authorization.sign_in
 
 import com.jobinterviewapp.R
 import com.weatherapp.core.util.UiText

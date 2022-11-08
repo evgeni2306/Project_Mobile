@@ -16,7 +16,7 @@ class InterviewConfigurationRepositoryImpl @Inject constructor(
     private val api: InterviewApplicationApi,
 ): InterviewConfigurationRepository {
 
-    override fun getFieldOfActivity() = flow {
+    override fun getFieldsOfActivity() = flow {
         try {
             val data = api.getFieldOfActivity()
             emit(Resource.Success(data = data))

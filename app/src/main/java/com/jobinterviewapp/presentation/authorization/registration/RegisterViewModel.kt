@@ -1,4 +1,4 @@
-package com.jobinterviewapp.presentation.authorization
+package com.jobinterviewapp.presentation.authorization.registration
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,6 +8,7 @@ import com.jobinterviewapp.domain.use_case.user.authorization.ValidateTextField
 import com.jobinterviewapp.domain.use_case.user.authorization.ValidatePassword
 import com.jobinterviewapp.domain.use_case.user.authorization.ValidateUserName
 import com.jobinterviewapp.domain.use_case.user.authorization.ValidateUserSurname
+import com.jobinterviewapp.presentation.authorization.AuthUiEvent
 import com.weatherapp.core.util.Resource
 import com.weatherapp.core.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel

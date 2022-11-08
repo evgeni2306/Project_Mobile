@@ -5,13 +5,14 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import com.jobinterviewapp.ui.theme.Shapes
+import androidx.compose.ui.graphics.Color
 
 private val DarkColorPalette = darkColors(
     primary = PrimaryColor,
     primaryVariant = PrimaryVariantColor,
     secondary = SecondaryColor,
     background = BackgroundColor,
+    surface = Color.White,
 )
 
 private val LightColorPalette = lightColors(
@@ -19,7 +20,7 @@ private val LightColorPalette = lightColors(
     primaryVariant = PrimaryVariantColor,
     secondary = SecondaryColor,
     background = BackgroundColor,
-
+    surface = Color.White,
     /* Other default colors to override
     background = Color.White,
     surface = Color.White,

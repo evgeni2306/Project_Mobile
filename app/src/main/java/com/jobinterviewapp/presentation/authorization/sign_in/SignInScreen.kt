@@ -1,9 +1,6 @@
 package com.jobinterviewapp.presentation.authorization
 
-import android.app.Activity
-import android.content.pm.ActivityInfo
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -13,7 +10,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -27,7 +23,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jobinterviewapp.R
 import com.jobinterviewapp.presentation.Screen
+import com.jobinterviewapp.presentation.authorization.sign_in.SignInViewModel
 import com.jobinterviewapp.presentation.components.AuthTextField
+import com.jobinterviewapp.presentation.dataStore
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -56,6 +54,9 @@ fun SignInScreen(
     LaunchedEffect(key1 = true) {
         viewModel.authError.collectLatest { authError ->
             if(authError == null) {
+                context.dataStore.updateData {
+                    it.copy(authorized = true)
+                }
                 navController.navigate(Screen.HomeScreen.route)
             }
             else {

@@ -1,15 +1,14 @@
-package com.jobinterviewapp.presentation.authorization
+package com.jobinterviewapp.presentation.authorization.sign_in
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jobinterviewapp.domain.use_case.user.SignInUserUseCase
 import com.jobinterviewapp.domain.use_case.user.authorization.ValidateAnyPassword
 import com.jobinterviewapp.domain.use_case.user.authorization.ValidateTextField
-import com.jobinterviewapp.domain.use_case.user.authorization.ValidatePassword
+import com.jobinterviewapp.presentation.authorization.AuthUiEvent
 import com.weatherapp.core.util.Resource
 import com.weatherapp.core.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
