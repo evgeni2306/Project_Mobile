@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserSettings(
-    val authorized: Boolean? = null,
+    val authorized: Boolean = false,
 )

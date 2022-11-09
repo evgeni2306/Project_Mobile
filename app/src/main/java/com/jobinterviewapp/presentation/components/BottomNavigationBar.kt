@@ -1,11 +1,11 @@
 package com.jobinterviewapp.presentation.components
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
@@ -32,7 +32,8 @@ fun BottomNavigationBar(
     val backStackEntry = navController.currentBackStackEntryAsState()
     NavigationBar(
         modifier = modifier
-            .height(50.dp)
+            .padding(vertical = 0.dp)
+            .height(92.dp)
             .shadow(4.dp),
         containerColor = backgroundColor,
     ) {
@@ -46,20 +47,20 @@ fun BottomNavigationBar(
                 },
                 enabled = true,
                 colors =  NavigationBarItemDefaults.colors(
-                    indicatorColor = MaterialTheme.colors.background,
+                    indicatorColor = MaterialTheme.colors.surface,
                 ),
                 icon = {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(
                             painter = painterResource(id = item.iconId),
-                            tint = if(selected) MaterialTheme.colors.primaryVariant else Color.Gray,
+                            tint = if(selected) MaterialTheme.colors.primary else Color.Gray,
                             contentDescription = item.screen.screenName.asString()
                         )
                         Text(
                             text = item.screen.screenName.asString(),
                             textAlign = TextAlign.Center,
                             fontSize = 10.sp,
-                            color = if(selected) MaterialTheme.colors.primaryVariant else Color.Gray,
+                            color = if(selected) MaterialTheme.colors.primary else Color.Gray,
                         )
                     }
                 }

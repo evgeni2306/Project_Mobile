@@ -10,6 +10,7 @@ enum class Screen(val route: String, val screenName: UiText, val subRoutes: List
     DirectionsOfFieldScreen("directions_of_field_screen", UiText.StringResource(R.string.home_screen_name)),
     TechnologiesOfDirectionScreen("technologies_of_direction_screen", UiText.StringResource(R.string.home_screen_name)),
     ProfessionsOfTechnologyScreen("professions_of_technology_screen", UiText.StringResource(R.string.home_screen_name)),
+    KnowledgeBaseScreen("knowledge_base_screen", UiText.StringResource(R.string.knowledge_base_screen)),
     ;
 
     fun withArgs(vararg args: String): String {

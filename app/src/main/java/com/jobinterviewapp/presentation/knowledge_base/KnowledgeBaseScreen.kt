@@ -1,0 +1,10 @@
+package com.jobinterviewapp.presentation.knowledge_base
+
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
+
+@Composable
+fun KnowledgeBaseScreen(
+    navController: NavController
+) {
+}

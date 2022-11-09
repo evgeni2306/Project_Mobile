@@ -22,5 +22,10 @@
     <string name="registration_screen_name">Регистрация</string>
     <string name="sign_in_screen_name">Вход в аккаунт</string>
     <string name="home_screen_name">Собеседование</string>
+    <string name="knowledge_base_screen">База знаний</string>
+    <string name="field_of_activity_screen_placeholder">Выберите IT-направление, в котором хотите пройти собеседование</string>
+    <string name="direction_of_field_screen_placeholder">Выберите направление разработки</string>
+    <string name="technology_of_direction_screen_placeholder">Выберите стэк технологий</string>
+    <string name="profession_of_technology_screen_placeholder">Выберите профессию</string>
 
 </resources>

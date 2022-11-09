@@ -34,12 +34,12 @@ interface InterviewApplicationApi {
 
     @GET("interview/new/sphere/direction={directionId}")
     suspend fun getTechnologiesOfDirection(
-        @Query("directionId") directionId: Int,
+        @Path("directionId") directionId: Int,
     ): List<FieldOfActivityDto>
 
-    @GET("interview/new/sphere/direction")
+    @GET("interview/new/sphere/direction/technology={technologyId}")
     suspend fun getProfessionsOfTechnology(
-        @Query("technology") technologyId: Int,
+        @Path("technologyId") technologyId: Int,
     ): List<FieldOfActivityDto>
 
     companion object {
