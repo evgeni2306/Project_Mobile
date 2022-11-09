@@ -57,7 +57,7 @@ fun SignInScreen(
                 context.dataStore.updateData {
                     it.copy(authorized = true)
                 }
-                navController.navigate(Screen.HomeScreen.route)
+                navController.navigate(Screen.FieldsOfActivityScreen.route)
             }
             else {
                 scaffoldState.snackbarHostState.showSnackbar(

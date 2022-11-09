@@ -6,10 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.jobinterviewapp.presentation.Screen
 import com.jobinterviewapp.presentation.home.components.FieldOfActivityList
 
 @Composable
 fun DirectionsOfFieldScreen(
+    navController: NavController,
     viewModel: DirectionsViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.collectAsState().value
@@ -17,6 +20,11 @@ fun DirectionsOfFieldScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        FieldOfActivityList(state.fieldsOfActivity)
+        FieldOfActivityList(
+            listState = state.fieldsOfActivity,
+            onItemClick = {
+                navController.navigate(Screen.TechnologiesOfDirectionScreen.withArgs(it.id.toString()))
+            }
+        )
     }
 }

@@ -10,7 +10,7 @@ class GetProfessionsOfTechnologyUseCase @Inject constructor(
     private val repository: InterviewConfigurationRepository
 ) {
 
-    operator fun invoke(): Flow<Resource<List<FieldOfActivityDto>>> {
-        return repository.getFieldsOfActivity()
+    operator fun invoke(technologyId: Int): Flow<Resource<List<FieldOfActivityDto>>> {
+        return repository.getProfessionsOfTechnology(technologyId)
     }
 }

@@ -25,7 +25,8 @@ import com.jobinterviewapp.data.remote.dto.FieldOfActivityDto
 
 @Composable
 fun FieldOfActivityList(
-    listState: List<FieldOfActivityDto>
+    listState: List<FieldOfActivityDto>,
+    onItemClick: (FieldOfActivityDto) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier
@@ -38,7 +39,7 @@ fun FieldOfActivityList(
                     .padding(vertical = 3.dp, horizontal = 6.dp)
                     .clip(shape)
                     .clickable {
-
+                        onItemClick(fieldOfActivity)
                     }
             ) {
                 Row(

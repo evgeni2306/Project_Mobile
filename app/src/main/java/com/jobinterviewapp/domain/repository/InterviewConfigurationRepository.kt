@@ -8,5 +8,9 @@ interface InterviewConfigurationRepository {
 
     fun getFieldsOfActivity(): Flow<Resource<List<FieldOfActivityDto>>>
 
-    fun getDirectionsOfField(sphereId: Int): Flow<Resource<List<FieldOfActivityDto>>>
+    fun getDirectionsOfField(fieldId: Int): Flow<Resource<List<FieldOfActivityDto>>>
+
+    fun getTechnologiesOfDirection(directionId: Int): Flow<Resource<List<FieldOfActivityDto>>>
+
+    fun getProfessionsOfTechnology(technologyId: Int): Flow<Resource<List<FieldOfActivityDto>>>
 }

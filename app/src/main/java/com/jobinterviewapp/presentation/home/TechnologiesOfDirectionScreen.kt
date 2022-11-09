@@ -1,6 +1,7 @@
 package com.jobinterviewapp.presentation.home
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -10,20 +11,17 @@ import com.jobinterviewapp.presentation.Screen
 import com.jobinterviewapp.presentation.home.components.FieldOfActivityList
 
 @Composable
-fun FieldsOfActivityScreen(
+fun TechnologiesOfDirectionScreen(
     navController: NavController,
-    viewModel: FieldsViewModel = hiltViewModel(),
+    viewModel: TechnologiesViewModel = hiltViewModel()
 ) {
-    val state = viewModel.state.collectAsState().value
     Box(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        FieldOfActivityList(
-            listState = state.fieldsOfActivity,
-            onItemClick = {
-                navController.navigate(Screen.DirectionsOfFieldScreen.withArgs(it.id.toString()))
-            }
-        )
+        val state = viewModel.state.collectAsState().value
+        FieldOfActivityList(listState = state.fieldsOfActivity, onItemClick = {
+            navController.navigate(Screen.ProfessionsOfTechnologyScreen.withArgs(it.id.toString()))
+        })
     }
 }

@@ -10,7 +10,7 @@ class GetTechnologiesOfDirectionUseCase @Inject constructor(
     private val repository: InterviewConfigurationRepository
 ) {
 
-    operator fun invoke(): Flow<Resource<List<FieldOfActivityDto>>> {
-        return repository.getFieldsOfActivity()
+    operator fun invoke(directionId: Int): Flow<Resource<List<FieldOfActivityDto>>> {
+        return repository.getTechnologiesOfDirection(directionId)
     }
 }
