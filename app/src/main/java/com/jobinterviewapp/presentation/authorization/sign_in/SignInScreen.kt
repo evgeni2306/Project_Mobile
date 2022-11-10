@@ -24,7 +24,7 @@ import androidx.navigation.NavController
 import com.jobinterviewapp.R
 import com.jobinterviewapp.presentation.Screen
 import com.jobinterviewapp.presentation.authorization.sign_in.SignInViewModel
-import com.jobinterviewapp.presentation.components.AuthTextField
+import com.jobinterviewapp.presentation.authorization.components.AuthTextField
 import com.jobinterviewapp.presentation.dataStore
 import kotlinx.coroutines.flow.collectLatest
 

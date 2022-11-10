@@ -4,6 +4,9 @@ import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -112,7 +115,7 @@ fun TransparentSystemBars() {
 fun Navigation(navController: NavHostController, modifier: Modifier, userSettings: UserSettings) {
     NavHost(
         navController = navController,
-        startDestination = if(userSettings.authorized) Screen.FieldsOfActivityScreen.route else Screen.RegistrationScreen.route,
+        startDestination = if(userSettings.authorized) Screen.KnowledgeBaseScreen.route else Screen.RegistrationScreen.route,
         modifier = modifier
     ) {
         composable(
@@ -124,7 +127,12 @@ fun Navigation(navController: NavHostController, modifier: Modifier, userSetting
             SignInScreen(navController)
         }
         composable(Screen.FieldsOfActivityScreen.route) {
-            FieldsOfActivityScreen(navController)
+            AnimatedVisibility(
+                visible = true,
+                enter = slideInHorizontally() + fadeIn()
+            ) {
+                FieldsOfActivityScreen(navController)
+            }
         }
         composable(
             route = "${Screen.DirectionsOfFieldScreen.route}/{${Constants.PARAM_FIELD_OF_ACTIVITY_ID}}",
@@ -134,7 +142,12 @@ fun Navigation(navController: NavHostController, modifier: Modifier, userSetting
                 }
             )
         ) {
-            DirectionsOfFieldScreen(navController)
+            AnimatedVisibility(
+                visible = true,
+                enter = slideInHorizontally() + fadeIn()
+            ) {
+                DirectionsOfFieldScreen(navController)
+            }
         }
         composable(
             route = "${Screen.TechnologiesOfDirectionScreen.route}/{${Constants.PARAM_DIRECTION_OF_FIELD_ID}}",

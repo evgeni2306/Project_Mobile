@@ -23,9 +23,9 @@ import androidx.navigation.NavController
 import com.jobinterviewapp.presentation.Screen
 import com.jobinterviewapp.presentation.home.components.FieldOfActivityList
 import com.jobinterviewapp.R
+import com.jobinterviewapp.presentation.home.components.InterviewConfigurationTopBar
 import com.jobinterviewapp.presentation.home.components.ScreenPlaceholder
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FieldsOfActivityScreen(
     navController: NavController,
@@ -34,42 +34,9 @@ fun FieldsOfActivityScreen(
     val state = viewModel.state.collectAsState().value
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Text(
-                        color = MaterialTheme.colors.onPrimary,
-                        text = Screen.FieldsOfActivityScreen.screenName.asString(),
-                        style = MaterialTheme.typography.body1,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                },
-                actions = {
-                    IconButton(
-                        onClick = {}
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_profile),
-                            contentDescription = null,
-                            tint = Color.LightGray,
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.mediumTopAppBarColors(
-                    containerColor = MaterialTheme.colors.primaryVariant
-                ),
-                navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            navController.navigateUp()
-                        },
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = null,
-                            tint = MaterialTheme.colors.onPrimary,
-                        )
-                    }
-                }
+            InterviewConfigurationTopBar(
+                navController = navController,
+                screen = Screen.FieldsOfActivityScreen,
             )
         }
     ) {

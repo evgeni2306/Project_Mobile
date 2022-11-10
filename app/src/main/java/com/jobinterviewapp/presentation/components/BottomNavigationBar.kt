@@ -39,7 +39,8 @@ fun BottomNavigationBar(
     ) {
         items.forEach { item ->
             val selected = item.screen.route == backStackEntry.value?.destination?.route
-                    || item.screen.subRoutes?.contains(backStackEntry.value?.destination?.route) ?: false
+                    || item.screen.subRoutes?.contains(
+                backStackEntry.value?.destination?.route?.split('/')?.first()) ?: false
             NavigationBarItem(
                 selected = selected,
                 onClick = {

@@ -1,4 +1,4 @@
-package com.jobinterviewapp.presentation.components
+package com.jobinterviewapp.presentation.authorization.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height

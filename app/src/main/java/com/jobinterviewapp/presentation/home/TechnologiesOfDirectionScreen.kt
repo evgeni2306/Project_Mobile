@@ -3,6 +3,7 @@ package com.jobinterviewapp.presentation.home
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -14,6 +15,7 @@ import com.jobinterviewapp.presentation.Screen
 import com.jobinterviewapp.presentation.home.components.FieldOfActivityList
 import com.jobinterviewapp.presentation.home.components.ScreenPlaceholder
 import com.jobinterviewapp.R
+import com.jobinterviewapp.presentation.home.components.InterviewConfigurationTopBar
 
 @Composable
 fun TechnologiesOfDirectionScreen(
@@ -21,17 +23,26 @@ fun TechnologiesOfDirectionScreen(
     viewModel: TechnologiesViewModel = hiltViewModel()
 ) {
     val state = viewModel.state.collectAsState().value
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
+    Scaffold(
+        topBar = {
+            InterviewConfigurationTopBar(
+                navController = navController,
+                screen = Screen.ProfessionsOfTechnologyScreen,
+            )
+        }
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
         ) {
-            ScreenPlaceholder(text = stringResource(R.string.technology_of_direction_screen_placeholder))
-            FieldOfActivityList(listState = state.fieldsOfActivity, onItemClick = {
-                navController.navigate(Screen.ProfessionsOfTechnologyScreen.withArgs(it.id.toString()))
-            })
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                ScreenPlaceholder(text = stringResource(R.string.technology_of_direction_screen_placeholder))
+                FieldOfActivityList(listState = state.fieldsOfActivity, onItemClick = {
+                    navController.navigate(Screen.ProfessionsOfTechnologyScreen.withArgs(it.id.toString()))
+                })
+            }
         }
     }
 }
