@@ -19,13 +19,26 @@
     <string name="navigate_to_registration_hint">Ещё нет аккаунта?</string>
     <string name="login_field_hint">Логин</string>
     <string name="password_field_hint">Пароль</string>
+    <!--    Screen names    -->
     <string name="registration_screen_name">Регистрация</string>
     <string name="sign_in_screen_name">Вход в аккаунт</string>
     <string name="home_screen_name">Собеседование</string>
-    <string name="knowledge_base_screen">База знаний</string>
+    <string name="knowledge_base_screen_name">База знаний</string>
+    <string name="interview_preview_screen_name">Предпросмотр собеседования</string>
+
     <string name="field_of_activity_screen_placeholder">Выберите IT-направление, в котором хотите пройти собеседование</string>
     <string name="direction_of_field_screen_placeholder">Выберите направление разработки</string>
     <string name="technology_of_direction_screen_placeholder">Выберите стэк технологий</string>
     <string name="profession_of_technology_screen_placeholder">Выберите профессию</string>
+    <string name="interview_simulation_subtitle">Тренировочное собеседование</string>
+    <string name="questions_count">%s вопросов</string>
+    <string name="questions_count_content">Тренировочное собеседование состоит из %s вопросов персонального, ситуационного и технического характера.</string>
+    <string name="tip_number_1">Продумывайте и проговаривайте ответы</string>
+    <string name="tip_number_1_content">Рекомендуем практиковаться в ответах на вопросы, произнося их вслух. Во время решения задач также озвучивайте свои мысли и ход решения.</string>
+    <string name="tip_number_2">Проверяйте себя</string>
+    <string name="tip_number_2_content">Сравнивайте свой ответ с предложенным, нажав на кнопку «Смотреть ответ».</string>
+    <string name="tip_number_3">Сохраняйте вопросы в избранное</string>
+    <string name="tip_number_3_content">Сложные вопросы добавляйте в избранное, чтобы вернуться к ним позже еще раз.</string>
+
 
 </resources>

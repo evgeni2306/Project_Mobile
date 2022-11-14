@@ -1,16 +1,16 @@
 package com.jobinterviewapp.domain.use_case.interviewConfiguration
 
-import com.jobinterviewapp.data.remote.dto.FieldOfActivityDto
+import com.jobinterviewapp.data.remote.dto.InterviewPreviewDto
 import com.jobinterviewapp.domain.repository.InterviewConfigurationRepository
 import com.jobinterviewapp.core.util.Resource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetTechnologiesOfDirectionUseCase @Inject constructor(
+class GetInterviewPreviewUseCase @Inject constructor(
     private val repository: InterviewConfigurationRepository
 ) {
 
-    operator fun invoke(directionId: Int): Flow<Resource<List<FieldOfActivityDto>>> {
-        return repository.getTechnologiesOfDirection(directionId)
+    operator fun invoke(professionId: Int): Flow<Resource<InterviewPreviewDto>> {
+        return repository.getInterviewPreview(professionId)
     }
 }

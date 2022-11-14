@@ -17,8 +17,6 @@ import androidx.compose.runtime.collectAsState
 import com.jobinterviewapp.R
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.compositeOver
-import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.datastore.dataStore
 import androidx.navigation.NavHostController
@@ -32,10 +30,8 @@ import com.jobinterviewapp.presentation.authorization.RegistrationScreen
 import com.jobinterviewapp.presentation.authorization.SignInScreen
 import com.jobinterviewapp.core.presentation.ui.theme.JobInterviewAppTheme
 import com.jobinterviewapp.presentation.components.BottomNavigationBar
-import com.jobinterviewapp.presentation.home.DirectionsOfFieldScreen
-import com.jobinterviewapp.presentation.home.FieldsOfActivityScreen
-import com.jobinterviewapp.presentation.home.ProfessionsOfTechnologyScreen
-import com.jobinterviewapp.presentation.home.TechnologiesOfDirectionScreen
+import com.jobinterviewapp.presentation.interview.*
+import com.jobinterviewapp.presentation.interview.interview_preview.InterviewPreviewScreen
 import com.jobinterviewapp.presentation.knowledge_base.KnowledgeBaseScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -50,8 +46,6 @@ class MainActivity : ComponentActivity() {
             JobInterviewAppTheme {
                 // A surface container using the 'background' color from the theme
                 TransparentSystemBars()
-//                val systemUiController = rememberSystemUiController()
-//                systemUiController.setSystemBarsColor(color = MaterialTheme.colors.background)
                 val navController = rememberNavController()
                 val userSettings = dataStore.data.collectAsState(
                     initial = UserSettings(true)
@@ -168,6 +162,16 @@ fun Navigation(navController: NavHostController, modifier: Modifier, userSetting
             )
         ) {
             ProfessionsOfTechnologyScreen(navController)
+        }
+        composable(
+            route = "${Screen.InterviewPreviewScreen.route}/{${Constants.PARAM_PROFESSIONS_OF_TECHNOLOGY}}",
+            arguments = listOf(
+                navArgument(Constants.PARAM_PROFESSIONS_OF_TECHNOLOGY) {
+                    type = NavType.IntType
+                }
+            )
+        ) {
+            InterviewPreviewScreen(navController)
         }
         composable(
             route = Screen.KnowledgeBaseScreen.route,

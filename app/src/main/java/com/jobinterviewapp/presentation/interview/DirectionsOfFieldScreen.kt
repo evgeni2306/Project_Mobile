@@ -1,4 +1,4 @@
-package com.jobinterviewapp.presentation.home
+package com.jobinterviewapp.presentation.interview
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,23 +11,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.jobinterviewapp.R
 import com.jobinterviewapp.presentation.Screen
-import com.jobinterviewapp.presentation.home.components.FieldOfActivityList
-import com.jobinterviewapp.presentation.home.components.InterviewConfigurationTopBar
-import com.jobinterviewapp.presentation.home.components.ScreenPlaceholder
+import com.jobinterviewapp.presentation.interview.components.FieldOfActivityList
+import com.jobinterviewapp.presentation.interview.components.ScreenPlaceholder
+import com.jobinterviewapp.R
+import com.jobinterviewapp.presentation.interview.components.InterviewConfigurationTopBar
 
 @Composable
-fun ProfessionsOfTechnologyScreen(
+fun DirectionsOfFieldScreen(
     navController: NavController,
-    viewModel: ProfessionsViewModel = hiltViewModel(),
+    viewModel: DirectionsViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.collectAsState().value
     Scaffold(
         topBar = {
             InterviewConfigurationTopBar(
                 navController = navController,
-                screen = Screen.ProfessionsOfTechnologyScreen,
+                screen = Screen.TechnologiesOfDirectionScreen,
             )
         }
     ) {
@@ -38,10 +38,11 @@ fun ProfessionsOfTechnologyScreen(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ScreenPlaceholder(text = stringResource(id = R.string.profession_of_technology_screen_placeholder))
+                ScreenPlaceholder(text = stringResource(id = R.string.direction_of_field_screen_placeholder))
                 FieldOfActivityList(
                     listState = state.fieldsOfActivity,
                     onItemClick = {
+                        navController.navigate(Screen.TechnologiesOfDirectionScreen.withArgs(it.id.toString()))
                     }
                 )
             }

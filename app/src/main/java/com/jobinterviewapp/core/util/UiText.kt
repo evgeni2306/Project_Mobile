@@ -1,4 +1,4 @@
-package com.weatherapp.core.util
+package com.jobinterviewapp.core.util
 
 import android.content.Context
 import androidx.annotation.StringRes

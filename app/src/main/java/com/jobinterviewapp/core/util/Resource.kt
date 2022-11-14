@@ -1,4 +1,4 @@
-package com.weatherapp.core.util
+package com.jobinterviewapp.core.util
 
 sealed interface Resource<T> {
     data class Success<T>(val data: T) : Resource<T>

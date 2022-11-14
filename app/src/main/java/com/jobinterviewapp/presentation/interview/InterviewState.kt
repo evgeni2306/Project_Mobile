@@ -1,9 +1,8 @@
-package com.jobinterviewapp.presentation.home
+package com.jobinterviewapp.presentation.interview
 
 import com.jobinterviewapp.data.remote.dto.FieldOfActivityDto
-import com.weatherapp.core.util.UiText
 
-data class HomeState(
+data class InterviewState(
     val fieldsOfActivity: List<FieldOfActivityDto> = emptyList(),
     val isLoading: Boolean = false,
 )

@@ -1,7 +1,7 @@
 package com.jobinterviewapp.domain.use_case.user.authorization
 
 import com.jobinterviewapp.R
-import com.weatherapp.core.util.UiText
+import com.jobinterviewapp.core.util.UiText
 import javax.inject.Inject
 
 class ValidateAnyPassword @Inject constructor() {

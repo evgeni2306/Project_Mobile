@@ -1,7 +1,8 @@
 package com.jobinterviewapp.domain.repository
 
 import com.jobinterviewapp.data.remote.dto.FieldOfActivityDto
-import com.weatherapp.core.util.Resource
+import com.jobinterviewapp.data.remote.dto.InterviewPreviewDto
+import com.jobinterviewapp.core.util.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface InterviewConfigurationRepository {
@@ -13,4 +14,6 @@ interface InterviewConfigurationRepository {
     fun getTechnologiesOfDirection(directionId: Int): Flow<Resource<List<FieldOfActivityDto>>>
 
     fun getProfessionsOfTechnology(technologyId: Int): Flow<Resource<List<FieldOfActivityDto>>>
+
+    fun getInterviewPreview(professionId: Int): Flow<Resource<InterviewPreviewDto>>
 }

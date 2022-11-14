@@ -9,8 +9,8 @@ import com.jobinterviewapp.domain.use_case.user.authorization.ValidatePassword
 import com.jobinterviewapp.domain.use_case.user.authorization.ValidateUserName
 import com.jobinterviewapp.domain.use_case.user.authorization.ValidateUserSurname
 import com.jobinterviewapp.presentation.authorization.AuthUiEvent
-import com.weatherapp.core.util.Resource
-import com.weatherapp.core.util.UiText
+import com.jobinterviewapp.core.util.Resource
+import com.jobinterviewapp.core.util.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

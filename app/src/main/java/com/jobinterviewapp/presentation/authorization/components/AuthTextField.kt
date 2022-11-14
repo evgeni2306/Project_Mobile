@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.weatherapp.core.util.UiText
+import com.jobinterviewapp.core.util.UiText
 
 @Composable
 fun AuthTextField(

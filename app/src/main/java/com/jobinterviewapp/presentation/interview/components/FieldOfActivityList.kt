@@ -1,4 +1,4 @@
-package com.jobinterviewapp.presentation.home.components
+package com.jobinterviewapp.presentation.interview.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

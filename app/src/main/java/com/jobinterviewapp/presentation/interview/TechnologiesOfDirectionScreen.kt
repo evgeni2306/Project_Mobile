@@ -1,4 +1,4 @@
-package com.jobinterviewapp.presentation.home
+package com.jobinterviewapp.presentation.interview
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,10 +12,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jobinterviewapp.presentation.Screen
-import com.jobinterviewapp.presentation.home.components.FieldOfActivityList
-import com.jobinterviewapp.presentation.home.components.ScreenPlaceholder
+import com.jobinterviewapp.presentation.interview.components.FieldOfActivityList
+import com.jobinterviewapp.presentation.interview.components.ScreenPlaceholder
 import com.jobinterviewapp.R
-import com.jobinterviewapp.presentation.home.components.InterviewConfigurationTopBar
+import com.jobinterviewapp.presentation.interview.components.InterviewConfigurationTopBar
 
 @Composable
 fun TechnologiesOfDirectionScreen(

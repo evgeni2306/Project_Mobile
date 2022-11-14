@@ -1,7 +1,7 @@
 package com.jobinterviewapp.presentation
 
 import com.jobinterviewapp.R
-import com.weatherapp.core.util.UiText
+import com.jobinterviewapp.core.util.UiText
 
 enum class Screen(val route: String, val screenName: UiText, val subRoutes: List<String>? = null) {
     RegistrationScreen("registration_screen", UiText.StringResource(R.string.registration_screen_name)),
@@ -13,12 +13,14 @@ enum class Screen(val route: String, val screenName: UiText, val subRoutes: List
             "directions_of_field_screen",
             "technologies_of_direction_screen",
             "professions_of_technology_screen",
+            "interview_preview_screen",
         )
     ),
     DirectionsOfFieldScreen("directions_of_field_screen", UiText.StringResource(R.string.home_screen_name)),
     TechnologiesOfDirectionScreen("technologies_of_direction_screen", UiText.StringResource(R.string.home_screen_name)),
     ProfessionsOfTechnologyScreen("professions_of_technology_screen", UiText.StringResource(R.string.home_screen_name)),
-    KnowledgeBaseScreen("knowledge_base_screen", UiText.StringResource(R.string.knowledge_base_screen)),
+    InterviewPreviewScreen("interview_preview_screen", UiText.StringResource(R.string.interview_preview_screen_name)),
+    KnowledgeBaseScreen("knowledge_base_screen", UiText.StringResource(R.string.knowledge_base_screen_name)),
     ;
 
     fun withArgs(vararg args: String): String {

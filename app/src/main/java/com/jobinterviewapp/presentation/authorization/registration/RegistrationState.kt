@@ -1,7 +1,6 @@
 package com.jobinterviewapp.presentation.authorization.registration
 
-import com.jobinterviewapp.R
-import com.weatherapp.core.util.UiText
+import com.jobinterviewapp.core.util.UiText
 
 data class RegistrationState(
     val isLoading: Boolean = false,

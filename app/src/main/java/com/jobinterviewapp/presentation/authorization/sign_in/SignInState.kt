@@ -1,7 +1,6 @@
 package com.jobinterviewapp.presentation.authorization.sign_in
 
-import com.jobinterviewapp.R
-import com.weatherapp.core.util.UiText
+import com.jobinterviewapp.core.util.UiText
 
 data class SignInState(
     val login: String = "",

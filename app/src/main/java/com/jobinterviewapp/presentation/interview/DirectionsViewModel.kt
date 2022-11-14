@@ -1,11 +1,11 @@
-package com.jobinterviewapp.presentation.home
+package com.jobinterviewapp.presentation.interview
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jobinterviewapp.domain.use_case.interviewConfiguration.GetProfessionsOfTechnologyUseCase
+import com.jobinterviewapp.domain.use_case.interviewConfiguration.GetDirectionsOfFieldUseCase
 import com.jobinterviewapp.presentation.Constants
-import com.weatherapp.core.util.Resource
+import com.jobinterviewapp.core.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,18 +15,19 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfessionsViewModel @Inject constructor(
+class DirectionsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getProfessionsOfTechnologyUseCase: GetProfessionsOfTechnologyUseCase
+    private val getDirectionsOfFieldUseCase: GetDirectionsOfFieldUseCase,
 ): ViewModel() {
-    private val _state = MutableStateFlow(HomeState())
+
+    private val _state = MutableStateFlow(InterviewState())
     val state = _state.asStateFlow()
-    private val technologyId: Int? = savedStateHandle.get<Int>(Constants.PARAM_TECHNOLOGIES_OF_DIRECTION_ID)
+    private val fieldOfActivityId: Int? = savedStateHandle.get<Int>(Constants.PARAM_FIELD_OF_ACTIVITY_ID)
 
     fun loadDirectionsOfField() {
         viewModelScope.launch {
-            technologyId?.let {
-                getProfessionsOfTechnologyUseCase(technologyId).collectLatest { result ->
+            fieldOfActivityId?.let {
+                getDirectionsOfFieldUseCase(fieldOfActivityId).collectLatest { result ->
                     when(result) {
                         is Resource.Success -> {
                             _state.update { it.copy(
