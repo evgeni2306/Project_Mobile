@@ -132,11 +132,9 @@ fun Navigation(navController: NavHostController, modifier: Modifier, userSetting
         composable(
             route = Screen.FieldsOfActivityScreen.route,
             exitTransition = {
-                fadeOut(
-                    animationSpec = tween(
-                        durationMillis = Constants.ENTRY_NAVIGATION_ANIMATION_DURATION
-                    ),
-                    targetAlpha = 100f
+                slideOutOfContainer(
+                    towards = AnimatedContentScope.SlideDirection.Left,
+                    animationSpec = tween(Constants.ENTRY_NAVIGATION_ANIMATION_DURATION),
                 )
             },
             popEnterTransition = {
@@ -157,10 +155,18 @@ fun Navigation(navController: NavHostController, modifier: Modifier, userSetting
                     animationSpec = tween(
                         durationMillis = Constants.ENTRY_NAVIGATION_ANIMATION_DURATION
                     ),
-                ) + fadeIn(
-                    animationSpec = tween(
-                        durationMillis = Constants.ENTRY_NAVIGATION_ANIMATION_DURATION
-                    ),
+                )
+            },
+            popEnterTransition = {
+                slideIntoContainer(
+                    towards = AnimatedContentScope.SlideDirection.Right,
+                    animationSpec = tween(Constants.ENTRY_NAVIGATION_ANIMATION_DURATION),
+                )
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    towards = AnimatedContentScope.SlideDirection.Left,
+                    animationSpec = tween(Constants.ENTRY_NAVIGATION_ANIMATION_DURATION),
                 )
             },
             popExitTransition = {
@@ -182,7 +188,9 @@ fun Navigation(navController: NavHostController, modifier: Modifier, userSetting
             enterTransition = {
                 slideIntoContainer(
                     towards = AnimatedContentScope.SlideDirection.Left,
-                    animationSpec = tween(Constants.ENTRY_NAVIGATION_ANIMATION_DURATION)
+                    animationSpec = tween(
+                        durationMillis = Constants.ENTRY_NAVIGATION_ANIMATION_DURATION
+                    ),
                 )
             },
             popEnterTransition = {
@@ -191,10 +199,13 @@ fun Navigation(navController: NavHostController, modifier: Modifier, userSetting
                     animationSpec = tween(Constants.ENTRY_NAVIGATION_ANIMATION_DURATION),
                 )
             },
-            popExitTransition = {
-                fadeOut(
+            exitTransition = {
+                slideOutOfContainer(
+                    towards = AnimatedContentScope.SlideDirection.Left,
                     animationSpec = tween(Constants.ENTRY_NAVIGATION_ANIMATION_DURATION),
                 )
+            },
+            popExitTransition = {
                 slideOutOfContainer(
                     towards = AnimatedContentScope.SlideDirection.Right,
                     animationSpec = tween(Constants.ENTRY_NAVIGATION_ANIMATION_DURATION),
@@ -211,12 +222,11 @@ fun Navigation(navController: NavHostController, modifier: Modifier, userSetting
         composable(
             route = "${Screen.ProfessionsOfTechnologyScreen.route}/{${Constants.PARAM_TECHNOLOGIES_OF_DIRECTION_ID}}",
             enterTransition = {
-                fadeIn(
-                    animationSpec = tween(Constants.ENTRY_NAVIGATION_ANIMATION_DURATION)
-                )
                 slideIntoContainer(
                     towards = AnimatedContentScope.SlideDirection.Left,
-                    animationSpec = tween(Constants.ENTRY_NAVIGATION_ANIMATION_DURATION)
+                    animationSpec = tween(
+                        durationMillis = Constants.ENTRY_NAVIGATION_ANIMATION_DURATION
+                    ),
                 )
             },
             popEnterTransition = {
@@ -225,10 +235,13 @@ fun Navigation(navController: NavHostController, modifier: Modifier, userSetting
                     animationSpec = tween(Constants.ENTRY_NAVIGATION_ANIMATION_DURATION),
                 )
             },
-            popExitTransition = {
-                fadeOut(
+            exitTransition = {
+                slideOutOfContainer(
+                    towards = AnimatedContentScope.SlideDirection.Left,
                     animationSpec = tween(Constants.ENTRY_NAVIGATION_ANIMATION_DURATION),
                 )
+            },
+            popExitTransition = {
                 slideOutOfContainer(
                     towards = AnimatedContentScope.SlideDirection.Right,
                     animationSpec = tween(Constants.ENTRY_NAVIGATION_ANIMATION_DURATION),
@@ -250,12 +263,11 @@ fun Navigation(navController: NavHostController, modifier: Modifier, userSetting
                 }
             ),
             enterTransition = {
-                fadeIn(
-                    animationSpec = tween(Constants.ENTRY_NAVIGATION_ANIMATION_DURATION)
-                )
                 slideIntoContainer(
                     towards = AnimatedContentScope.SlideDirection.Left,
-                    animationSpec = tween(Constants.ENTRY_NAVIGATION_ANIMATION_DURATION)
+                    animationSpec = tween(
+                        durationMillis = Constants.ENTRY_NAVIGATION_ANIMATION_DURATION
+                    ),
                 )
             },
             popEnterTransition = {
@@ -264,10 +276,13 @@ fun Navigation(navController: NavHostController, modifier: Modifier, userSetting
                     animationSpec = tween(Constants.ENTRY_NAVIGATION_ANIMATION_DURATION),
                 )
             },
-            popExitTransition = {
-                fadeOut(
+            exitTransition = {
+                slideOutOfContainer(
+                    towards = AnimatedContentScope.SlideDirection.Left,
                     animationSpec = tween(Constants.ENTRY_NAVIGATION_ANIMATION_DURATION),
                 )
+            },
+            popExitTransition = {
                 slideOutOfContainer(
                     towards = AnimatedContentScope.SlideDirection.Right,
                     animationSpec = tween(Constants.ENTRY_NAVIGATION_ANIMATION_DURATION),

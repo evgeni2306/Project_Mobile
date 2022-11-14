@@ -46,9 +46,10 @@ fun InterviewPreviewScreen(
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
+                modifier = Modifier,
             ) {
                 Card(
+                    elevation = 0.dp,
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.CenterHorizontally),
@@ -94,6 +95,7 @@ fun InterviewPreviewScreen(
                                 topStart = 10.dp,
                                 topEnd = 10.dp
                             ),
+                            elevation = 0.dp,
                         ) {
                             Column(
                                 modifier = Modifier
