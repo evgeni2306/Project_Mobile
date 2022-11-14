@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Card
@@ -50,10 +51,19 @@ fun InterviewPreviewScreen(
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 24.dp)
                         .align(Alignment.CenterHorizontally),
+                    shape = RoundedCornerShape(
+                        bottomStart = 10.dp,
+                        bottomEnd = 10.dp,
+                        topStart = 0.dp,
+                        topEnd = 0.dp
+                    ),
                 ) {
-                    Column {
+                    Column(
+                        modifier = Modifier
+                            .padding(vertical = 24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         state.previewName?.let { previewName ->
                             Text(
                                 modifier = Modifier
@@ -74,40 +84,51 @@ fun InterviewPreviewScreen(
                 }
                 LazyColumn(
                     modifier = Modifier
-                        .padding(vertical = 16.dp)
-                        .background(color = MaterialTheme.colors.surface)
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                        .padding(vertical = 8.dp)
                 ) {
                     item {
-                        Column(
-                            modifier = Modifier.padding(vertical = 8.dp)
+                        Card(
+                            shape = RoundedCornerShape(
+                                bottomStart = 0.dp,
+                                bottomEnd = 0.dp,
+                                topStart = 10.dp,
+                                topEnd = 10.dp
+                            ),
                         ) {
-                            state.questionsCount?.let { questionsCount ->
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ) {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.ic_questions_count),
-                                        contentDescription = null,
-                                    )
-                                    Spacer(Modifier.width(8.dp))
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp, horizontal = 16.dp),
+                            ) {
+                                state.questionsCount?.let { questionsCount ->
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                    ) {
+                                        Image(
+                                            painter = painterResource(id = R.drawable.ic_questions_count),
+                                            contentDescription = null,
+                                        )
+                                        Spacer(Modifier.width(8.dp))
+                                        Text(
+                                            text = stringResource(R.string.questions_count, questionsCount),
+                                            fontWeight = FontWeight.SemiBold,
+                                        )
+                                    }
+                                    Spacer(Modifier.height(8.dp))
                                     Text(
-                                        text = stringResource(R.string.questions_count, questionsCount),
-                                        fontWeight = FontWeight.SemiBold,
+                                        text = stringResource(id = R.string.questions_count_content, questionsCount),
+                                        color = Color.DarkGray
                                     )
                                 }
-                                Spacer(Modifier.height(8.dp))
-                                Text(
-                                    text = stringResource(id = R.string.questions_count_content, questionsCount),
-                                    color = Color.DarkGray
-                                )
                             }
                         }
                     }
 
                     item {
                         Column(
-                            modifier = Modifier.padding(vertical = 8.dp)
+                            modifier = Modifier
+                                .background(color = MaterialTheme.colors.surface)
+                                .padding(vertical = 8.dp, horizontal = 16.dp)
                         ) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
@@ -131,7 +152,9 @@ fun InterviewPreviewScreen(
                     }
                     item {
                         Column(
-                            modifier = Modifier.padding(vertical = 8.dp)
+                            modifier = Modifier
+                                .background(color = MaterialTheme.colors.surface)
+                                .padding(vertical = 8.dp, horizontal = 16.dp)
                         ) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
@@ -155,7 +178,9 @@ fun InterviewPreviewScreen(
                     }
                     item {
                         Column(
-                            modifier = Modifier.padding(vertical = 8.dp)
+                            modifier = Modifier
+                                .background(color = MaterialTheme.colors.surface)
+                                .padding(vertical = 8.dp, horizontal = 16.dp)
                         ) {
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
