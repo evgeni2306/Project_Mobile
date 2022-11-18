@@ -38,7 +38,6 @@ fun FieldOfActivityScreenContent(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                //Spacer(modifier = Modifier.height(8.dp))
                 FieldOfActivityList(
                     listState = fieldsOfActivity,
                     onItemClick = {
