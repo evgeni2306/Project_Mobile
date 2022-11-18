@@ -5,33 +5,29 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.*
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import com.jobinterviewapp.R
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
 import androidx.datastore.dataStore
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.jobinterviewapp.presentation.authorization.RegistrationScreen
+import com.jobinterviewapp.presentation.authorization.registration.RegistrationScreen
 import com.jobinterviewapp.presentation.authorization.SignInScreen
 import com.jobinterviewapp.core.presentation.ui.theme.JobInterviewAppTheme
 import com.jobinterviewapp.presentation.components.BottomNavigationBar
@@ -39,14 +35,12 @@ import com.jobinterviewapp.presentation.interview.*
 import com.jobinterviewapp.presentation.interview.interview_preview.InterviewPreviewScreen
 import com.jobinterviewapp.presentation.knowledge_base.KnowledgeBaseScreen
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 val Context.dataStore by dataStore("user-settings.json", UserSettingsSerializer)
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalAnimationApi::class)
+    @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -65,32 +59,27 @@ class MainActivity : ComponentActivity() {
                                 items = listOf(
                                     BottomNavItem(
                                         screen = Screen.KnowledgeBaseScreen,
-                                        iconId = R.drawable.ic_knowledge_base,
+                                        iconOutlinedId = R.drawable.ic_knowledge_base_outlined,
+                                        iconFilledId = R.drawable.ic_knowledge_base_filled,
                                     ),
                                     BottomNavItem(
                                         screen = Screen.FieldsOfActivityScreen,
-                                        iconId = R.drawable.ic_interview,
+                                        iconOutlinedId = R.drawable.ic_interview,
+                                        iconFilledId = R.drawable.ic_interview,
                                     ),
                                 ),
-                                backgroundColor = MaterialTheme.colors.surface,
                                 navController = navController,
-                                onItemClick = {
-                                    navController.navigate(it.screen.route) {
-                                        popUpTo(it.screen.route) {
-                                            inclusive = true
-                                        }
-                                    }
-                                }
                             )
                         }
                     }
                 ) {
                     Surface(
                         modifier = Modifier
+                            .systemBarsPadding()
                             .fillMaxSize(),
-                        color = MaterialTheme.colors.background
+                        color = MaterialTheme.colorScheme.background
                     ) {
-                        Navigation(navController, Modifier, userSettings)
+                        Navigation(navController, Modifier.systemBarsPadding(), userSettings)
                     }
                 }
             }
@@ -101,14 +90,17 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TransparentSystemBars() {
     val systemUiController = rememberSystemUiController()
+    val isDarkTheme = isSystemInDarkTheme()
     SideEffect {
+        systemUiController.setSystemBarsColor(Color.Transparent)
         systemUiController.setNavigationBarColor(
-            darkIcons = true,
+            darkIcons = !isDarkTheme,
             color = Color.Transparent,
             navigationBarContrastEnforced = false,
         )
         systemUiController.setStatusBarColor(
             color = Color.Transparent,
+            darkIcons = !isDarkTheme
         )
     }
 }

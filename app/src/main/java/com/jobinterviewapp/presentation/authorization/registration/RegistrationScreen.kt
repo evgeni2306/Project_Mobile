@@ -1,4 +1,4 @@
-package com.jobinterviewapp.presentation.authorization
+package com.jobinterviewapp.presentation.authorization.registration
 
 import android.app.Activity
 import android.content.pm.ActivityInfo
@@ -6,9 +6,9 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -26,12 +26,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jobinterviewapp.R
 import com.jobinterviewapp.presentation.Screen
-import com.jobinterviewapp.presentation.authorization.registration.RegisterViewModel
+import com.jobinterviewapp.presentation.authorization.AuthUiEvent
 import com.jobinterviewapp.presentation.authorization.components.AuthTextField
 import com.jobinterviewapp.presentation.dataStore
 import kotlinx.coroutines.flow.collectLatest
 
-@OptIn(ExperimentalLayoutApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalComposeUiApi::class,
+    ExperimentalMaterial3Api::class
+)
 @Composable
 fun RegistrationScreen(
     navController: NavController,
@@ -39,7 +41,7 @@ fun RegistrationScreen(
 ) {
     val state = viewModel.state.collectAsState().value
 
-    val scaffoldState = rememberScaffoldState()
+    val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
@@ -51,7 +53,7 @@ fun RegistrationScreen(
                 navController.navigate(Screen.FieldsOfActivityScreen.route)
             }
             else {
-                scaffoldState.snackbarHostState.showSnackbar(
+                snackbarHostState.showSnackbar(
                     message = authError.asString(context)
                 )
             }
@@ -61,7 +63,7 @@ fun RegistrationScreen(
     (context as? Activity)?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
     Scaffold(
-        scaffoldState = scaffoldState,
+        snackbarHost = { SnackbarHost(snackbarHostState) },
     ) {
         val keyboardMode = WindowInsets.isImeVisible
         val keyboardController = LocalSoftwareKeyboardController.current
@@ -86,12 +88,12 @@ fun RegistrationScreen(
                     val logoPadding = if(keyboardMode) 23.dp else 46.dp
                     Text(
                         text = "ЛОГОТИП",
-                        style = MaterialTheme.typography.h5,
+                        style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier
                             .animateContentSize()
                             .padding(vertical = logoPadding)
                             .align(Alignment.CenterHorizontally),
-                        color = MaterialTheme.colors.primary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold,
                     )
                     AuthTextField(
@@ -223,13 +225,13 @@ fun RegistrationScreen(
                         },
                         enabled = state.isValidForm,
                         colors = ButtonDefaults.buttonColors(
-                            disabledBackgroundColor = MaterialTheme.colors.primary,
-                            disabledContentColor = MaterialTheme.colors.primaryVariant
+                            //disabledBackgroundColor = MaterialTheme.colorScheme.primary,
+                            //disabledContentColor = MaterialTheme.colorScheme.primaryVariant
                         ),
                     ) {
                         if(state.isLoading) {
                             CircularProgressIndicator(
-                                color = MaterialTheme.colors.onPrimary,
+                                color = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier
                                     .size(18.dp)
                                     .align(Alignment.CenterVertically),
@@ -239,7 +241,7 @@ fun RegistrationScreen(
                         else {
                             Text(
                                 text = stringResource(R.string.register_button_text),
-                                style = MaterialTheme.typography.body1,
+                                style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Bold,
                             )
                         }
@@ -258,15 +260,15 @@ fun RegistrationScreen(
                         ) {
                             Text(
                                 text = stringResource(R.string.navigate_to_sign_in_hint),
-                                color = MaterialTheme.colors.onBackground,
-                                style = MaterialTheme.typography.body1,
+                                color = MaterialTheme.colorScheme.onBackground,
+                                style = MaterialTheme.typography.bodyMedium,
                             )
                             Spacer(Modifier.width(3.dp))
                             Text(
                                 text = stringResource(R.string.sign_in_button_text),
-                                color = MaterialTheme.colors.primary,
+                                color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.Bold,
-                                style = MaterialTheme.typography.body1,
+                                style = MaterialTheme.typography.bodyMedium,
                             )
                         }
                     }

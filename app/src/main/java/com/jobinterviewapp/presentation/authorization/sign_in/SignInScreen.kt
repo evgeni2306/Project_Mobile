@@ -6,6 +6,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -28,7 +29,7 @@ import com.jobinterviewapp.presentation.authorization.components.AuthTextField
 import com.jobinterviewapp.presentation.dataStore
 import kotlinx.coroutines.flow.collectLatest
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun SignInScreen(
     navController: NavController,
@@ -37,7 +38,7 @@ fun SignInScreen(
 
     val state = viewModel.state.collectAsState().value
 
-    val scaffoldState = rememberScaffoldState()
+    val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
 
     BackHandler(
@@ -60,7 +61,7 @@ fun SignInScreen(
                 navController.navigate(Screen.FieldsOfActivityScreen.route)
             }
             else {
-                scaffoldState.snackbarHostState.showSnackbar(
+                snackbarHostState.showSnackbar(
                     message = authError.asString(context)
                 )
             }
@@ -68,7 +69,7 @@ fun SignInScreen(
     }
 
     Scaffold(
-        scaffoldState = scaffoldState,
+        snackbarHost = { SnackbarHost(snackbarHostState) },
     ) {
         val keyboardController = LocalSoftwareKeyboardController.current
         Box(
@@ -83,11 +84,11 @@ fun SignInScreen(
                 Column {
                     Text(
                         text = "ЛОГОТИП",
-                        style = MaterialTheme.typography.h5,
+                        style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier
                             .padding(vertical = 46.dp)
                             .align(Alignment.CenterHorizontally),
-                        color = MaterialTheme.colors.primary,
+                        color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold,
                     )
                     AuthTextField(
@@ -165,13 +166,13 @@ fun SignInScreen(
                         onClick = { viewModel.signInUser(); keyboardController?.hide() },
                         enabled = state.isValidForm,
                         colors = ButtonDefaults.buttonColors(
-                            disabledBackgroundColor = MaterialTheme.colors.primary,
-                            disabledContentColor = MaterialTheme.colors.primaryVariant
+                            //disabledBackgroundColor = MaterialTheme.colorScheme.primary,
+                            //disabledContentColor = MaterialTheme.colorScheme.primaryVariant
                         ),
                     ) {
                         if(state.isLoading) {
                             CircularProgressIndicator(
-                                color = MaterialTheme.colors.onPrimary,
+                                color = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier
                                     .size(18.dp)
                                     .align(Alignment.CenterVertically),
@@ -181,7 +182,7 @@ fun SignInScreen(
                         else {
                             Text(
                                 text = stringResource(R.string.sign_in_button_text),
-                                style = MaterialTheme.typography.body1,
+                                style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.Bold,
                             )
                         }
@@ -205,15 +206,15 @@ fun SignInScreen(
                     ) {
                         Text(
                             text = stringResource(R.string.navigate_to_registration_hint),
-                            color = MaterialTheme.colors.onBackground,
-                            style = MaterialTheme.typography.body1,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            style = MaterialTheme.typography.bodyMedium,
                         )
                         Spacer(Modifier.width(3.dp))
                         Text(
                             text = stringResource(R.string.register_button_text),
-                            color = MaterialTheme.colors.primary,
+                            color = MaterialTheme.colorScheme.primary,
                             fontWeight = FontWeight.Bold,
-                            style = MaterialTheme.typography.body1,
+                            style = MaterialTheme.typography.bodyMedium,
                         )
                     }
                 }

@@ -8,7 +8,7 @@ enum class Screen(val route: String, val screenName: UiText, val subRoutes: List
     SignInScreen("sign_in_screen", UiText.StringResource(R.string.sign_in_screen_name)),
     FieldsOfActivityScreen(
         "fields_of_activity_screen",
-        UiText.StringResource(R.string.home_screen_name),
+        UiText.StringResource(R.string.fields_of_activity_screen_name),
         listOf(
             "directions_of_field_screen",
             "technologies_of_direction_screen",
@@ -16,11 +16,26 @@ enum class Screen(val route: String, val screenName: UiText, val subRoutes: List
             "interview_preview_screen",
         )
     ),
-    DirectionsOfFieldScreen("directions_of_field_screen", UiText.StringResource(R.string.home_screen_name)),
-    TechnologiesOfDirectionScreen("technologies_of_direction_screen", UiText.StringResource(R.string.home_screen_name)),
-    ProfessionsOfTechnologyScreen("professions_of_technology_screen", UiText.StringResource(R.string.home_screen_name)),
-    InterviewPreviewScreen("interview_preview_screen", UiText.StringResource(R.string.interview_preview_screen_name)),
-    KnowledgeBaseScreen("knowledge_base_screen", UiText.StringResource(R.string.knowledge_base_screen_name)),
+    DirectionsOfFieldScreen(
+        "directions_of_field_screen",
+        UiText.StringResource(R.string.directions_of_field_screen_name)
+    ),
+    TechnologiesOfDirectionScreen(
+        "technologies_of_direction_screen",
+        UiText.StringResource(R.string.technologies_of_direction_screen_name)
+    ),
+    ProfessionsOfTechnologyScreen(
+        "professions_of_technology_screen",
+        UiText.StringResource(R.string.professions_of_technology_screen_name)
+    ),
+    InterviewPreviewScreen(
+        "interview_preview_screen",
+        UiText.StringResource(R.string.interview_preview_screen_name)
+    ),
+    KnowledgeBaseScreen(
+        "knowledge_base_screen",
+        UiText.StringResource(R.string.knowledge_base_screen_name)
+    ),
     ;
 
     fun withArgs(vararg args: String): String {

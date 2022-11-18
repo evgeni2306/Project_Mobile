@@ -22,7 +22,10 @@
     <!--    Screen names    -->
     <string name="registration_screen_name">Регистрация</string>
     <string name="sign_in_screen_name">Вход в аккаунт</string>
-    <string name="home_screen_name">Собеседование</string>
+    <string name="fields_of_activity_screen_name">Выберите IT-сферу</string>
+    <string name="directions_of_field_screen_name">Выберите направление</string>
+    <string name="technologies_of_direction_screen_name">Выберите технологию</string>
+    <string name="professions_of_technology_screen_name">Выберите профессию</string>
     <string name="knowledge_base_screen_name">База знаний</string>
     <string name="interview_preview_screen_name">Предпросмотр собеседования</string>
 

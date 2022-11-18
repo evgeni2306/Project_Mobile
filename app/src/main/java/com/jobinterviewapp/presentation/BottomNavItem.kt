@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 
 data class BottomNavItem(
     val screen: Screen,
-    @DrawableRes val iconId: Int,
+    @DrawableRes val iconFilledId: Int,
+    @DrawableRes val iconOutlinedId: Int,
     val badgeCount: Int = 0
 )

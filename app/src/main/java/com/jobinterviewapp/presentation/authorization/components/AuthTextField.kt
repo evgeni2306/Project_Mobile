@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jobinterviewapp.core.util.UiText
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AuthTextField(
     value: String,
@@ -25,7 +26,7 @@ fun AuthTextField(
     keyboardOptions: KeyboardOptions,
     singleLine: Boolean,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    helperColor: Color = MaterialTheme.colors.error,
+    helperColor: Color = MaterialTheme.colorScheme.error,
 ) {
     Column(
         modifier = modifier,
@@ -41,7 +42,7 @@ fun AuthTextField(
             singleLine = singleLine,
             visualTransformation = visualTransformation,
             colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = MaterialTheme.colors.background,
+                //backgroundColor = MaterialTheme.colorScheme.background,
                 unfocusedIndicatorColor = Color.LightGray),
             trailingIcon = trailingIcon,
         )
