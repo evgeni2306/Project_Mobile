@@ -14,7 +14,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.collectAsState
 import com.jobinterviewapp.R
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,15 +27,17 @@ import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobinterviewapp.presentation.authorization.registration.RegistrationScreen
-import com.jobinterviewapp.presentation.authorization.SignInScreen
+import com.jobinterviewapp.presentation.authorization.sign_in.SignInScreen
 import com.jobinterviewapp.core.presentation.ui.theme.JobInterviewAppTheme
 import com.jobinterviewapp.presentation.components.BottomNavigationBar
 import com.jobinterviewapp.presentation.interview.*
 import com.jobinterviewapp.presentation.interview.interview_preview.InterviewPreviewScreen
 import com.jobinterviewapp.presentation.knowledge_base.KnowledgeBaseScreen
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
-val Context.dataStore by dataStore("user-settings.json", UserSettingsSerializer)
+val Context.dataStore by dataStore(Constants.USER_SETTINGS_FILE_NAME, UserSettingsSerializer)
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -45,41 +46,41 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
+            val userSettings = runBlocking {
+                dataStore.data.first()
+            }
             JobInterviewAppTheme {
                 // A surface container using the 'background' color from the theme
                 TransparentSystemBars()
                 val navController = rememberAnimatedNavController()
-                val userSettings = dataStore.data.collectAsState(
-                    initial = UserSettings(true)
-                ).value
                 Scaffold(
                     bottomBar = {
-                        if(userSettings.authorized) {
-                            BottomNavigationBar(
-                                items = listOf(
-                                    BottomNavItem(
-                                        screen = Screen.KnowledgeBaseScreen,
-                                        iconOutlinedId = R.drawable.ic_knowledge_base_outlined,
-                                        iconFilledId = R.drawable.ic_knowledge_base_filled,
-                                    ),
-                                    BottomNavItem(
-                                        screen = Screen.FieldsOfActivityScreen,
-                                        iconOutlinedId = R.drawable.ic_interview,
-                                        iconFilledId = R.drawable.ic_interview,
-                                    ),
+                        BottomNavigationBar(
+                            items = listOf(
+                                BottomNavItem(
+                                    screen = Screen.KnowledgeBaseScreen,
+                                    iconOutlinedId = R.drawable.ic_knowledge_base_outlined,
+                                    iconFilledId = R.drawable.ic_knowledge_base_filled,
                                 ),
-                                navController = navController,
-                            )
-                        }
+                                BottomNavItem(
+                                    screen = Screen.FieldsOfActivityScreen,
+                                    iconOutlinedId = R.drawable.ic_interview_outlined,
+                                    iconFilledId = R.drawable.ic_interview_filled,
+                                ),
+                            ),
+                            navController = navController,
+                        )
                     }
-                ) {
+                ) { innerPadding ->
                     Surface(
                         modifier = Modifier
-                            .systemBarsPadding()
+                            .padding(
+                                bottom = innerPadding.calculateBottomPadding(),
+                            )
                             .fillMaxSize(),
                         color = MaterialTheme.colorScheme.background
                     ) {
-                        Navigation(navController, Modifier.systemBarsPadding(), userSettings)
+                        Navigation(navController, Modifier, userSettings)
                     }
                 }
             }
@@ -107,10 +108,13 @@ fun TransparentSystemBars() {
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun Navigation(navController: NavHostController, modifier: Modifier, userSettings: UserSettings) {
+fun Navigation(navController: NavHostController, modifier: Modifier, userSettings: UserSettings?) {
     AnimatedNavHost(
         navController = navController,
-        startDestination = if(userSettings.authorized) Screen.KnowledgeBaseScreen.route else Screen.RegistrationScreen.route,
+        startDestination = if(userSettings?.authorized == true)
+            Screen.KnowledgeBaseScreen.route
+        else
+            Screen.RegistrationScreen.route,
         modifier = modifier
     ) {
         composable(

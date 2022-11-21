@@ -3,8 +3,8 @@ package com.jobinterviewapp.presentation.authorization.registration
 import android.app.Activity
 import android.content.pm.ActivityInfo
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -13,7 +13,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -50,7 +49,13 @@ fun RegistrationScreen(
                 context.dataStore.updateData {
                     it.copy(authorized = true)
                 }
-                navController.navigate(Screen.FieldsOfActivityScreen.route)
+                navController.navigate(Screen.KnowledgeBaseScreen.route) {
+                    popUpTo(
+                        route = Screen.RegistrationScreen.route,
+                    ) {
+                        inclusive = true
+                    }
+                }
             }
             else {
                 snackbarHostState.showSnackbar(
@@ -68,15 +73,10 @@ fun RegistrationScreen(
         val keyboardMode = WindowInsets.isImeVisible
         val keyboardController = LocalSoftwareKeyboardController.current
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .statusBarsPadding()
+                .fillMaxSize(),
         ) {
-            if(state.isLoading) {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .background(Color.Black)
-                )
-            }
 
             Column(
                 modifier = Modifier
@@ -84,17 +84,19 @@ fun RegistrationScreen(
                     .padding(horizontal = 22.dp),
                 verticalArrangement = Arrangement.SpaceBetween,
             ) {
-                Column {
-                    val logoPadding = if(keyboardMode) 23.dp else 46.dp
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    val logoPadding = if(keyboardMode) 20.dp else 40.dp
                     Text(
                         text = "ЛОГОТИП",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleLarge,
                         modifier = Modifier
                             .animateContentSize()
                             .padding(vertical = logoPadding)
                             .align(Alignment.CenterHorizontally),
-                        color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
                     )
                     AuthTextField(
                         modifier = Modifier.fillMaxWidth(),
@@ -115,7 +117,7 @@ fun RegistrationScreen(
                                 IconButton(onClick = { viewModel.onEvent(AuthUiEvent.SignUpNameClear) }) {
                                     Icon(
                                         imageVector = Icons.Default.Clear,
-                                        contentDescription = "Clear Icon",
+                                        contentDescription = null,
                                     )
                                 }
                             }
@@ -140,7 +142,7 @@ fun RegistrationScreen(
                                 IconButton(onClick = { viewModel.onEvent(AuthUiEvent.SignUpSurnameClear) }) {
                                     Icon(
                                         imageVector = Icons.Default.Clear,
-                                        contentDescription = "Clear Icon",
+                                        contentDescription = null,
                                     )
                                 }
                             }
@@ -169,7 +171,7 @@ fun RegistrationScreen(
                                 IconButton(onClick = { viewModel.onEvent(AuthUiEvent.SignUpLoginClear) }) {
                                     Icon(
                                         imageVector = Icons.Default.Clear,
-                                        contentDescription = "Clear Icon",
+                                        contentDescription = null,
                                     )
                                 }
                             }
@@ -208,30 +210,25 @@ fun RegistrationScreen(
                                             painterResource(R.drawable.ic_visibility_24)
                                         else
                                             painterResource(R.drawable.ic_visibility_off_24),
-                                        contentDescription = "Clear Icon",
+                                        contentDescription = null,
                                     )
                                 }
                             }
                         },
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
                     Button(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(40.dp),
+                            ,
                         onClick = {
                             viewModel.onEvent(AuthUiEvent.SignUp)
                             keyboardController?.hide()
                         },
                         enabled = state.isValidForm,
-                        colors = ButtonDefaults.buttonColors(
-                            //disabledBackgroundColor = MaterialTheme.colorScheme.primary,
-                            //disabledContentColor = MaterialTheme.colorScheme.primaryVariant
-                        ),
                     ) {
                         if(state.isLoading) {
                             CircularProgressIndicator(
-                                color = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier
                                     .size(18.dp)
                                     .align(Alignment.CenterVertically),
@@ -252,25 +249,12 @@ fun RegistrationScreen(
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally)
                             .padding(vertical = 30.dp)
-                            .fillMaxWidth()
-                            .height(40.dp),
+                            .fillMaxWidth(),
                         onClick = { navController.navigate(Screen.SignInScreen.route) },
                     ) {
-                        Row(
-                        ) {
-                            Text(
-                                text = stringResource(R.string.navigate_to_sign_in_hint),
-                                color = MaterialTheme.colorScheme.onBackground,
-                                style = MaterialTheme.typography.bodyMedium,
-                            )
-                            Spacer(Modifier.width(3.dp))
-                            Text(
-                                text = stringResource(R.string.sign_in_button_text),
-                                color = MaterialTheme.colorScheme.primary,
-                                fontWeight = FontWeight.Bold,
-                                style = MaterialTheme.typography.bodyMedium,
-                            )
-                        }
+                        Text(
+                            text = stringResource(R.string.navigate_to_sign_in_hint),
+                        )
                     }
                 }
             }

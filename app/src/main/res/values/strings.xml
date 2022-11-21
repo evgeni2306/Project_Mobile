@@ -15,8 +15,8 @@
     <string name="password_digits_error">Пароль должен содержать хотя бы 1 символ</string>
     <string name="register_button_text">Зарегистрироваться</string>
     <string name="sign_in_button_text">Войти</string>
-    <string name="navigate_to_sign_in_hint">Уже есть аккаунт?</string>
-    <string name="navigate_to_registration_hint">Ещё нет аккаунта?</string>
+    <string name="navigate_to_sign_in_hint">Уже есть аккаунт? Войти</string>
+    <string name="navigate_to_registration_hint">Ещё нет аккаунта? Зарегистрироваться</string>
     <string name="login_field_hint">Логин</string>
     <string name="password_field_hint">Пароль</string>
     <!--    Screen names    -->
@@ -42,6 +42,7 @@
     <string name="tip_number_2_content">Сравнивайте свой ответ с предложенным, нажав на кнопку «Смотреть ответ».</string>
     <string name="tip_number_3">Сохраняйте вопросы в избранное</string>
     <string name="tip_number_3_content">Сложные вопросы добавляйте в избранное, чтобы вернуться к ним позже еще раз.</string>
+    <string name="start_interview_button_text">Начать</string>
 
 
 </resources>

@@ -1,15 +1,12 @@
 package com.jobinterviewapp.presentation.interview.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.jobinterviewapp.R
 import com.jobinterviewapp.data.remote.dto.FieldOfActivityDto
 import com.jobinterviewapp.presentation.Screen
 
@@ -18,7 +15,6 @@ import com.jobinterviewapp.presentation.Screen
 fun FieldOfActivityScreenContent(
     navController: NavController,
     fieldsOfActivity: List<FieldOfActivityDto>,
-    screenTitle: String,
     screen: Screen,
     onItemClick: (FieldOfActivityDto) -> Unit,
 ) {
@@ -28,7 +24,7 @@ fun FieldOfActivityScreenContent(
                 navController = navController,
                 screen = screen,
             )
-        }
+        },
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -38,6 +34,11 @@ fun FieldOfActivityScreenContent(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Divider(
+                    modifier = Modifier
+                        .padding(horizontal = 12.dp),
+                )
+                Spacer(modifier = Modifier.height(6.dp))
                 FieldOfActivityList(
                     listState = fieldsOfActivity,
                     onItemClick = {

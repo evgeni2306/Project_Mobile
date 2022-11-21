@@ -1,9 +1,8 @@
-package com.jobinterviewapp.presentation.authorization
+package com.jobinterviewapp.presentation.authorization.sign_in
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.*
@@ -24,7 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jobinterviewapp.R
 import com.jobinterviewapp.presentation.Screen
-import com.jobinterviewapp.presentation.authorization.sign_in.SignInViewModel
+import com.jobinterviewapp.presentation.authorization.AuthUiEvent
 import com.jobinterviewapp.presentation.authorization.components.AuthTextField
 import com.jobinterviewapp.presentation.dataStore
 import kotlinx.coroutines.flow.collectLatest
@@ -58,7 +57,13 @@ fun SignInScreen(
                 context.dataStore.updateData {
                     it.copy(authorized = true)
                 }
-                navController.navigate(Screen.FieldsOfActivityScreen.route)
+                navController.navigate(Screen.KnowledgeBaseScreen.route) {
+                    popUpTo(
+                        route = Screen.RegistrationScreen.route,
+                    ) {
+                        inclusive = true
+                    }
+                }
             }
             else {
                 snackbarHostState.showSnackbar(
@@ -73,7 +78,9 @@ fun SignInScreen(
     ) {
         val keyboardController = LocalSoftwareKeyboardController.current
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .statusBarsPadding()
+                .fillMaxSize(),
         ) {
             Column(
                 modifier = Modifier
@@ -84,9 +91,9 @@ fun SignInScreen(
                 Column {
                     Text(
                         text = "ЛОГОТИП",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleLarge,
                         modifier = Modifier
-                            .padding(vertical = 46.dp)
+                            .padding(vertical = 40.dp)
                             .align(Alignment.CenterHorizontally),
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold,
@@ -112,7 +119,7 @@ fun SignInScreen(
                                 IconButton(onClick = { viewModel.onEvent(AuthUiEvent.SignInLoginClear) }) {
                                     Icon(
                                         imageVector = Icons.Default.Clear,
-                                        contentDescription = "Clear Icon",
+                                        contentDescription = null,
                                     )
                                 }
                             }
@@ -152,23 +159,18 @@ fun SignInScreen(
                                             painterResource(R.drawable.ic_visibility_24)
                                         else
                                             painterResource(R.drawable.ic_visibility_off_24),
-                                        contentDescription = "Show password",
+                                        contentDescription = null,
                                     )
                                 }
                             }
                         },
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
                     Button(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(40.dp),
-                        onClick = { viewModel.signInUser(); keyboardController?.hide() },
+                            .fillMaxWidth(),
+                        onClick = { viewModel.onEvent(AuthUiEvent.SignIn); keyboardController?.hide() },
                         enabled = state.isValidForm,
-                        colors = ButtonDefaults.buttonColors(
-                            //disabledBackgroundColor = MaterialTheme.colorScheme.primary,
-                            //disabledContentColor = MaterialTheme.colorScheme.primaryVariant
-                        ),
                     ) {
                         if(state.isLoading) {
                             CircularProgressIndicator(
@@ -192,7 +194,6 @@ fun SignInScreen(
                     modifier = Modifier
                         .padding(vertical = 30.dp)
                         .fillMaxWidth()
-                        .height(40.dp)
                         .align(Alignment.CenterHorizontally),
                     onClick = {
                         navController.navigate(Screen.RegistrationScreen.route) {
@@ -202,21 +203,9 @@ fun SignInScreen(
                         }
                     },
                 ) {
-                    Row(
-                    ) {
-                        Text(
-                            text = stringResource(R.string.navigate_to_registration_hint),
-                            color = MaterialTheme.colorScheme.onBackground,
-                            style = MaterialTheme.typography.bodyMedium,
-                        )
-                        Spacer(Modifier.width(3.dp))
-                        Text(
-                            text = stringResource(R.string.register_button_text),
-                            color = MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.Bold,
-                            style = MaterialTheme.typography.bodyMedium,
-                        )
-                    }
+                    Text(
+                        text = stringResource(R.string.navigate_to_registration_hint),
+                    )
                 }
             }
         }

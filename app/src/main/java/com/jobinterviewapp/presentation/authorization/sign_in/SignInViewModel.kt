@@ -68,7 +68,7 @@ class SignInViewModel @Inject constructor(
                 && stateValue.password.isNotEmpty())
     }
 
-    fun signInUser() {
+    private fun signInUser() {
         viewModelScope.launch {
             val stateValue = state.value
             _state.update { it.copy(isLoading = true) }

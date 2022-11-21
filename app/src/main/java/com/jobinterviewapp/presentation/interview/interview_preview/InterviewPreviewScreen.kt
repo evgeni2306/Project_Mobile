@@ -1,38 +1,23 @@
 package com.jobinterviewapp.presentation.interview.interview_preview
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jobinterviewapp.R
-import com.jobinterviewapp.presentation.Screen
-import com.jobinterviewapp.presentation.interview.components.InterviewConfigurationTopBar
+import com.jobinterviewapp.presentation.interview.interview_preview.components.TipListItem
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun InterviewPreviewScreen(
     navController: NavController,
@@ -84,171 +69,90 @@ fun InterviewPreviewScreen(
                     }
                 }
             )
+        },
+        bottomBar = {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(
+                    modifier = Modifier
+                        .padding(horizontal = 15.dp)
+                        .fillMaxWidth()
+                    ,
+                    onClick = { /*TODO*/ },
+
+                    ) {
+                    Text(
+                        text = stringResource(R.string.start_interview_button_text)
+                    )
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+            }
         }
     ) { innerPadding ->
         Box(
             modifier = Modifier
-                .padding(innerPadding)
+                .padding(
+                    top = innerPadding.calculateTopPadding(),
+                    bottom = 35.dp
+                )
                 .fillMaxSize(),
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
+            CompositionLocalProvider(
+                LocalOverscrollConfiguration provides OverscrollConfiguration(
+                    glowColor = MaterialTheme.colorScheme.background,
+                )
             ) {
-//                Text(
-//                    text = stringResource(R.string.interview_simulation_subtitle),
-//                    style = MaterialTheme.typography.bodyMedium,
-//                    fontWeight = FontWeight.SemiBold,
-//                )
-
-                val isVisible = remember {
-                    MutableTransitionState(false).apply {
-                        // Start the animation immediately.
-                        this.targetState = true
-                    }
-                }
-
                 Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        .padding(vertical = 8.dp)
+                        .fillMaxSize()
                         .verticalScroll(rememberScrollState()),
                 ) {
-                    AnimatedVisibility(
-                        visibleState = isVisible,
-                        enter = slideInHorizontally(
-                            animationSpec = tween(600, 0),
-                            initialOffsetX = {
-                                it
-                            }
-                        )
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 8.dp, horizontal = 16.dp)
-                            ,
-                        ) {
-                            state.questionsCount?.let { questionsCount ->
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ) {
-                                    Image(
-                                        painter = painterResource(id = R.drawable.ic_questions_count),
-                                        contentDescription = null,
-                                    )
-                                    Spacer(Modifier.width(8.dp))
-                                    Text(
-                                        text = stringResource(R.string.questions_count, questionsCount),
-                                        fontWeight = FontWeight.SemiBold,
-                                    )
-                                }
-                                Spacer(Modifier.height(8.dp))
-                                Text(
-                                    text = stringResource(id = R.string.questions_count_content, questionsCount),
-                                )
-                            }
-                        }
-                    }
+                    Divider(
+                        modifier = Modifier
+                            .padding(horizontal = 12.dp),
+                    )
+                    Spacer(modifier = Modifier.height(6.dp))
 
-                    AnimatedVisibility(
-                        visibleState = isVisible,
-                        enter = slideInHorizontally(
-                            animationSpec = tween(800, 0),
-                            initialOffsetX = {
-                                it
-                            }
-                        )
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .padding(vertical = 8.dp, horizontal = 16.dp)
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Image(
-                                    painter = painterResource(id = R.drawable.ic_tip_number_1),
-                                    contentDescription = null,
-                                )
-                                Spacer(Modifier.width(8.dp))
-                                Text(
-                                    text = stringResource(R.string.tip_number_1),
-                                    fontWeight = FontWeight.SemiBold,
-                                )
-                            }
-                            Spacer(Modifier.height(8.dp))
-                            Text(
-                                text = stringResource(id = R.string.tip_number_1_content),
-                            )
-                        }
-                    }
+                    TipListItem(
+                        title = stringResource(R.string.questions_count, state.questionsCount?:0),
+                        description = stringResource(
+                            id = R.string.questions_count_content,
+                            state.questionsCount?:0),
+                        trailingImageId = R.drawable.ic_questions_count,
+                        animationDuration = 600,
+                    )
 
-                    AnimatedVisibility(
-                        visibleState = isVisible,
-                        enter = slideInHorizontally(
-                            animationSpec = tween(1000, 0),
-                            initialOffsetX = {
-                                it
-                            }
-                        )
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .padding(vertical = 8.dp, horizontal = 16.dp)
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Image(
-                                    painter = painterResource(id = R.drawable.ic_tip_number_2),
-                                    contentDescription = null,
-                                )
-                                Spacer(Modifier.width(8.dp))
-                                Text(
-                                    text = stringResource(R.string.tip_number_2),
-                                    fontWeight = FontWeight.SemiBold,
-                                )
-                            }
-                            Spacer(Modifier.height(8.dp))
-                            Text(
-                                text = stringResource(id = R.string.tip_number_2_content),
-                            )
-                        }
-                    }
+                    TipListItem(
+                        title = stringResource(R.string.tip_number_1),
+                        description = stringResource(R.string.tip_number_1_content),
+                        trailingImageId = R.drawable.ic_tip_number_1,
+                        animationDuration = 800,
+                    )
 
-                    AnimatedVisibility(
-                        visibleState = isVisible,
-                        enter = slideInHorizontally(
-                            animationSpec = tween(1200, 0),
-                            initialOffsetX = {
-                                it
-                            }
-                        )
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .padding(vertical = 8.dp, horizontal = 16.dp)
-                        ) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Image(
-                                    painter = painterResource(id = R.drawable.ic_tip_number_3),
-                                    contentDescription = null,
-                                )
-                                Spacer(Modifier.width(8.dp))
-                                Text(
-                                    text = stringResource(R.string.tip_number_3),
-                                    fontWeight = FontWeight.SemiBold,
-                                )
-                            }
-                            Spacer(Modifier.height(8.dp))
-                            Text(
-                                text = stringResource(id = R.string.tip_number_3_content),
-                            )
-                        }
-                    }
-                    
-                    Spacer(modifier = Modifier.height(22.dp))
+                    TipListItem(
+                        title = stringResource(R.string.tip_number_2),
+                        description = stringResource(R.string.tip_number_2_content),
+                        trailingImageId = R.drawable.ic_tip_number_2,
+                        animationDuration = 1000,
+                    )
+
+                    TipListItem(
+                        title = stringResource(R.string.tip_number_3),
+                        description = stringResource(R.string.tip_number_3_content),
+                        trailingImageId = R.drawable.ic_tip_number_3,
+                        animationDuration = 1200,
+                    )
+
+                    TipListItem(
+                        title = stringResource(R.string.tip_number_3),
+                        description = stringResource(R.string.tip_number_3_content),
+                        trailingImageId = R.drawable.ic_tip_number_3,
+                        animationDuration = 1200,
+                    )
+
+                    Spacer(modifier = Modifier.height(35.dp))
                 }
             }
         }
