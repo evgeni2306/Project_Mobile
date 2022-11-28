@@ -28,6 +28,7 @@
     <string name="professions_of_technology_screen_name">Выберите профессию</string>
     <string name="knowledge_base_screen_name">База знаний</string>
     <string name="interview_preview_screen_name">Предпросмотр собеседования</string>
+    <string name="interview_simulation_screen_name">Собеседование</string>
 
     <string name="field_of_activity_screen_placeholder">Выберите IT-направление, в котором хотите пройти собеседование</string>
     <string name="direction_of_field_screen_placeholder">Выберите направление разработки</string>
@@ -43,6 +44,14 @@
     <string name="tip_number_3">Сохраняйте вопросы в избранное</string>
     <string name="tip_number_3_content">Сложные вопросы добавляйте в избранное, чтобы вернуться к ним позже еще раз.</string>
     <string name="start_interview_button_text">Начать</string>
+
+    <string name="refresh_page_button_text">Повторить попытку</string>
+    <string name="compare_answer_button_text">Сравнить ответ</string>
+    <string name="hide_answer_button_text">Скрыть ответ</string>
+    <string name="right_answer_button_text">Да!</string>
+    <string name="wrong_answer_button_text">Нет</string>
+    <string name="is_right_answer_text">Ваш ответ совпал?</string>
+    <string name="right_answer_title">Правильный ответ:</string>
 
 
 </resources>

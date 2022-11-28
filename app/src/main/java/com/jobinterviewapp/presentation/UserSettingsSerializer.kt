@@ -7,15 +7,15 @@ import java.io.InputStream
 import java.io.OutputStream
 
 @Suppress("BlockingMethodInNonBlockingContext")
-object UserSettingsSerializer : Serializer<UserSettings> {
+object UserSettingsSerializer : Serializer<AuthSettings> {
 
-    override val defaultValue: UserSettings
-        get() = UserSettings()
+    override val defaultValue: AuthSettings
+        get() = AuthSettings()
 
-    override suspend fun readFrom(input: InputStream): UserSettings {
+    override suspend fun readFrom(input: InputStream): AuthSettings {
         return try {
             Json.decodeFromString(
-                deserializer = UserSettings.serializer(),
+                deserializer = AuthSettings.serializer(),
                 string = input.readBytes().decodeToString()
             )
         } catch (e: SerializationException) {
@@ -24,10 +24,10 @@ object UserSettingsSerializer : Serializer<UserSettings> {
         }
     }
 
-    override suspend fun writeTo(t: UserSettings, output: OutputStream) {
+    override suspend fun writeTo(t: AuthSettings, output: OutputStream) {
         output.write(
             Json.encodeToString(
-                serializer = UserSettings.serializer(),
+                serializer = AuthSettings.serializer(),
                 value = t
             ).encodeToByteArray()
         )

@@ -1,8 +1,6 @@
 package com.jobinterviewapp.data.remote
 
-import com.jobinterviewapp.data.remote.dto.AuthResponseDto
-import com.jobinterviewapp.data.remote.dto.FieldOfActivityDto
-import com.jobinterviewapp.data.remote.dto.InterviewPreviewDto
+import com.jobinterviewapp.data.remote.dto.*
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -47,6 +45,25 @@ interface InterviewServiceApi {
     suspend fun getInterviewPreview(
         @Path("professionId") professionId: Int,
     ): InterviewPreviewDto
+
+    @POST("interview/start")
+    suspend fun startInterview(
+        @Query("profId") professionId: Int,
+        @Query("authKey") userKey: String,
+    ): StartInterviewDto
+
+    @POST("interview/question")
+    suspend fun getInterviewTask(
+        @Query("interviewId") interviewId: Int,
+        @Query("authKey") userKey: String,
+    ): TaskDto
+
+    @POST("interview/question/answer")
+    suspend fun postInterviewTaskAnswer(
+        @Query("taskId") taskId: Int,
+        @Query("authKey") userKey: String,
+        @Query("answer") answer: Boolean,
+    ): Int
 
     companion object {
         const val BASE_URL = "http://server2306.site/"

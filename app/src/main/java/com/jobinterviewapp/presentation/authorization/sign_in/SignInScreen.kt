@@ -25,7 +25,6 @@ import com.jobinterviewapp.R
 import com.jobinterviewapp.presentation.Screen
 import com.jobinterviewapp.presentation.authorization.AuthUiEvent
 import com.jobinterviewapp.presentation.authorization.components.AuthTextField
-import com.jobinterviewapp.presentation.dataStore
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
@@ -54,9 +53,6 @@ fun SignInScreen(
     LaunchedEffect(key1 = true) {
         viewModel.authError.collectLatest { authError ->
             if(authError == null) {
-                context.dataStore.updateData {
-                    it.copy(authorized = true)
-                }
                 navController.navigate(Screen.KnowledgeBaseScreen.route) {
                     popUpTo(
                         route = Screen.RegistrationScreen.route,

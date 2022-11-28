@@ -1,6 +1,5 @@
 package com.jobinterviewapp.presentation
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,7 +17,6 @@ import com.jobinterviewapp.R
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
-import androidx.datastore.dataStore
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
@@ -29,15 +27,15 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.jobinterviewapp.presentation.authorization.registration.RegistrationScreen
 import com.jobinterviewapp.presentation.authorization.sign_in.SignInScreen
 import com.jobinterviewapp.core.presentation.ui.theme.JobInterviewAppTheme
+import com.jobinterviewapp.di.AppModule
 import com.jobinterviewapp.presentation.components.BottomNavigationBar
-import com.jobinterviewapp.presentation.interview.*
-import com.jobinterviewapp.presentation.interview.interview_preview.InterviewPreviewScreen
+import com.jobinterviewapp.presentation.interview_configuration.*
+import com.jobinterviewapp.presentation.interview_configuration.interview_preview.InterviewPreviewScreen
+import com.jobinterviewapp.presentation.interview_simulation.InterviewSimulationScreen
 import com.jobinterviewapp.presentation.knowledge_base.KnowledgeBaseScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-
-val Context.dataStore by dataStore(Constants.USER_SETTINGS_FILE_NAME, UserSettingsSerializer)
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -47,7 +45,7 @@ class MainActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             val userSettings = runBlocking {
-                dataStore.data.first()
+                AppModule.DataStoreManager(applicationContext).authSettings.first()
             }
             JobInterviewAppTheme {
                 // A surface container using the 'background' color from the theme
@@ -108,10 +106,10 @@ fun TransparentSystemBars() {
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun Navigation(navController: NavHostController, modifier: Modifier, userSettings: UserSettings?) {
+fun Navigation(navController: NavHostController, modifier: Modifier, userSettings: AuthSettings) {
     AnimatedNavHost(
         navController = navController,
-        startDestination = if(userSettings?.authorized == true)
+        startDestination = if(userSettings.authorized)
             Screen.KnowledgeBaseScreen.route
         else
             Screen.RegistrationScreen.route,
@@ -252,9 +250,9 @@ fun Navigation(navController: NavHostController, modifier: Modifier, userSetting
             ProfessionsOfTechnologyScreen(navController)
         }
         composable(
-            route = "${Screen.InterviewPreviewScreen.route}/{${Constants.PARAM_PROFESSIONS_OF_TECHNOLOGY}}",
+            route = "${Screen.InterviewPreviewScreen.route}/{${Constants.PARAM_PROFESSIONS_OF_TECHNOLOGY_ID}}",
             arguments = listOf(
-                navArgument(Constants.PARAM_PROFESSIONS_OF_TECHNOLOGY) {
+                navArgument(Constants.PARAM_PROFESSIONS_OF_TECHNOLOGY_ID) {
                     type = NavType.IntType
                 }
             ),
@@ -291,6 +289,17 @@ fun Navigation(navController: NavHostController, modifier: Modifier, userSetting
             route = Screen.KnowledgeBaseScreen.route,
         ) {
             KnowledgeBaseScreen(navController)
+        }
+        composable(
+            route = Screen.InterviewSimulationScreen.route +
+            "/{${Constants.PARAM_PROFESSIONS_OF_TECHNOLOGY_ID}}" +
+            "/{${Constants.PARAM_INTERVIEW_TASK_COUNT}}",
+            arguments = listOf(
+                navArgument(Constants.PARAM_PROFESSIONS_OF_TECHNOLOGY_ID) { type = NavType.IntType },
+                navArgument(Constants.PARAM_INTERVIEW_TASK_COUNT) { type = NavType.IntType }
+            )
+        ) {
+            InterviewSimulationScreen(navController)
         }
     }
 }

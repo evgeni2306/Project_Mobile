@@ -36,6 +36,10 @@ enum class Screen(val route: String, val screenName: UiText, val subRoutes: List
         "knowledge_base_screen",
         UiText.StringResource(R.string.knowledge_base_screen_name)
     ),
+    InterviewSimulationScreen(
+        "interview_simulation_screen",
+        UiText.StringResource(R.string.interview_simulation_screen_name)
+    ),
     ;
 
     fun withArgs(vararg args: String): String {

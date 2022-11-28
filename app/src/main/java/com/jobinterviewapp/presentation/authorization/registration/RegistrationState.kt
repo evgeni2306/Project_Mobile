@@ -5,7 +5,6 @@ import com.jobinterviewapp.core.util.UiText
 data class RegistrationState(
     val isLoading: Boolean = false,
     val isValidForm: Boolean = false,
-    val userId: String = "",
     val userName: String = "",
     val userNameError: UiText? = null,
     val userSurname: String = "",

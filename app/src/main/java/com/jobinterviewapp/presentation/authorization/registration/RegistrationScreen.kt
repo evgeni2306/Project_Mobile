@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.pm.ActivityInfo
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -27,7 +26,6 @@ import com.jobinterviewapp.R
 import com.jobinterviewapp.presentation.Screen
 import com.jobinterviewapp.presentation.authorization.AuthUiEvent
 import com.jobinterviewapp.presentation.authorization.components.AuthTextField
-import com.jobinterviewapp.presentation.dataStore
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalComposeUiApi::class,
@@ -46,9 +44,6 @@ fun RegistrationScreen(
     LaunchedEffect(key1 = true) {
         viewModel.authError.collectLatest { authError ->
             if(authError == null) {
-                context.dataStore.updateData {
-                    it.copy(authorized = true)
-                }
                 navController.navigate(Screen.KnowledgeBaseScreen.route) {
                     popUpTo(
                         route = Screen.RegistrationScreen.route,

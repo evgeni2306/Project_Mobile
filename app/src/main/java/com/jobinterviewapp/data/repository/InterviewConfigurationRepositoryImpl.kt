@@ -42,28 +42,33 @@ class InterviewConfigurationRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
     private inline fun <T> safeApiCall(apiCall: () -> T): Resource<T> {
-        try {
+        return try {
             val data = apiCall()
-            return Resource.Success(data = data)
+            Resource.Success(data = data)
+        } catch(throwable: Throwable) {
+            Resource.Error(handleThrowableException(throwable))
         }
-        catch(e: HttpException) {
-            val errorMessage = if(e.localizedMessage.isNullOrEmpty()) {
-                UiText.StringResource(R.string.unknown_exception)
-            }
-            else {
-                val errorBody = e.response()?.errorBody()
-                if (errorBody == null) {
-                    UiText.DynamicString(e.localizedMessage!!)
+    }
+
+    private fun handleThrowableException(throwable: Throwable): UiText {
+        return when(throwable) {
+            is HttpException -> {
+                if(throwable.localizedMessage.isNullOrEmpty()) {
+                    UiText.StringResource(R.string.unknown_exception)
                 }
                 else {
-                    val errorMessage = Gson().fromJson(errorBody.charStream(), ErrorDto::class.java).message
-                    UiText.DynamicString(errorMessage)
+                    val errorBody = throwable.response()?.errorBody()
+                    if(errorBody == null) {
+                        UiText.DynamicString(throwable.localizedMessage!!)
+                    } else {
+                        UiText.DynamicString(Gson().fromJson(errorBody.charStream(), ErrorDto::class.java).message)
+                    }
                 }
             }
-            return Resource.Error(errorMessage)
-        }
-        catch(e: IOException) {
-            return Resource.Error(UiText.StringResource(R.string.io_exception))
+            is IOException -> {
+                UiText.StringResource(R.string.io_exception)
+            }
+            else -> UiText.StringResource(R.string.unknown_exception)
         }
     }
 }

@@ -8,6 +8,7 @@ import com.jobinterviewapp.domain.use_case.user.authorization.ValidateTextField
 import com.jobinterviewapp.presentation.authorization.AuthUiEvent
 import com.jobinterviewapp.core.util.Resource
 import com.jobinterviewapp.core.util.UiText
+import com.jobinterviewapp.di.AppModule
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -17,7 +18,8 @@ import javax.inject.Inject
 class SignInViewModel @Inject constructor(
     private val signInUseCase: SignInUserUseCase,
     private val validateTextField: ValidateTextField,
-    private val validateAnyPassword: ValidateAnyPassword
+    private val validateAnyPassword: ValidateAnyPassword,
+    private val dataStoreManager: AppModule.DataStoreManager,
 ): ViewModel() {
 
     private val _state = MutableStateFlow(SignInState())
@@ -77,6 +79,7 @@ class SignInViewModel @Inject constructor(
                 when(result) {
                     is Resource.Success -> {
                         _authError.emit(null)
+                        dataStoreManager.setAuthSettings(true, result.data)
                     }
                     is Resource.Error -> {
                         _authError.emit(result.message)

@@ -2,13 +2,13 @@ package com.jobinterviewapp.data.repository
 
 import com.google.gson.Gson
 import com.jobinterviewapp.R
-import com.jobinterviewapp.data.remote.InterviewServiceApi
-import com.jobinterviewapp.data.remote.dto.ErrorDto
-import com.jobinterviewapp.domain.models.Credential
-import com.jobinterviewapp.domain.repository.UserRepository
 import com.jobinterviewapp.core.util.Resource
 import com.jobinterviewapp.core.util.UiText
-import kotlinx.coroutines.Dispatchers
+import com.jobinterviewapp.data.remote.InterviewServiceApi
+import com.jobinterviewapp.data.remote.dto.ErrorDto
+import com.jobinterviewapp.data.remote.dto.TaskDto
+import com.jobinterviewapp.domain.repository.InterviewSimulationRepository
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -16,27 +16,38 @@ import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
 
+class InterviewSimulationRepositoryImpl @Inject constructor(
+    private val api: InterviewServiceApi,
+): InterviewSimulationRepository {
 
-class UserRepositoryImpl @Inject constructor(
-    private val api: InterviewServiceApi
-): UserRepository {
-    override fun registerUser(credential: Credential): Flow<Resource<String>> = flow {
-        emit(safeApiCall {
-            api.register(
-                name = credential.name,
-                surname = credential.surname,
-                login = credential.login,
-                password = credential.password,
-            ).key
-        })
-    }.flowOn(Dispatchers.IO)
+    override fun startInterview(professionId: Int, userKey: String): Flow<Resource<Int>> {
+        return flow {
+            emit(safeApiCall { api.startInterview(professionId, userKey).interviewId })
+        }.flowOn(Dispatchers.IO)
+    }
 
-    override fun signInUser(login: String, password: String): Flow<Resource<String>> = flow {
+    override fun postInterviewTaskAnswer(taskId: Int, userKey: String, answer: Boolean,): Flow<Resource<Int>> {
+        return flow {
+            emit(safeApiCall { api.postInterviewTaskAnswer(
+                taskId = taskId,
+                userKey = userKey,
+                answer = answer
+            ) })
+        }.flowOn(Dispatchers.IO)
+    }
+
+    override fun getInterviewTasks(taskCount: Int, userKey: String, interviewId: Int): Flow<Resource<List<TaskDto>>> = flow {
         emit(safeApiCall {
-            api.signIn(
-                login = login,
-                password = password,
-            ).key
+            coroutineScope {
+                val deferredTaskList = mutableListOf<Deferred<TaskDto>>()
+                for(i in 0 until taskCount) {
+                    val deferredTask = async(Dispatchers.IO) {
+                        api.getInterviewTask(interviewId, userKey)
+                    }
+                    deferredTaskList.add(deferredTask)
+                }
+                deferredTaskList.awaitAll()
+            }
         })
     }.flowOn(Dispatchers.IO)
 

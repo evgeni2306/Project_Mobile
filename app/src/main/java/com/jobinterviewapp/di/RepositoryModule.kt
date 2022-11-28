@@ -1,8 +1,10 @@
 package com.jobinterviewapp.di
 
 import com.jobinterviewapp.data.repository.InterviewConfigurationRepositoryImpl
+import com.jobinterviewapp.data.repository.InterviewSimulationRepositoryImpl
 import com.jobinterviewapp.data.repository.UserRepositoryImpl
 import com.jobinterviewapp.domain.repository.InterviewConfigurationRepository
+import com.jobinterviewapp.domain.repository.InterviewSimulationRepository
 import com.jobinterviewapp.domain.repository.UserRepository
 import dagger.Binds
 import dagger.Module
@@ -25,4 +27,10 @@ abstract class RepositoryModule {
     abstract fun bindInterviewConfigurationRepository(
         interviewConfigurationRepositoryImpl: InterviewConfigurationRepositoryImpl
     ): InterviewConfigurationRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindInterviewSimulationRepository(
+        interviewSimulationRepositoryImpl: InterviewSimulationRepositoryImpl
+    ): InterviewSimulationRepository
 }
