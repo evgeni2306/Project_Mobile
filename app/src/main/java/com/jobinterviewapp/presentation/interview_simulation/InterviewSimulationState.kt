@@ -9,5 +9,4 @@ data class InterviewSimulationState(
     val currentTaskNumber: Int = 1,
     val currentTask: TaskDto? = null,
     val userKey: String? = null,
-    val taskList: List<TaskDto> = emptyList(),
 )

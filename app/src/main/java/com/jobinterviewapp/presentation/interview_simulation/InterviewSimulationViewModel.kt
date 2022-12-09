@@ -46,7 +46,7 @@ class InterviewSimulationViewModel @Inject constructor(
                                             userKey = authSettings.userKey
                                         )
                                     }
-                                    getInterviewTasks()
+                                    getInterviewTask()
                                 }
                                 is Resource.Error -> {
                                     _state.update {
@@ -77,13 +77,6 @@ class InterviewSimulationViewModel @Inject constructor(
             ).collect { result ->
                 when(result) {
                     is Resource.Success -> {
-                        _state.update {
-                            it.copy(
-                                currentTaskNumber = it.currentTaskNumber + 1,
-                                currentTask = it.taskList[it.currentTaskNumber - 1],
-                                error = null,
-                            )
-                        }
                     }
                     is Resource.Error -> {
                         _state.update {
@@ -93,11 +86,12 @@ class InterviewSimulationViewModel @Inject constructor(
                         }
                     }
                 }
+                getInterviewTask()
             }
         }
     }
 
-    private fun getInterviewTasks() {
+    private fun getInterviewTask() {
         val stateValue = state.value
         if(interviewTaskCount == null
             || stateValue.userKey == null
@@ -105,15 +99,13 @@ class InterviewSimulationViewModel @Inject constructor(
             return
         viewModelScope.launch {
             getInterviewTaskUseCase(
-                interviewTaskCount,
                 stateValue.userKey,
                 stateValue.interviewId).collectLatest { result ->
                 when(result) {
                     is Resource.Success -> {
                         _state.update {
                             it.copy(
-                                taskList = result.data,
-                                currentTask = result.data[it.currentTaskNumber - 1],
+                                currentTask = result.data,
                                 error = null,
                             )
                         }

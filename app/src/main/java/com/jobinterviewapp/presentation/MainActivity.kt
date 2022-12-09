@@ -61,7 +61,7 @@ class MainActivity : ComponentActivity() {
                                     iconFilledId = R.drawable.ic_knowledge_base_filled,
                                 ),
                                 BottomNavItem(
-                                    screen = Screen.FieldsOfActivityScreen,
+                                    screen = Screen.SavedProfessionsScreen,
                                     iconOutlinedId = R.drawable.ic_interview_outlined,
                                     iconFilledId = R.drawable.ic_interview_filled,
                                 ),
@@ -289,6 +289,11 @@ fun Navigation(navController: NavHostController, modifier: Modifier, userSetting
             route = Screen.KnowledgeBaseScreen.route,
         ) {
             KnowledgeBaseScreen(navController)
+        }
+        composable(
+            route = Screen.SavedProfessionsScreen.route,
+        ) {
+            SavedProfessionsScreen(navController)
         }
         composable(
             route = Screen.InterviewSimulationScreen.route +

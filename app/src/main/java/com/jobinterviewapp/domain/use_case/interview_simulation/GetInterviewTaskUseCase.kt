@@ -10,7 +10,7 @@ class GetInterviewTaskUseCase @Inject constructor(
     private val repository: InterviewSimulationRepository
 ) {
 
-    operator fun invoke(taskCount: Int, userKey: String, interviewId: Int): Flow<Resource<List<TaskDto>>> {
-        return repository.getInterviewTasks(taskCount, userKey, interviewId)
+    operator fun invoke(userKey: String, interviewId: Int): Flow<Resource<TaskDto>> {
+        return repository.getInterviewTask(userKey, interviewId)
     }
 }

@@ -19,11 +19,11 @@ fun TaskCategoryElement(
         modifier = modifier,
     ) {
         Box(
-            modifier = modifier.padding(2.dp)
+            modifier = modifier.padding(4.dp)
         ) {
             Text(
                 text = categoryName,
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.titleSmall,
             )
         }
     }

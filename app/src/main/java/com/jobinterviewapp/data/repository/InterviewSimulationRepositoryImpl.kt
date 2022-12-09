@@ -31,25 +31,18 @@ class InterviewSimulationRepositoryImpl @Inject constructor(
             emit(safeApiCall { api.postInterviewTaskAnswer(
                 taskId = taskId,
                 userKey = userKey,
-                answer = answer
+                answer = if(answer) 1 else 0
             ) })
         }.flowOn(Dispatchers.IO)
     }
 
-    override fun getInterviewTasks(taskCount: Int, userKey: String, interviewId: Int): Flow<Resource<List<TaskDto>>> = flow {
-        emit(safeApiCall {
-            coroutineScope {
-                val deferredTaskList = mutableListOf<Deferred<TaskDto>>()
-                for(i in 0 until taskCount) {
-                    val deferredTask = async(Dispatchers.IO) {
-                        api.getInterviewTask(interviewId, userKey)
-                    }
-                    deferredTaskList.add(deferredTask)
-                }
-                deferredTaskList.awaitAll()
-            }
-        })
+    override fun getInterviewTask(userKey: String, interviewId: Int): Flow<Resource<TaskDto>> = flow {
+        emit(safeApiCall { api.getInterviewTask(
+            userKey = userKey,
+            interviewId = interviewId,
+        ) })
     }.flowOn(Dispatchers.IO)
+
 
     private inline fun <T> safeApiCall(apiCall: () -> T): Resource<T> {
         return try {

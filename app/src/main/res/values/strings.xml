@@ -52,6 +52,7 @@
     <string name="wrong_answer_button_text">Нет</string>
     <string name="is_right_answer_text">Ваш ответ совпал?</string>
     <string name="right_answer_title">Правильный ответ:</string>
+    <string name="create_new_interview_button_text">Новое собеседование</string>
 
 
 </resources>

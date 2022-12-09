@@ -62,7 +62,18 @@ interface InterviewServiceApi {
     suspend fun postInterviewTaskAnswer(
         @Query("taskId") taskId: Int,
         @Query("authKey") userKey: String,
-        @Query("answer") answer: Boolean,
+        @Query("answer") answer: Int,
+    ): Int
+
+    @POST("interview/templates")
+    suspend fun getSavedProfessions(
+        @Query("authKey") userKey: String,
+    ): List<ProfessionDto>
+
+    @POST("interview/templates/delete")
+    suspend fun deleteSavedProfessions(
+        @Query("authKey") userKey: String,
+        @Query("templateId") professionId: Int,
     ): Int
 
     companion object {
