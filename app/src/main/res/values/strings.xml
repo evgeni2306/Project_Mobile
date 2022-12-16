@@ -53,6 +53,11 @@
     <string name="is_right_answer_text">Ваш ответ совпал?</string>
     <string name="right_answer_title">Правильный ответ:</string>
     <string name="create_new_interview_button_text">Новое собеседование</string>
+    <string name="wrong_answers_title">Вам следует обратить внимание на эти вопросы</string>
+    <string name="end_of_interview_text">Спасибо, это был последний вопрос</string>
+    <string name="interview_result_button_text">Результаты</string>
+    <string name="right_answers_text">Правильные ответы</string>
+    <string name="try_interview_again_button_text">Пройти ещё раз</string>
 
 
 </resources>

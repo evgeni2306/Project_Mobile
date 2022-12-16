@@ -6,7 +6,8 @@ import com.jobinterviewapp.core.util.Resource
 import com.jobinterviewapp.core.util.UiText
 import com.jobinterviewapp.data.remote.InterviewServiceApi
 import com.jobinterviewapp.data.remote.dto.ErrorDto
-import com.jobinterviewapp.data.remote.dto.TaskDto
+import com.jobinterviewapp.data.remote.dto.InterviewResultDto
+import com.jobinterviewapp.data.remote.dto.InterviewTaskDto
 import com.jobinterviewapp.domain.repository.InterviewSimulationRepository
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
@@ -36,13 +37,28 @@ class InterviewSimulationRepositoryImpl @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    override fun getInterviewTask(userKey: String, interviewId: Int): Flow<Resource<TaskDto>> = flow {
-        emit(safeApiCall { api.getInterviewTask(
+    override fun getInterviewTask(userKey: String, interviewId: Int): Flow<Resource<InterviewTaskDto?>> = flow {
+        emit(safeApiCall {
+            val response = api.getInterviewTask(
+                userKey = userKey,
+                interviewId = interviewId,
+            )
+            if(response.code() == 204) {
+                null
+            }
+            else {
+                response.body()
+            }
+        })
+    }.flowOn(Dispatchers.IO)
+
+
+    override fun getInterviewResult(userKey: String, interviewId: Int): Flow<Resource<InterviewResultDto>> = flow {
+        emit(safeApiCall { api.getInterviewResult(
             userKey = userKey,
             interviewId = interviewId,
         ) })
     }.flowOn(Dispatchers.IO)
-
 
     private inline fun <T> safeApiCall(apiCall: () -> T): Resource<T> {
         return try {

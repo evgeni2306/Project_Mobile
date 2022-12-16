@@ -16,6 +16,7 @@ enum class Screen(val route: String, val screenName: UiText, val subRoutes: List
             "professions_of_technology_screen",
             "interview_preview_screen",
             "interview_simulation_screen",
+            "InterviewResultScreen",
         )
     ),
     DirectionsOfFieldScreen(
@@ -45,6 +46,10 @@ enum class Screen(val route: String, val screenName: UiText, val subRoutes: List
     FieldsOfActivityScreen(
         "fields_of_activity_screen",
         UiText.StringResource(R.string.fields_of_activity_screen_name),
+    ),
+    InterviewResultScreen(
+        "InterviewResultScreen",
+        UiText.StringResource(R.string.interview_simulation_screen_name),
     ),
     ;
 

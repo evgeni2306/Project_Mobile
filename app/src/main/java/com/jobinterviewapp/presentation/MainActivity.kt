@@ -29,9 +29,10 @@ import com.jobinterviewapp.presentation.authorization.sign_in.SignInScreen
 import com.jobinterviewapp.core.presentation.ui.theme.JobInterviewAppTheme
 import com.jobinterviewapp.di.AppModule
 import com.jobinterviewapp.presentation.components.BottomNavigationBar
-import com.jobinterviewapp.presentation.interview_configuration.*
-import com.jobinterviewapp.presentation.interview_configuration.interview_preview.InterviewPreviewScreen
-import com.jobinterviewapp.presentation.interview_simulation.InterviewSimulationScreen
+import com.jobinterviewapp.presentation.interview.interview_configuration.*
+import com.jobinterviewapp.presentation.interview.interview_configuration.interview_preview.InterviewPreviewScreen
+import com.jobinterviewapp.presentation.interview.interview_result.InterviewResultScreen
+import com.jobinterviewapp.presentation.interview.interview_simulation.InterviewSimulationScreen
 import com.jobinterviewapp.presentation.knowledge_base.KnowledgeBaseScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
@@ -305,6 +306,17 @@ fun Navigation(navController: NavHostController, modifier: Modifier, userSetting
             )
         ) {
             InterviewSimulationScreen(navController)
+        }
+        composable(
+            route = Screen.InterviewResultScreen.route +
+                    "/{${Constants.PARAM_INTERVIEW_ID}}" +
+                    "/{${Constants.PARAM_PROFESSIONS_OF_TECHNOLOGY_ID}}",
+            arguments = listOf(
+                navArgument(Constants.PARAM_INTERVIEW_ID) { type = NavType.IntType },
+                navArgument(Constants.PARAM_PROFESSIONS_OF_TECHNOLOGY_ID) { type = NavType.IntType },
+            )
+        ) {
+            InterviewResultScreen(navController)
         }
     }
 }

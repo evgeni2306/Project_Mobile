@@ -8,4 +8,5 @@ object Constants {
     const val PARAM_INTERVIEW_TASK_COUNT = "interviewTaskCount"
     const val ENTRY_NAVIGATION_ANIMATION_DURATION = 300
     const val USER_SETTINGS_FILE_NAME = "user-settings.json"
+    const val PARAM_INTERVIEW_ID = "PARAM_INTERVIEW_ID"
 }

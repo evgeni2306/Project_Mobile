@@ -56,7 +56,7 @@ interface InterviewServiceApi {
     suspend fun getInterviewTask(
         @Query("interviewId") interviewId: Int,
         @Query("authKey") userKey: String,
-    ): TaskDto
+    ): Response<InterviewTaskDto>
 
     @POST("interview/question/answer")
     suspend fun postInterviewTaskAnswer(
@@ -75,6 +75,12 @@ interface InterviewServiceApi {
         @Query("authKey") userKey: String,
         @Query("templateId") professionId: Int,
     ): Int
+
+    @POST("interview/results")
+    suspend fun getInterviewResult(
+        @Query("authKey") userKey: String,
+        @Query("interviewId") interviewId: Int,
+    ): InterviewResultDto
 
     companion object {
         const val BASE_URL = "http://server2306.site/"
