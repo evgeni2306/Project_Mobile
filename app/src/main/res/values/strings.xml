@@ -23,6 +23,7 @@
     <string name="registration_screen_name">Регистрация</string>
     <string name="sign_in_screen_name">Вход в аккаунт</string>
     <string name="fields_of_activity_screen_name">Выберите IT-сферу</string>
+    <string name="saved_professions_screen">Собеседования</string>
     <string name="directions_of_field_screen_name">Выберите направление</string>
     <string name="technologies_of_direction_screen_name">Выберите технологию</string>
     <string name="professions_of_technology_screen_name">Выберите профессию</string>
@@ -58,6 +59,7 @@
     <string name="interview_result_button_text">Результаты</string>
     <string name="right_answers_text">Правильные ответы</string>
     <string name="try_interview_again_button_text">Пройти ещё раз</string>
+    <string name="saved_professions_placeholder">Пройдите своё первое собеседование, нажав кнопку \"%s\"</string>
 
 
 </resources>

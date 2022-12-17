@@ -8,7 +8,7 @@ enum class Screen(val route: String, val screenName: UiText, val subRoutes: List
     SignInScreen("sign_in_screen", UiText.StringResource(R.string.sign_in_screen_name)),
     SavedProfessionsScreen(
         "SavedProfessionsScreen",
-        UiText.StringResource(R.string.fields_of_activity_screen_name),
+        UiText.StringResource(R.string.saved_professions_screen),
         listOf(
             "directions_of_field_screen",
             "fields_of_activity_screen",

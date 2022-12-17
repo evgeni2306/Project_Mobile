@@ -1,5 +1,6 @@
 package com.jobinterviewapp.presentation.interview.interview_configuration
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -12,7 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -33,9 +37,10 @@ fun SavedProfessionsScreen(
                 screen = Screen.SavedProfessionsScreen,
             )
         },
-    ) {
+    ) { innerPadding ->
         Box(
             modifier = Modifier
+                .padding(top = innerPadding.calculateTopPadding())
                 .fillMaxSize()
                 ,
         ) {
@@ -45,8 +50,19 @@ fun SavedProfessionsScreen(
             ) {
                 items(state.savedProfessions) { profession ->
                     ListItem(
+                        modifier = Modifier
+                            .clickable {
+                                       navController.navigate(
+                                           route = Screen.InterviewPreviewScreen.withArgs(
+                                               profession.id.toString()
+                                           )
+                                       )
+                            },
                         headlineText = {
-                            profession.name
+                            Text(
+                                text = profession.name,
+                                style = MaterialTheme.typography.titleMedium,
+                            )
                         },
                         trailingContent = {
                             Icon(
@@ -56,6 +72,21 @@ fun SavedProfessionsScreen(
                         }
                     )
                 }
+            }
+
+            if(state.savedProfessions.isEmpty()) {
+                Text(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(30.dp)
+                    ,
+                    text = stringResource(
+                        id = R.string.saved_professions_placeholder,
+                        stringResource(R.string.create_new_interview_button_text)
+                    ),
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center,
+                )
             }
 
             ExtendedFloatingActionButton(

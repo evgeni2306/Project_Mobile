@@ -34,8 +34,7 @@ fun FieldOfActivityList(
                 headlineText = {
                     Text(
                         text = fieldOfActivity.name,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.titleMedium,
                     )
                 },
                 leadingContent = {

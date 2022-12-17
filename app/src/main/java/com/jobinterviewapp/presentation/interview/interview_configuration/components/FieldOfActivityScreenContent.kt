@@ -43,11 +43,6 @@ fun FieldOfActivityScreenContent(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Divider(
-                    modifier = Modifier
-                        .padding(horizontal = 12.dp),
-                )
-                Spacer(modifier = Modifier.height(6.dp))
                 FieldOfActivityList(
                     listState = fieldsOfActivity,
                     onItemClick = {
