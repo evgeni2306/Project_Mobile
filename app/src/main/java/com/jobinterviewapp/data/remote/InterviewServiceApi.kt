@@ -68,7 +68,7 @@ interface InterviewServiceApi {
     @POST("interview/templates")
     suspend fun getSavedProfessions(
         @Query("authKey") userKey: String,
-    ): List<ProfessionDto>
+    ): List<SavedProfessionDto>
 
     @POST("interview/templates/delete")
     suspend fun deleteSavedProfessions(

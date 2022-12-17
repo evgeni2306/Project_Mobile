@@ -9,7 +9,7 @@ import com.jobinterviewapp.data.remote.dto.InterviewPreviewDto
 import com.jobinterviewapp.domain.repository.InterviewConfigurationRepository
 import com.jobinterviewapp.core.util.Resource
 import com.jobinterviewapp.core.util.UiText
-import com.jobinterviewapp.data.remote.dto.ProfessionDto
+import com.jobinterviewapp.data.remote.dto.SavedProfessionDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -42,7 +42,7 @@ class InterviewConfigurationRepositoryImpl @Inject constructor(
         emit(safeApiCall { api.getInterviewPreview(professionId) })
     }.flowOn(Dispatchers.IO)
 
-    override fun getSavedProfessions(userKey: String): Flow<Resource<List<ProfessionDto>>> = flow {
+    override fun getSavedProfessions(userKey: String): Flow<Resource<List<SavedProfessionDto>>> = flow {
         emit(safeApiCall { api.getSavedProfessions(userKey) })
     }.flowOn(Dispatchers.IO)
 

@@ -84,7 +84,15 @@ fun InterviewPreviewScreen(
                         navController.navigate(Screen.InterviewSimulationScreen.withArgs(
                             state.professionId.toString(),
                             state.questionsCount.toString(),
-                        ))
+                        )) {
+                            navController.currentBackStackEntry?.destination?.route?.let { currentRoute ->
+                                popUpTo(
+                                    route = currentRoute,
+                                ) {
+                                    inclusive = true
+                                }
+                            }
+                        }
                     },
 
                     ) {

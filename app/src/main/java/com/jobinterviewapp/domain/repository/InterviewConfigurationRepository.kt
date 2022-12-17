@@ -3,7 +3,7 @@ package com.jobinterviewapp.domain.repository
 import com.jobinterviewapp.data.remote.dto.FieldOfActivityDto
 import com.jobinterviewapp.data.remote.dto.InterviewPreviewDto
 import com.jobinterviewapp.core.util.Resource
-import com.jobinterviewapp.data.remote.dto.ProfessionDto
+import com.jobinterviewapp.data.remote.dto.SavedProfessionDto
 import kotlinx.coroutines.flow.Flow
 
 interface InterviewConfigurationRepository {
@@ -18,7 +18,7 @@ interface InterviewConfigurationRepository {
 
     fun getInterviewPreview(professionId: Int): Flow<Resource<InterviewPreviewDto>>
 
-    fun getSavedProfessions(userKey: String): Flow<Resource<List<ProfessionDto>>>
+    fun getSavedProfessions(userKey: String): Flow<Resource<List<SavedProfessionDto>>>
 
     fun deleteSavedProfessions(userKey: String, professionId: Int): Flow<Resource<Int>>
 }

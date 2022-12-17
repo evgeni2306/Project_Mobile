@@ -131,7 +131,7 @@ fun InterviewResultScreen(
                 Button(
                     onClick = {
                         navController.navigate(
-                            route = Screen.InterviewSimulationScreen.withArgs(
+                            route = Screen.InterviewPreviewScreen.withArgs(
                                 state.professionId.toString()
                             )
                         )
