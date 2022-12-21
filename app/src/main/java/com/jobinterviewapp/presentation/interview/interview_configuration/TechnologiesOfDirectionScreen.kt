@@ -15,10 +15,9 @@ fun TechnologiesOfDirectionScreen(
     val state = viewModel.state.collectAsState().value
     FieldOfActivityScreenContent(
         navController = navController,
-        fieldsOfActivity = state.fieldsOfActivity,
         screen = Screen.TechnologiesOfDirectionScreen,
         onItemClick = { navController.navigate(Screen.ProfessionsOfTechnologyScreen.withArgs(it.id.toString())) },
         onRefreshClick = { viewModel.loadDirectionsOfField() },
-        error = state.error,
+        state = state,
     )
 }

@@ -15,10 +15,9 @@ fun DirectionsOfFieldScreen(
     val state = viewModel.state.collectAsState().value
     FieldOfActivityScreenContent(
         navController = navController,
-        fieldsOfActivity = state.fieldsOfActivity,
         screen = Screen.DirectionsOfFieldScreen,
         onItemClick = { navController.navigate(Screen.TechnologiesOfDirectionScreen.withArgs(it.id.toString())) },
         onRefreshClick = { viewModel.loadDirectionsOfField() },
-        error = state.error,
+        state = state,
     )
 }

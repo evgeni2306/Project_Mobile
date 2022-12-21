@@ -19,27 +19,38 @@ class ProfessionsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getProfessionsOfTechnologyUseCase: GetProfessionsOfTechnologyUseCase
 ): ViewModel() {
-    private val _state = MutableStateFlow(InterviewState())
+    private val _state = MutableStateFlow(InterviewConfigurationState())
     val state = _state.asStateFlow()
     private val technologyId: Int? = savedStateHandle.get<Int>(Constants.PARAM_TECHNOLOGIES_OF_DIRECTION_ID)
 
     fun loadDirectionsOfField() {
         viewModelScope.launch {
-            technologyId?.let {
-                getProfessionsOfTechnologyUseCase(technologyId).collectLatest { result ->
-                    when(result) {
-                        is Resource.Success -> {
-                            _state.update { it.copy(
-                                fieldsOfActivity = result.data,
-                                error = null,
-                            ) }
-                        }
-                        is Resource.Error -> {
-                            _state.update {
-                                it.copy(
-                                    error = result.message,
-                                )
-                            }
+            if(technologyId == null) {
+                return@launch
+            }
+            _state.update {
+                it.copy(
+                    isLoading = true,
+                    error = null,
+                    fieldsOfActivity = emptyList(),
+                )
+            }
+            getProfessionsOfTechnologyUseCase(technologyId).collectLatest { result ->
+                when(result) {
+                    is Resource.Success -> {
+                        _state.update { it.copy(
+                            fieldsOfActivity = result.data,
+                            error = null,
+                            isLoading = false,
+                        ) }
+                    }
+                    is Resource.Error -> {
+                        _state.update {
+                            it.copy(
+                                error = result.message,
+                                isLoading = false,
+                                fieldsOfActivity = emptyList()
+                            )
                         }
                     }
                 }

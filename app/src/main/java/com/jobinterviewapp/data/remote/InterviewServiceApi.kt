@@ -82,6 +82,12 @@ interface InterviewServiceApi {
         @Query("interviewId") interviewId: Int,
     ): InterviewResultDto
 
+    @POST("question/favorite/add")
+    suspend fun addTaskToFavorites(
+        @Query("authKey") userKey: String,
+        @Query("questionId") taskId: Int,
+    ): Int
+
     companion object {
         const val BASE_URL = "http://server2306.site/"
     }

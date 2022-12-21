@@ -40,6 +40,15 @@ class UserRepositoryImpl @Inject constructor(
         })
     }.flowOn(Dispatchers.IO)
 
+    override fun addTaskToFavorites(userKey: String, taskId: Int): Flow<Resource<Int>> = flow {
+        emit(safeApiCall {
+            api.addTaskToFavorites(
+                userKey = userKey,
+                taskId = taskId,
+            )
+        })
+    }.flowOn(Dispatchers.IO)
+
     private inline fun <T> safeApiCall(apiCall: () -> T): Resource<T> {
         return try {
             val data = apiCall()

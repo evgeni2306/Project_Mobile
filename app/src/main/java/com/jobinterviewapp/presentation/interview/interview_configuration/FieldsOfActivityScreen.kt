@@ -15,10 +15,9 @@ fun FieldsOfActivityScreen(
     val state = viewModel.state.collectAsState().value
     FieldOfActivityScreenContent(
         navController = navController,
-        fieldsOfActivity = state.fieldsOfActivity,
         screen = Screen.FieldsOfActivityScreen,
         onItemClick = { navController.navigate(Screen.DirectionsOfFieldScreen.withArgs(it.id.toString())) },
         onRefreshClick = { viewModel.loadFieldsOfActivity() },
-        error = state.error,
+        state = state,
     )
 }

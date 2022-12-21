@@ -20,27 +20,36 @@ class DirectionsViewModel @Inject constructor(
     private val getDirectionsOfFieldUseCase: GetDirectionsOfFieldUseCase,
 ): ViewModel() {
 
-    private val _state = MutableStateFlow(InterviewState())
+    private val _state = MutableStateFlow(InterviewConfigurationState())
     val state = _state.asStateFlow()
     private val fieldOfActivityId: Int? = savedStateHandle.get<Int>(Constants.PARAM_FIELD_OF_ACTIVITY_ID)
 
     fun loadDirectionsOfField() {
         viewModelScope.launch {
-            fieldOfActivityId?.let {
-                getDirectionsOfFieldUseCase(fieldOfActivityId).collectLatest { result ->
-                    when(result) {
-                        is Resource.Success -> {
-                            _state.update { it.copy(
-                                fieldsOfActivity = result.data,
-                                error = null,
-                            ) }
-                        }
-                        is Resource.Error -> {
-                            _state.update {
-                                it.copy(
-                                    error = result.message,
-                                )
-                            }
+            _state.update {
+                it.copy(
+                    isLoading = true,
+                    error = null,
+                    fieldsOfActivity = emptyList(),
+                )
+            }
+            if(fieldOfActivityId == null)
+                return@launch
+            getDirectionsOfFieldUseCase(fieldOfActivityId).collectLatest { result ->
+                when(result) {
+                    is Resource.Success -> {
+                        _state.update { it.copy(
+                            fieldsOfActivity = result.data,
+                            error = null,
+                            isLoading = false,
+                        ) }
+                    }
+                    is Resource.Error -> {
+                        _state.update {
+                            it.copy(
+                                isLoading = false,
+                                error = result.message,
+                            )
                         }
                     }
                 }

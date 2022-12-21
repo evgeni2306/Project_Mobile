@@ -4,6 +4,7 @@ import com.jobinterviewapp.core.util.UiText
 import com.jobinterviewapp.data.remote.dto.TaskDto
 
 data class InterviewResultState(
+    val userKey: String? = null,
     val error: UiText? = null,
     val wrongAnswers: List<TaskDto> = emptyList(),
     val rightAnswersCount: Int? = null,
@@ -11,4 +12,5 @@ data class InterviewResultState(
     val rightAnswersPercentage: Float? = null,
     val answersCount: Int? = null,
     val professionId: Int? = null,
+    val isLoading: Boolean = false,
 )

@@ -15,10 +15,9 @@ fun ProfessionsOfTechnologyScreen(
     val state = viewModel.state.collectAsState().value
     FieldOfActivityScreenContent(
         navController = navController,
-        fieldsOfActivity = state.fieldsOfActivity,
         screen = Screen.ProfessionsOfTechnologyScreen,
         onItemClick = { navController.navigate(Screen.InterviewPreviewScreen.withArgs(it.id.toString())) },
         onRefreshClick = { viewModel.loadDirectionsOfField() },
-        error = state.error,
+        state = state,
     )
 }

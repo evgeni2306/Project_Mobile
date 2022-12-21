@@ -19,27 +19,38 @@ class TechnologiesViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getTechnologiesOfDirectionUseCase: GetTechnologiesOfDirectionUseCase,
 ): ViewModel() {
-    private val _state = MutableStateFlow(InterviewState())
+    private val _state = MutableStateFlow(InterviewConfigurationState())
     val state = _state.asStateFlow()
     private val directionId: Int? = savedStateHandle.get<Int>(Constants.PARAM_DIRECTION_OF_FIELD_ID)
 
     fun loadDirectionsOfField() {
         viewModelScope.launch {
-            directionId?.let {
-                getTechnologiesOfDirectionUseCase(directionId).collectLatest { result ->
-                    when(result) {
-                        is Resource.Success -> {
-                            _state.update { it.copy(
-                                fieldsOfActivity = result.data,
-                                error = null,
-                            ) }
-                        }
-                        is Resource.Error -> {
-                            _state.update {
-                                it.copy(
-                                    error = result.message,
-                                )
-                            }
+            if(directionId == null) {
+                return@launch
+            }
+            _state.update {
+                it.copy(
+                    isLoading = true,
+                    error = null,
+                    fieldsOfActivity = emptyList(),
+                )
+            }
+            getTechnologiesOfDirectionUseCase(directionId).collectLatest { result ->
+                when(result) {
+                    is Resource.Success -> {
+                        _state.update { it.copy(
+                            fieldsOfActivity = result.data,
+                            isLoading = false,
+                            error = null,
+                        ) }
+                    }
+                    is Resource.Error -> {
+                        _state.update {
+                            it.copy(
+                                isLoading = false,
+                                error = result.message,
+                                fieldsOfActivity = emptyList(),
+                            )
                         }
                     }
                 }

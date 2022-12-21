@@ -17,10 +17,17 @@ class FieldsViewModel @Inject constructor(
     private val getFieldOfActivityUseCase: GetFieldsOfActivityUseCase,
 ): ViewModel() {
 
-    private val _state = MutableStateFlow(InterviewState())
+    private val _state = MutableStateFlow(InterviewConfigurationState())
     val state = _state.asStateFlow()
 
     fun loadFieldsOfActivity() {
+        _state.update {
+            it.copy(
+                isLoading = true,
+                error = null,
+                fieldsOfActivity = emptyList(),
+            )
+        }
         viewModelScope.launch {
             getFieldOfActivityUseCase().collectLatest { result ->
                 when(result) {
@@ -28,11 +35,13 @@ class FieldsViewModel @Inject constructor(
                         _state.update { it.copy(
                             fieldsOfActivity = result.data,
                             error = null,
+                            isLoading = false,
                         ) }
                     }
                     is Resource.Error -> {
                         _state.update {
                             it.copy(
+                                isLoading = false,
                                 error = result.message,
                             )
                         }

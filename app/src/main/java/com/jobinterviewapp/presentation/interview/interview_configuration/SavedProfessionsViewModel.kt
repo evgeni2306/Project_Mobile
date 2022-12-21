@@ -25,6 +25,13 @@ class SavedProfessionsViewModel @Inject constructor(
 
     fun getSavedProfessions() {
         viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    isLoading = true,
+                    error = null,
+                    savedProfessions = emptyList(),
+                )
+            }
             dataStoreManager.authSettings.collectLatest { authSettings ->
                 if(authSettings.userKey == null)
                     return@collectLatest
@@ -38,11 +45,20 @@ class SavedProfessionsViewModel @Inject constructor(
                         is Resource.Success -> {
                             _state.update {
                                 it.copy(
-                                    savedProfessions = result.data
+                                    savedProfessions = result.data,
+                                    isLoading = false,
+                                    error = null,
                                 )
                             }
                         }
                         is Resource.Error -> {
+                            _state.update {
+                                it.copy(
+                                    savedProfessions = emptyList(),
+                                    error = result.message,
+                                    isLoading = false,
+                                )
+                            }
                         }
                     }
                 }

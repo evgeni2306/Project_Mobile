@@ -3,25 +3,26 @@ package com.jobinterviewapp.presentation.interview.interview_configuration.compo
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.jobinterviewapp.core.util.UiText
 import com.jobinterviewapp.data.remote.dto.FieldOfActivityDto
 import com.jobinterviewapp.presentation.Screen
 import com.jobinterviewapp.presentation.components.ErrorTextHandler
+import com.jobinterviewapp.presentation.interview.interview_configuration.InterviewConfigurationState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FieldOfActivityScreenContent(
     navController: NavController,
-    fieldsOfActivity: List<FieldOfActivityDto>,
     screen: Screen,
     onItemClick: (FieldOfActivityDto) -> Unit,
-    error: UiText?,
+    state: InterviewConfigurationState,
     onRefreshClick: () -> Unit,
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
     Scaffold(
         topBar = {
             InterviewConfigurationTopBar(
@@ -36,7 +37,7 @@ fun FieldOfActivityScreenContent(
                 .fillMaxSize()
         ) {
             ErrorTextHandler(
-                error = error,
+                error = state.error,
                 onRefreshClick = onRefreshClick,
                 modifier = Modifier.align(Alignment.Center),
             )
@@ -44,10 +45,17 @@ fun FieldOfActivityScreenContent(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 FieldOfActivityList(
-                    listState = fieldsOfActivity,
+                    listState = state.fieldsOfActivity,
                     onItemClick = {
                         onItemClick(it)
                     }
+                )
+            }
+            if(state.isLoading) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                    ,
                 )
             }
         }

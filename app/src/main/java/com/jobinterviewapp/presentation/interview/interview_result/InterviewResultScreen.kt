@@ -108,7 +108,9 @@ fun InterviewResultScreen(
                                         modifier = Modifier,
                                     )
                                     IconButton(
-                                        onClick = { /*TODO*/ },
+                                        onClick = {
+                                            viewModel.addTaskToFavorites(task.questionId)
+                                        },
                                     ) {
                                         Image(
                                             painter = painterResource(id = R.drawable.ic_favorites),
