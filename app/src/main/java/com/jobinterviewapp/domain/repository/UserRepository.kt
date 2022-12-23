@@ -11,4 +11,6 @@ interface UserRepository {
     fun signInUser(login: String, password: String): Flow<Resource<String>>
 
     fun addTaskToFavorites(userKey: String, taskId: Int): Flow<Resource<Int>>
+
+    fun deleteTaskFromFavorites(userKey: String, favoriteId: Int): Flow<Resource<Int>>
 }

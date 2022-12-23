@@ -5,6 +5,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -87,12 +89,13 @@ fun InterviewResultScreen(
                 )
                 LazyColumn(
                 ) {
-                    items(state.wrongAnswers) { task ->
+                    items(count = state.wrongAnswers.size) { index ->
                         ElevatedCard(
                             modifier = Modifier
                                 .padding(vertical = 4.dp)
                                 ,
                         ) {
+                            val task = state.wrongAnswers[index]
                             Column(
                                 modifier = Modifier
                                     .padding(20.dp),
@@ -109,11 +112,14 @@ fun InterviewResultScreen(
                                     )
                                     IconButton(
                                         onClick = {
-                                            viewModel.addTaskToFavorites(task.questionId)
+                                            viewModel.onFavoriteTaskClicked(index)
                                         },
                                     ) {
-                                        Image(
-                                            painter = painterResource(id = R.drawable.ic_favorites),
+                                        Icon(
+                                            painter = if(task.isFavorite)
+                                                painterResource(id = R.drawable.ic_favorite_filled)
+                                            else
+                                                painterResource(id = R.drawable.ic_favorite_border),
                                             contentDescription = null
                                         )
                                     }

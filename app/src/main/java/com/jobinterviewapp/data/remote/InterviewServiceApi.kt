@@ -88,6 +88,12 @@ interface InterviewServiceApi {
         @Query("questionId") taskId: Int,
     ): Int
 
+    @POST("question/favorite/delete ")
+    suspend fun deleteTaskFromFavorites(
+        @Query("authKey") userKey: String,
+        @Query("favoriteId") favoriteId: Int,
+    ): Int
+
     companion object {
         const val BASE_URL = "http://server2306.site/"
     }

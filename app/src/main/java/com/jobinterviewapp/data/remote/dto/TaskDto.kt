@@ -5,4 +5,6 @@ data class TaskDto(
     val answer: String,
     val category: String,
     val questionId: Int,
+    val isFavorite: Int,
+    val favoriteId: Int,
 )

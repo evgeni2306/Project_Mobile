@@ -49,6 +49,15 @@ class UserRepositoryImpl @Inject constructor(
         })
     }.flowOn(Dispatchers.IO)
 
+    override fun deleteTaskFromFavorites(userKey: String, favoriteId: Int): Flow<Resource<Int>> = flow {
+        emit(safeApiCall {
+            api.deleteTaskFromFavorites(
+                favoriteId = favoriteId,
+                userKey = userKey,
+            )
+        })
+    }.flowOn(Dispatchers.IO)
+
     private inline fun <T> safeApiCall(apiCall: () -> T): Resource<T> {
         return try {
             val data = apiCall()

@@ -4,10 +4,12 @@ import com.google.gson.Gson
 import com.jobinterviewapp.R
 import com.jobinterviewapp.core.util.Resource
 import com.jobinterviewapp.core.util.UiText
+import com.jobinterviewapp.data.mappers.toInterviewResult
+import com.jobinterviewapp.data.mappers.toInterviewTask
 import com.jobinterviewapp.data.remote.InterviewServiceApi
 import com.jobinterviewapp.data.remote.dto.ErrorDto
-import com.jobinterviewapp.data.remote.dto.InterviewResultDto
-import com.jobinterviewapp.data.remote.dto.InterviewTaskDto
+import com.jobinterviewapp.domain.models.InterviewResult
+import com.jobinterviewapp.domain.models.InterviewTask
 import com.jobinterviewapp.domain.repository.InterviewSimulationRepository
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
@@ -37,7 +39,7 @@ class InterviewSimulationRepositoryImpl @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
-    override fun getInterviewTask(userKey: String, interviewId: Int): Flow<Resource<InterviewTaskDto?>> = flow {
+    override fun getInterviewTask(userKey: String, interviewId: Int): Flow<Resource<InterviewTask?>> = flow {
         emit(safeApiCall {
             val response = api.getInterviewTask(
                 userKey = userKey,
@@ -47,17 +49,17 @@ class InterviewSimulationRepositoryImpl @Inject constructor(
                 null
             }
             else {
-                response.body()
+                response.body()?.toInterviewTask()
             }
         })
     }.flowOn(Dispatchers.IO)
 
 
-    override fun getInterviewResult(userKey: String, interviewId: Int): Flow<Resource<InterviewResultDto>> = flow {
+    override fun getInterviewResult(userKey: String, interviewId: Int): Flow<Resource<InterviewResult>> = flow {
         emit(safeApiCall { api.getInterviewResult(
             userKey = userKey,
             interviewId = interviewId,
-        ) })
+        ).toInterviewResult() })
     }.flowOn(Dispatchers.IO)
 
     private inline fun <T> safeApiCall(apiCall: () -> T): Resource<T> {

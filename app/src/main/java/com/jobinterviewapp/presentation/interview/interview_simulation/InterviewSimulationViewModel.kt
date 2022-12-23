@@ -8,6 +8,8 @@ import com.jobinterviewapp.di.AppModule
 import com.jobinterviewapp.domain.use_case.interview_simulation.GetInterviewTaskUseCase
 import com.jobinterviewapp.domain.use_case.interview_simulation.PostInterviewTaskAnswerUseCase
 import com.jobinterviewapp.domain.use_case.interview_simulation.StartInterviewUseCase
+import com.jobinterviewapp.domain.use_case.user.AddTaskToFavoritesUseCase
+import com.jobinterviewapp.domain.use_case.user.DeleteTaskFromFavoritesUseCase
 import com.jobinterviewapp.presentation.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -21,6 +23,8 @@ class InterviewSimulationViewModel @Inject constructor(
     private val dataStoreManager: AppModule.DataStoreManager,
     private val getInterviewTaskUseCase: GetInterviewTaskUseCase,
     private val postInterviewTaskAnswerUseCase: PostInterviewTaskAnswerUseCase,
+    private val addTaskToFavoritesUseCase: AddTaskToFavoritesUseCase,
+    private val deleteTaskFromFavoritesUseCase: DeleteTaskFromFavoritesUseCase,
 ): ViewModel() {
     private val professionId = savedStateHandle.get<Int>(Constants.PARAM_PROFESSIONS_OF_TECHNOLOGY_ID)
     private val interviewTaskCount: Int? = savedStateHandle.get<Int>(Constants.PARAM_INTERVIEW_TASK_COUNT)
@@ -57,6 +61,70 @@ class InterviewSimulationViewModel @Inject constructor(
                                     }
                                 }
                             }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun onFavoriteTaskClicked() {
+        viewModelScope.launch {
+            val userKey = state.value.userKey ?: return@launch
+            var currentTask = state.value.currentTask ?: return@launch
+            if(currentTask.isFavorite) {
+                if (currentTask.favoriteId == null) {
+                    return@launch
+                }
+                deleteTaskFromFavoritesUseCase(
+                    userKey,
+                    currentTask.favoriteId!!
+                ).collect { result ->
+                    when (result) {
+                        is Resource.Error -> {
+                            _state.update {
+                                it.copy(
+                                    error = result.message,
+                                )
+                            }
+                        }
+                        is Resource.Success -> {
+                            currentTask = currentTask.copy(
+                                favoriteId = null,
+                                isFavorite = !currentTask.isFavorite,
+                            )
+                        }
+                    }
+                }
+                _state.update {
+                    it.copy(
+                        currentTask = currentTask,
+                    )
+                }
+            } else {
+                var newFavoriteId: Int? = null
+                addTaskToFavoritesUseCase(userKey, currentTask.questionId).collect { result ->
+                    when (result) {
+                        is Resource.Error -> {
+                            _state.update {
+                                it.copy(
+                                    error = result.message,
+                                )
+                            }
+                        }
+                        is Resource.Success -> {
+                            newFavoriteId = result.data
+                        }
+                    }
+                    newFavoriteId?.let {
+                        currentTask = currentTask.copy(
+                            isFavorite = !currentTask.isFavorite,
+                            favoriteId = newFavoriteId
+                        )
+                        _state.update {
+                            it.copy(
+                                currentTask = currentTask,
+                            )
                         }
                     }
                 }

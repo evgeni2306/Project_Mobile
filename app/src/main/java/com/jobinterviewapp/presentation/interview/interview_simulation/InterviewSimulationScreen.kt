@@ -7,6 +7,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -140,10 +143,15 @@ fun InterviewSimulationScreen(
                                                 modifier = Modifier,
                                             )
                                             IconButton(
-                                                onClick = { /*TODO*/ },
+                                                onClick = {
+                                                    viewModel.onFavoriteTaskClicked()
+                                                }
                                             ) {
-                                                Image(
-                                                    painter = painterResource(id = R.drawable.ic_favorites),
+                                                Icon(
+                                                    painter = if(currentTask.isFavorite)
+                                                        painterResource(id = R.drawable.ic_favorite_filled)
+                                                    else
+                                                        painterResource(id = R.drawable.ic_favorite_border),
                                                     contentDescription = null
                                                 )
                                             }
