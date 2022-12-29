@@ -12,7 +12,7 @@ import com.jobinterviewapp.R
 fun EmployerAvatar() {
     Image(
         modifier = Modifier.size(90.dp),
-        painter = painterResource(id = R.drawable.ic_employer),
+        painter = painterResource(id = R.drawable.avatar),
         contentDescription = null,
     )
 }
