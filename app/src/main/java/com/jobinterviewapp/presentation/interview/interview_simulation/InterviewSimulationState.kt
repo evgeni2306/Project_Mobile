@@ -11,4 +11,5 @@ data class InterviewSimulationState(
     val userKey: String? = null,
     val isEndOfInterview: Boolean = false,
     val professionId: Int? = null,
+    val isLoading: Boolean = false,
 )

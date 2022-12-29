@@ -30,6 +30,12 @@ class InterviewPreviewViewModel @Inject constructor(
 
     fun loadInterviewPreview() {
         viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    isLoading = true,
+                    error = null,
+                )
+            }
             professionId?.let {
                 getInterviewPreviewUseCase(professionId).collectLatest { result ->
                     when(result) {
@@ -40,7 +46,17 @@ class InterviewPreviewViewModel @Inject constructor(
                             ) }
                         }
                         is Resource.Error -> {
+                            _state.update {
+                                it.copy(
+                                    error = result.message,
+                                )
+                            }
                         }
+                    }
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                        )
                     }
                 }
             }

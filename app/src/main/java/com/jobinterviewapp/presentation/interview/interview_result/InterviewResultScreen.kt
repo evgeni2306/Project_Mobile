@@ -1,153 +1,197 @@
 package com.jobinterviewapp.presentation.interview.interview_result
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalOverscrollConfiguration
+import androidx.compose.foundation.OverscrollConfiguration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jobinterviewapp.R
 import com.jobinterviewapp.presentation.Screen
+import com.jobinterviewapp.presentation.components.ErrorTextHandler
 import com.jobinterviewapp.presentation.interview.components.TaskCategoryElement
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun InterviewResultScreen(
     navController: NavController,
     viewModel: InterviewResultViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.collectAsState().value
-    if(state.rightAnswersPercentage == null) {
-        return
-    }
-    Scaffold { innerPadding ->
+    Scaffold(
+        bottomBar = {
+            if(!state.isLoading && state.error == null) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        onClick = {
+                            navController.navigateUp()
+                        }
+                    ) {
+                        Text(
+                            text = stringResource(R.string.interview_result_done_button_text),
+                        )
+                    }
+
+                    TextButton(
+                        onClick = {
+                            navController.navigate(
+                                route = Screen.InterviewPreviewScreen.withArgs(
+                                    state.professionId.toString()
+                                )
+                            )
+                        }
+                    ) {
+                        Text(
+                            text = stringResource(R.string.try_interview_again_button_text)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
+            }
+        }
+    ) { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(
+                    top = innerPadding.calculateTopPadding(),
+                    bottom = 100.dp,
+                )
             ,
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    ,
-            ) {
-                ElevatedCard() {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                            ,
-                    ) {
-                        ListItem(
-                            modifier = Modifier.fillMaxWidth(),
-                            trailingContent = {
-                                Text(
-                                    text = "${state.rightAnswersCount}/${state.answersCount}",
-                                    style = MaterialTheme.typography.titleMedium,
-                                )
-                            },
-                            headlineText = {
-                                Text(
-                                    text = stringResource(R.string.right_answers_text),
-                                    style = MaterialTheme.typography.titleMedium,
-                                )
-                            }
-                        )
-                        LinearProgressIndicator(
-                            progress = state.rightAnswersPercentage,
-                            modifier = Modifier
-                                .padding(vertical = 16.dp)
-                                .height(10.dp)
-                                .fillMaxWidth()
-                                ,
-                        )
-                    }
-                }
-
-                Text(
-                    text = stringResource(R.string.wrong_answers_title),
-                    style = MaterialTheme.typography.titleMedium,
-                    textAlign = TextAlign.Center,
+            if(state.isLoading) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
+            ErrorTextHandler(
+                error = state.error,
+                modifier = Modifier.align(Alignment.Center),
+                onRefreshClick = viewModel::loadInterviewResult,
+            )
+            if(!state.isLoading && state.error == null && state.rightAnswersPercentage != null) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
-                        .padding(vertical = 16.dp)
-                )
-                LazyColumn(
+                        .padding(horizontal = 16.dp)
+                    ,
                 ) {
-                    items(count = state.wrongAnswers.size) { index ->
-                        ElevatedCard(
+                    Spacer(modifier = Modifier.height(20.dp))
+                    ElevatedCard() {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier
-                                .padding(vertical = 4.dp)
-                                ,
+                                .fillMaxWidth()
+                                .padding(
+                                    horizontal = 16.dp,
+                                    vertical = 0.dp
+                                )
+                            ,
                         ) {
-                            val task = state.wrongAnswers[index]
-                            Column(
-                                modifier = Modifier
-                                    .padding(20.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                            ) {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ) {
-                                    TaskCategoryElement(
-                                        categoryName = task.category,
-                                        modifier = Modifier,
+                            ListItem(
+                                modifier = Modifier.fillMaxWidth(),
+                                trailingContent = {
+                                    Text(
+                                        text = "${state.rightAnswersCount}/${state.answersCount}",
+                                        style = MaterialTheme.typography.titleMedium,
                                     )
-                                    IconButton(
-                                        onClick = {
-                                            viewModel.onFavoriteTaskClicked(index)
-                                        },
+                                },
+                                headlineText = {
+                                    Text(
+                                        text = stringResource(R.string.right_answers_text),
+                                        style = MaterialTheme.typography.titleMedium,
+                                    )
+                                },
+                            )
+                            LinearProgressIndicator(
+                                progress = state.rightAnswersPercentage,
+                                modifier = Modifier
+                                    .padding(vertical = 0.dp, horizontal = 18.dp)
+                                    .fillMaxWidth(),
+                            )
+                            Spacer(modifier = Modifier.height(20.dp))
+                        }
+                    }
+
+                    Text(
+                        text = stringResource(R.string.wrong_answers_title),
+                        style = MaterialTheme.typography.titleMedium,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .padding(vertical = 16.dp)
+                    )
+                    CompositionLocalProvider(
+                        LocalOverscrollConfiguration provides OverscrollConfiguration(
+                            glowColor = MaterialTheme.colorScheme.background,
+                        )
+                    ) {
+                        LazyColumn(
+                        ) {
+                            items(count = state.wrongAnswers.size) { index ->
+                                ElevatedCard(
+                                    modifier = Modifier
+                                        .padding(bottom = 8.dp)
+                                    ,
+                                ) {
+                                    val task = state.wrongAnswers[index]
+                                    Column(
+                                        modifier = Modifier
+                                            .padding(20.dp),
+                                        horizontalAlignment = Alignment.CenterHorizontally,
                                     ) {
-                                        Icon(
-                                            painter = if(task.isFavorite)
-                                                painterResource(id = R.drawable.ic_favorite_filled)
-                                            else
-                                                painterResource(id = R.drawable.ic_favorite_border),
-                                            contentDescription = null
+                                        Row(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
+                                            verticalAlignment = Alignment.CenterVertically,
+                                        ) {
+                                            TaskCategoryElement(
+                                                categoryName = task.category,
+                                                modifier = Modifier,
+                                            )
+                                            IconButton(
+                                                onClick = {
+                                                    viewModel.onFavoriteTaskClicked(index)
+                                                },
+                                            ) {
+                                                Icon(
+                                                    painter = if(task.isFavorite)
+                                                        painterResource(id = R.drawable.ic_favorite_filled)
+                                                    else
+                                                        painterResource(id = R.drawable.ic_favorite_border),
+                                                    contentDescription = null
+                                                )
+                                            }
+                                        }
+                                        Text(
+                                            style = MaterialTheme.typography.titleMedium,
+                                            text = task.question,
+                                            modifier = Modifier
+                                                .padding(horizontal = 10.dp),
+                                            textAlign = TextAlign.Center,
                                         )
                                     }
                                 }
-                                Text(
-                                    style = MaterialTheme.typography.titleMedium,
-                                    text = task.question,
-                                    modifier = Modifier
-                                        .padding(horizontal = 10.dp),
-                                    textAlign = TextAlign.Center,
-                                )
+                            }
+                            item {
+                                Spacer(modifier = Modifier.height(16.dp))
                             }
                         }
                     }
-                }
-
-                Button(
-                    onClick = {
-                        navController.navigate(
-                            route = Screen.InterviewPreviewScreen.withArgs(
-                                state.professionId.toString()
-                            )
-                        )
-                    }
-                ) {
-                    Text(
-                        text = stringResource(R.string.try_interview_again_button_text)
-                    )
                 }
             }
         }

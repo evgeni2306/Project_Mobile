@@ -12,6 +12,7 @@ import com.jobinterviewapp.domain.use_case.user.AddTaskToFavoritesUseCase
 import com.jobinterviewapp.domain.use_case.user.DeleteTaskFromFavoritesUseCase
 import com.jobinterviewapp.presentation.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,6 +39,12 @@ class InterviewSimulationViewModel @Inject constructor(
     fun startInterview() {
         professionId?.let {
             viewModelScope.launch {
+                _state.update {
+                    it.copy(
+                        error = null,
+                        isLoading = true,
+                    )
+                }
                 dataStoreManager.authSettings.collectLatest { authSettings ->
                     authSettings.userKey?.let { userKey ->
                         startInterviewUseCase(professionId, userKey).collectLatest { result ->
@@ -48,7 +55,7 @@ class InterviewSimulationViewModel @Inject constructor(
                                             professionId = professionId,
                                             interviewId = result.data,
                                             error = null,
-                                            userKey = authSettings.userKey
+                                            userKey = authSettings.userKey,
                                         )
                                     }
                                     getInterviewTask()
@@ -60,6 +67,11 @@ class InterviewSimulationViewModel @Inject constructor(
                                         )
                                     }
                                 }
+                            }
+                            _state.update {
+                                it.copy(
+                                    isLoading = false
+                                )
                             }
                         }
                     }
@@ -167,6 +179,14 @@ class InterviewSimulationViewModel @Inject constructor(
             || stateValue.interviewId == null)
             return
         viewModelScope.launch {
+            val loadingJob = launch {
+                delay(Constants.SIMULATION_LOADING_ANIMATION_DELAY)
+                _state.update {
+                    it.copy(
+                        isLoading = true,
+                    )
+                }
+            }
             getInterviewTaskUseCase(
                 stateValue.userKey,
                 stateValue.interviewId).collectLatest { result ->
@@ -196,6 +216,12 @@ class InterviewSimulationViewModel @Inject constructor(
                             )
                         }
                     }
+                }
+                loadingJob.cancel()
+                _state.update {
+                    it.copy(
+                        isLoading = false
+                    )
                 }
             }
         }

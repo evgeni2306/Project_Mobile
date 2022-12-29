@@ -22,7 +22,6 @@ fun FieldOfActivityScreenContent(
     state: InterviewConfigurationState,
     onRefreshClick: () -> Unit,
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
     Scaffold(
         topBar = {
             InterviewConfigurationTopBar(
@@ -39,7 +38,9 @@ fun FieldOfActivityScreenContent(
             ErrorTextHandler(
                 error = state.error,
                 onRefreshClick = onRefreshClick,
-                modifier = Modifier.align(Alignment.Center),
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .padding(20.dp),
             )
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally

@@ -38,6 +38,8 @@ fun BottomNavigationBar(
         || routeName == Screen.InterviewPreviewScreen.route
         || routeName == Screen.RegistrationScreen.route
         || routeName == Screen.SignInScreen.route
+        || routeName == Screen.InterviewSimulationScreen.route
+        || routeName == Screen.InterviewResultScreen.route
     ) {
         return
     }

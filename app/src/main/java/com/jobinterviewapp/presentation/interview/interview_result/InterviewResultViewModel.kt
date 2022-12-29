@@ -113,7 +113,6 @@ class InterviewResultViewModel @Inject constructor(
                                         rightAnswersPercentage = rightAnswersPercentage,
                                         answersCount = questionsCount,
                                         professionId = professionId,
-                                        isLoading = false,
                                         error = null
                                     )
                                 }
@@ -122,10 +121,14 @@ class InterviewResultViewModel @Inject constructor(
                                 _state.update {
                                     it.copy(
                                         error = result.message,
-                                        isLoading = false,
                                     )
                                 }
                             }
+                        }
+                        _state.update {
+                            it.copy(
+                                isLoading = false,
+                            )
                         }
                     }
                 }

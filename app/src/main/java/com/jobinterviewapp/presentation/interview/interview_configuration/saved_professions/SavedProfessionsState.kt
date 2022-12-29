@@ -1,4 +1,4 @@
-package com.jobinterviewapp.presentation.interview.interview_configuration
+package com.jobinterviewapp.presentation.interview.interview_configuration.saved_professions
 
 import com.jobinterviewapp.core.util.UiText
 import com.jobinterviewapp.data.remote.dto.SavedProfessionDto

@@ -1,9 +1,12 @@
-package com.jobinterviewapp.presentation.interview.interview_configuration
+package com.jobinterviewapp.presentation.interview.interview_configuration.technologies
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jobinterviewapp.domain.use_case.interview_configuration.GetFieldsOfActivityUseCase
+import com.jobinterviewapp.domain.use_case.interview_configuration.GetTechnologiesOfDirectionUseCase
+import com.jobinterviewapp.presentation.Constants
 import com.jobinterviewapp.core.util.Resource
+import com.jobinterviewapp.presentation.interview.interview_configuration.InterviewConfigurationState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,29 +16,33 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FieldsViewModel @Inject constructor(
-    private val getFieldOfActivityUseCase: GetFieldsOfActivityUseCase,
+class TechnologiesViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    private val getTechnologiesOfDirectionUseCase: GetTechnologiesOfDirectionUseCase,
 ): ViewModel() {
-
     private val _state = MutableStateFlow(InterviewConfigurationState())
     val state = _state.asStateFlow()
+    private val directionId: Int? = savedStateHandle.get<Int>(Constants.PARAM_DIRECTION_OF_FIELD_ID)
 
-    fun loadFieldsOfActivity() {
-        _state.update {
-            it.copy(
-                isLoading = true,
-                error = null,
-                fieldsOfActivity = emptyList(),
-            )
-        }
+    fun loadDirectionsOfField() {
         viewModelScope.launch {
-            getFieldOfActivityUseCase().collectLatest { result ->
+            if(directionId == null) {
+                return@launch
+            }
+            _state.update {
+                it.copy(
+                    isLoading = true,
+                    error = null,
+                    fieldsOfActivity = emptyList(),
+                )
+            }
+            getTechnologiesOfDirectionUseCase(directionId).collectLatest { result ->
                 when(result) {
                     is Resource.Success -> {
                         _state.update { it.copy(
                             fieldsOfActivity = result.data,
-                            error = null,
                             isLoading = false,
+                            error = null,
                         ) }
                     }
                     is Resource.Error -> {
@@ -43,6 +50,7 @@ class FieldsViewModel @Inject constructor(
                             it.copy(
                                 isLoading = false,
                                 error = result.message,
+                                fieldsOfActivity = emptyList(),
                             )
                         }
                     }
@@ -52,6 +60,6 @@ class FieldsViewModel @Inject constructor(
     }
 
     init {
-        loadFieldsOfActivity()
+        loadDirectionsOfField()
     }
 }

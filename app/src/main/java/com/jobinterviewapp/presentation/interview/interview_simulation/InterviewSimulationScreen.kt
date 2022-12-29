@@ -22,7 +22,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jobinterviewapp.R
 import com.jobinterviewapp.presentation.Screen
+import com.jobinterviewapp.presentation.components.ErrorTextHandler
 import com.jobinterviewapp.presentation.interview.components.TaskCategoryElement
+import com.jobinterviewapp.presentation.interview.interview_simulation.components.EmployerAvatar
+import com.jobinterviewapp.presentation.interview.interview_simulation.components.LastQuestionDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -70,167 +73,170 @@ fun InterviewSimulationScreen(
         }
     ) { paddingValues ->
         Box {
-            state.currentTask?.let { currentTask ->
+            Column(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                EmployerAvatar()
                 Column(
-                    modifier = Modifier
-                        .padding(paddingValues)
-                        .fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
                 ) {
-                    Image(
-                        modifier = Modifier.size(90.dp),
-                        painter = painterResource(id = R.drawable.ic_employer),
-                        contentDescription = null,
-                    )
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.
-                                padding(horizontal = 16.dp)
+                    ElevatedCard(
+                        modifier = Modifier
+                            .size(25.dp),
+                        shape = TriangleShape(),
+                    ) {}
+                    var expanded by remember { mutableStateOf(false) }
+                    ElevatedCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .animateContentSize()
                     ) {
-                        ElevatedCard(
-                            modifier = Modifier
-                                .size(25.dp),
-                            shape = TriangleShape(),
-                        ) {}
-                        var expanded by remember { mutableStateOf(false) }
-                        ElevatedCard(
-                            modifier = Modifier
-                                .animateContentSize()
-                        ) {
-                            val isVisible = remember {
-                                MutableTransitionState(false).apply {
-                                    // Start the animation immediately.
-                                    this.targetState = true
-                                }
+                        val isVisible = remember {
+                            MutableTransitionState(false).apply {
+                                // Start the animation immediately.
+                                this.targetState = true
                             }
-                            AnimatedVisibility(
-                                visibleState = isVisible,
+                        }
+                        AnimatedVisibility(
+                            visibleState = isVisible,
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(20.dp)
+                                    .fillMaxWidth(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
                             ) {
-                                Column(
+                                if(state.isLoading) {
+                                    CircularProgressIndicator()
+                                }
+                                ErrorTextHandler(
+                                    error = state.error,
+                                    onRefreshClick = viewModel::startInterview,
                                     modifier = Modifier
-                                        .padding(20.dp),
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                ) {
-                                    if(state.isEndOfInterview) {
-                                        Text(
-                                            text = stringResource(R.string.end_of_interview_text),
-                                            style = MaterialTheme.typography.titleMedium,
+                                    ,
+                                )
+                                if(state.isEndOfInterview) {
+                                    LastQuestionDialog {
+                                        val route = Screen.InterviewResultScreen.withArgs(
+                                            state.interviewId.toString(),
+                                            state.professionId.toString(),
                                         )
-                                        Spacer(Modifier.height(10.dp))
-                                        Button(
+                                        navController.navigate(
+                                            route = route
+                                        ) {
+                                            navController.currentDestination?.route?.let {
+                                                popUpTo(it) {
+                                                    inclusive = true
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                if(!state.isEndOfInterview && state.currentTask != null && !state.isLoading && state.error == null) {
+                                    val currentTask = state.currentTask
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        verticalAlignment = Alignment.CenterVertically,
+                                    ) {
+                                        TaskCategoryElement(
+                                            categoryName = currentTask.category,
+                                            modifier = Modifier,
+                                        )
+                                        IconButton(
                                             onClick = {
-                                                navController.navigate(
-                                                    route = Screen.InterviewResultScreen.withArgs(
-                                                        state.interviewId.toString(),
-                                                        state.professionId.toString(),
-                                                    )
-                                                )
+                                                viewModel.onFavoriteTaskClicked()
                                             }
                                         ) {
-                                            Text(
-                                                text = stringResource(R.string.interview_result_button_text),
+                                            Icon(
+                                                painter = if(currentTask.isFavorite)
+                                                    painterResource(id = R.drawable.ic_favorite_filled)
+                                                else
+                                                    painterResource(id = R.drawable.ic_favorite_border),
+                                                contentDescription = null
                                             )
                                         }
                                     }
-                                    else {
-                                        Row(
-                                            modifier = Modifier.fillMaxWidth(),
-                                            horizontalArrangement = Arrangement.SpaceBetween,
-                                            verticalAlignment = Alignment.CenterVertically,
-                                        ) {
-                                            TaskCategoryElement(
-                                                categoryName = currentTask.category,
-                                                modifier = Modifier,
-                                            )
-                                            IconButton(
-                                                onClick = {
-                                                    viewModel.onFavoriteTaskClicked()
-                                                }
-                                            ) {
-                                                Icon(
-                                                    painter = if(currentTask.isFavorite)
-                                                        painterResource(id = R.drawable.ic_favorite_filled)
-                                                    else
-                                                        painterResource(id = R.drawable.ic_favorite_border),
-                                                    contentDescription = null
-                                                )
-                                            }
+                                    Text(
+                                        style = MaterialTheme.typography.titleMedium,
+                                        text = currentTask.question,
+                                        modifier = Modifier
+                                            .padding(horizontal = 10.dp),
+                                        textAlign = TextAlign.Center,
+                                    )
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                    TextButton(
+                                        modifier = Modifier
+                                            .width(150.dp),
+                                        onClick = {
+                                            expanded = !expanded
                                         }
+                                    ) {
                                         Text(
-                                            style = MaterialTheme.typography.titleMedium,
-                                            text = currentTask.question,
-                                            modifier = Modifier
-                                                .padding(horizontal = 10.dp),
-                                            textAlign = TextAlign.Center,
-                                        )
-                                        Spacer(modifier = Modifier.height(10.dp))
-                                        TextButton(
-                                            modifier = Modifier
-                                                .width(150.dp),
-                                            onClick = {
-                                                expanded = !expanded
-                                            }
-                                        ) {
-                                            Text(
-                                                text = stringResource(
-                                                    if(!expanded)
-                                                        R.string.compare_answer_button_text
-                                                    else
-                                                        R.string.hide_answer_button_text
-                                                )
+                                            text = stringResource(
+                                                if(!expanded)
+                                                    R.string.compare_answer_button_text
+                                                else
+                                                    R.string.hide_answer_button_text
                                             )
-                                        }
-                                        AnimatedVisibility(
-                                            visible = expanded,
-                                        ) {
-                                            Card {
-                                                Column(
-                                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                        )
+                                    }
+                                    AnimatedVisibility(
+                                        visible = expanded,
+                                    ) {
+                                        Card {
+                                            Column(
+                                                horizontalAlignment = Alignment.CenterHorizontally,
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(20.dp)
+                                            ) {
+                                                Text(
+                                                    text = stringResource(R.string.right_answer_title),
+                                                    style = MaterialTheme.typography.titleMedium,
+                                                )
+                                                Text(
                                                     modifier = Modifier
-                                                        .fillMaxWidth()
-                                                        .padding(20.dp)
-                                                ) {
-                                                    Text(
-                                                        text = stringResource(R.string.right_answer_title),
-                                                        style = MaterialTheme.typography.titleMedium,
-                                                    )
-                                                    Text(
-                                                        modifier = Modifier
-                                                            .padding(10.dp),
-                                                        text = currentTask.answer,
-                                                        style = MaterialTheme.typography.bodyLarge,
-                                                        textAlign = TextAlign.Center,
-                                                    )
-                                                    Spacer(modifier = Modifier.height(10.dp))
-                                                    Text(
-                                                        text = stringResource(R.string.is_right_answer_text),
-                                                        style = MaterialTheme.typography.titleSmall
-                                                    )
-                                                    Spacer(Modifier.height(10.dp))
-                                                    Row {
-                                                        Button(
-                                                            modifier = Modifier.width(115.dp),
-                                                            onClick = {
-                                                                expanded = false
-                                                                viewModel.submitAnswer(true)
-                                                            }
-                                                        ) {
-                                                            Text(
-                                                                text = stringResource(R.string.right_answer_button_text)
-                                                            )
+                                                        .padding(10.dp),
+                                                    text = currentTask.answer,
+                                                    style = MaterialTheme.typography.bodyLarge,
+                                                    textAlign = TextAlign.Center,
+                                                )
+                                                Spacer(modifier = Modifier.height(10.dp))
+                                                Text(
+                                                    text = stringResource(R.string.is_right_answer_text),
+                                                    style = MaterialTheme.typography.titleSmall
+                                                )
+                                                Spacer(Modifier.height(10.dp))
+                                                Row {
+                                                    Button(
+                                                        modifier = Modifier.width(115.dp),
+                                                        onClick = {
+                                                            expanded = false
+                                                            viewModel.submitAnswer(true)
                                                         }
-                                                        Spacer(modifier = Modifier.width(15.dp))
-                                                        OutlinedButton(
-                                                            modifier = Modifier.width(115.dp),
-                                                            onClick = {
-                                                                expanded = false
-                                                                viewModel.submitAnswer(false)
-                                                            }
-                                                        ) {
-                                                            Text(
-                                                                text = stringResource(R.string.wrong_answer_button_text)
-                                                            )
+                                                    ) {
+                                                        Text(
+                                                            text = stringResource(R.string.right_answer_button_text)
+                                                        )
+                                                    }
+                                                    Spacer(modifier = Modifier.width(15.dp))
+                                                    OutlinedButton(
+                                                        modifier = Modifier.width(115.dp),
+                                                        onClick = {
+                                                            expanded = false
+                                                            viewModel.submitAnswer(false)
                                                         }
+                                                    ) {
+                                                        Text(
+                                                            text = stringResource(R.string.wrong_answer_button_text)
+                                                        )
                                                     }
                                                 }
                                             }

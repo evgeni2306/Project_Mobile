@@ -1,4 +1,4 @@
-package com.jobinterviewapp.presentation.interview.interview_configuration
+package com.jobinterviewapp.presentation.interview.interview_configuration.directions
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -6,6 +6,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jobinterviewapp.presentation.Screen
 import com.jobinterviewapp.presentation.interview.interview_configuration.components.*
+import com.jobinterviewapp.presentation.interview.interview_configuration.directions.DirectionsViewModel
 
 @Composable
 fun DirectionsOfFieldScreen(

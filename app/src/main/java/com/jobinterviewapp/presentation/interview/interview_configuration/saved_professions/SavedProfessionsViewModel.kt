@@ -1,4 +1,4 @@
-package com.jobinterviewapp.presentation.interview.interview_configuration
+package com.jobinterviewapp.presentation.interview.interview_configuration.saved_professions
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SavedProfessionsViewModel @Inject constructor(
-    val getSavedProfessionsUseCase: GetSavedProfessionsUseCase,
+    private val getSavedProfessionsUseCase: GetSavedProfessionsUseCase,
     private val dataStoreManager: AppModule.DataStoreManager,
 ): ViewModel() {
 
@@ -46,7 +46,6 @@ class SavedProfessionsViewModel @Inject constructor(
                             _state.update {
                                 it.copy(
                                     savedProfessions = result.data,
-                                    isLoading = false,
                                     error = null,
                                 )
                             }
@@ -56,10 +55,14 @@ class SavedProfessionsViewModel @Inject constructor(
                                 it.copy(
                                     savedProfessions = emptyList(),
                                     error = result.message,
-                                    isLoading = false,
                                 )
                             }
                         }
+                    }
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                        )
                     }
                 }
             }

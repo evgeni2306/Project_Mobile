@@ -16,6 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jobinterviewapp.R
 import com.jobinterviewapp.presentation.Screen
+import com.jobinterviewapp.presentation.components.ErrorTextHandler
 import com.jobinterviewapp.presentation.interview.interview_configuration.interview_preview.components.TipListItem
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -27,80 +28,92 @@ fun InterviewPreviewScreen(
     val state = viewModel.state.collectAsState().value
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                title = {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                    ) {
-                        state.previewName?.let { previewName ->
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                CenterAlignedTopAppBar(
+                    title = {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                        ) {
+                            state.previewName?.let { previewName ->
+                                Text(
+                                    text = previewName,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    fontWeight = FontWeight.Bold,
+                                )
+                            }
                             Text(
-                                text = previewName,
-                                style = MaterialTheme.typography.bodyLarge,
-                                fontWeight = FontWeight.Bold,
+                                text = stringResource(R.string.interview_simulation_subtitle),
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.SemiBold,
                             )
                         }
-                        Text(
-                            text = stringResource(R.string.interview_simulation_subtitle),
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                    }
-                },
+                    },
 
-                actions = {
-                    IconButton(
-                        onClick = {}
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_profile),
-                            contentDescription = null,
-                        )
+                    actions = {
+                        IconButton(
+                            onClick = {}
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_profile),
+                                contentDescription = null,
+                            )
+                        }
+                    },
+                    navigationIcon = {
+                        IconButton(
+                            onClick = {
+                                navController.navigateUp()
+                            },
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowBack,
+                                contentDescription = null,
+                            )
+                        }
                     }
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            navController.navigateUp()
-                        },
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = null,
-                        )
-                    }
-                }
-            )
+                )
+                Divider(
+                    modifier = Modifier
+                        .padding(horizontal = 12.dp),
+                )
+                Spacer(modifier = Modifier.height(6.dp))
+            }
         },
         bottomBar = {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Button(
-                    modifier = Modifier
-                        .padding(horizontal = 15.dp)
-                        .fillMaxWidth()
-                    ,
-                    onClick = {
-                        navController.navigate(Screen.InterviewSimulationScreen.withArgs(
-                            state.professionId.toString(),
-                            state.questionsCount.toString(),
-                        )) {
-                            navController.currentBackStackEntry?.destination?.route?.let { currentRoute ->
-                                popUpTo(
-                                    route = currentRoute,
-                                ) {
-                                    inclusive = true
+                if(state.error == null) {
+                    Button(
+                        modifier = Modifier
+                            .padding(horizontal = 15.dp)
+                            .fillMaxWidth()
+                        ,
+                        onClick = {
+                            navController.navigate(Screen.InterviewSimulationScreen.withArgs(
+                                state.professionId.toString(),
+                                state.questionsCount.toString(),
+                            )) {
+                                navController.currentBackStackEntry?.destination?.route?.let { currentRoute ->
+                                    popUpTo(
+                                        route = currentRoute,
+                                    ) {
+                                        inclusive = true
+                                    }
                                 }
                             }
-                        }
-                    },
-
+                        },
                     ) {
-                    Text(
-                        text = stringResource(R.string.start_interview_button_text)
-                    )
+                        Text(
+                            text = stringResource(R.string.start_interview_button_text)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(30.dp))
                 }
-                Spacer(modifier = Modifier.height(20.dp))
             }
         }
     ) { innerPadding ->
@@ -108,10 +121,18 @@ fun InterviewPreviewScreen(
             modifier = Modifier
                 .padding(
                     top = innerPadding.calculateTopPadding(),
-                    bottom = 35.dp
+                    bottom = 53.dp
                 )
                 .fillMaxSize(),
         ) {
+            if(state.error != null) {
+                ErrorTextHandler(
+                    error = state.error,
+                    modifier = Modifier.align(Alignment.Center),
+                    onRefreshClick = viewModel::loadInterviewPreview
+                )
+                return@Box
+            }
             CompositionLocalProvider(
                 LocalOverscrollConfiguration provides OverscrollConfiguration(
                     glowColor = MaterialTheme.colorScheme.background,
@@ -123,12 +144,6 @@ fun InterviewPreviewScreen(
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState()),
                 ) {
-                    Divider(
-                        modifier = Modifier
-                            .padding(horizontal = 12.dp),
-                    )
-                    Spacer(modifier = Modifier.height(6.dp))
-
                     TipListItem(
                         title = stringResource(R.string.questions_count, state.questionsCount?:0),
                         description = stringResource(
@@ -158,7 +173,6 @@ fun InterviewPreviewScreen(
                         trailingImageId = R.drawable.ic_tip_number_3,
                         animationDuration = 1200,
                     )
-
                     Spacer(modifier = Modifier.height(35.dp))
                 }
             }
