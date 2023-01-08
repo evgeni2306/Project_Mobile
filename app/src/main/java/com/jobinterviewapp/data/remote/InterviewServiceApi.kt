@@ -88,11 +88,22 @@ interface InterviewServiceApi {
         @Query("questionId") taskId: Int,
     ): Int
 
-    @POST("question/favorite/delete ")
+    @POST("question/favorite/delete")
     suspend fun deleteTaskFromFavorites(
         @Query("authKey") userKey: String,
         @Query("favoriteId") favoriteId: Int,
     ): Int
+
+    @POST("knowledgebase/professions")
+    suspend fun getProfessionList(
+        @Query("authKey") userKey: String,
+    ): List<ProfessionDto>
+
+    @POST("knowledgebase/professions/questions")
+    suspend fun getProfessionTaskList(
+        @Query("authKey") userKey: String,
+        @Query("profId") profId: Int,
+    ): List<TaskDto>
 
     companion object {
         const val BASE_URL = "http://server2306.site/"

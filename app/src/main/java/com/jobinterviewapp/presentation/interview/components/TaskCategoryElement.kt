@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
+import androidx.compose.ui.text.font.FontWeight.Companion.SemiBold
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -20,15 +21,15 @@ fun TaskCategoryElement(
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(9.dp)
+        shape = RoundedCornerShape(6.dp)
     ) {
         Box(
-            modifier = modifier.padding(5.dp)
+            modifier = modifier.padding(3.dp)
         ) {
             Text(
                 text = categoryName,
-                style = MaterialTheme.typography.bodySmall,
-                fontWeight = Bold,
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = SemiBold,
             )
         }
     }

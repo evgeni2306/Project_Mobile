@@ -47,6 +47,11 @@ class InterviewResultViewModel @Inject constructor(
                             ).collect { result ->
                                 when (result) {
                                     is Resource.Error -> {
+                                        _state.update {
+                                            it.copy(
+                                                error = result.message
+                                            )
+                                        }
                                     }
                                     is Resource.Success -> {
                                     }

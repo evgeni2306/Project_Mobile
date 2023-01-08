@@ -16,7 +16,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jobinterviewapp.R
 import com.jobinterviewapp.presentation.Screen
+import com.jobinterviewapp.presentation.components.DefaultTopBar
 import com.jobinterviewapp.presentation.components.ErrorTextHandler
+import com.jobinterviewapp.presentation.components.TopBarTitleText
 import com.jobinterviewapp.presentation.interview.interview_configuration.interview_preview.components.TipListItem
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -28,60 +30,35 @@ fun InterviewPreviewScreen(
     val state = viewModel.state.collectAsState().value
     Scaffold(
         topBar = {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                CenterAlignedTopAppBar(
-                    title = {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ) {
-                            state.previewName?.let { previewName ->
-                                Text(
-                                    text = previewName,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    fontWeight = FontWeight.Bold,
-                                )
-                            }
-                            Text(
-                                text = stringResource(R.string.interview_simulation_subtitle),
-                                style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = FontWeight.SemiBold,
-                            )
+            DefaultTopBar(
+                title = {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        state.previewName?.let { previewName ->
+                            TopBarTitleText(previewName)
                         }
-                    },
-
-                    actions = {
-                        IconButton(
-                            onClick = {}
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_profile),
-                                contentDescription = null,
-                            )
-                        }
-                    },
-                    navigationIcon = {
-                        IconButton(
-                            onClick = {
-                                navController.navigateUp()
-                            },
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.ArrowBack,
-                                contentDescription = null,
-                            )
-                        }
+                        Text(
+                            text = stringResource(R.string.interview_simulation_subtitle),
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.SemiBold,
+                        )
                     }
-                )
-                Divider(
-                    modifier = Modifier
-                        .padding(horizontal = 12.dp),
-                )
-                Spacer(modifier = Modifier.height(6.dp))
-            }
+                },
+                onProfileClick = {},
+                navigationIcon = {
+                    IconButton(
+                        onClick = {
+                            navController.navigateUp()
+                        },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = null,
+                        )
+                    }
+                }
+            )
         },
         bottomBar = {
             Column(

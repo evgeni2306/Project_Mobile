@@ -21,6 +21,7 @@ import androidx.navigation.NavController
 import com.jobinterviewapp.R
 import com.jobinterviewapp.presentation.Screen
 import com.jobinterviewapp.presentation.components.ErrorTextHandler
+import com.jobinterviewapp.presentation.components.TaskItemCard
 import com.jobinterviewapp.presentation.interview.components.TaskCategoryElement
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -143,49 +144,10 @@ fun InterviewResultScreen(
                         LazyColumn(
                         ) {
                             items(count = state.wrongAnswers.size) { index ->
-                                ElevatedCard(
-                                    modifier = Modifier
-                                        .padding(bottom = 8.dp)
-                                    ,
-                                ) {
-                                    val task = state.wrongAnswers[index]
-                                    Column(
-                                        modifier = Modifier
-                                            .padding(20.dp),
-                                        horizontalAlignment = Alignment.CenterHorizontally,
-                                    ) {
-                                        Row(
-                                            modifier = Modifier.fillMaxWidth(),
-                                            horizontalArrangement = Arrangement.SpaceBetween,
-                                            verticalAlignment = Alignment.CenterVertically,
-                                        ) {
-                                            TaskCategoryElement(
-                                                categoryName = task.category,
-                                                modifier = Modifier,
-                                            )
-                                            IconButton(
-                                                onClick = {
-                                                    viewModel.onFavoriteTaskClicked(index)
-                                                },
-                                            ) {
-                                                Icon(
-                                                    painter = if(task.isFavorite)
-                                                        painterResource(id = R.drawable.ic_favorite_filled)
-                                                    else
-                                                        painterResource(id = R.drawable.ic_favorite_border),
-                                                    contentDescription = null
-                                                )
-                                            }
-                                        }
-                                        Text(
-                                            style = MaterialTheme.typography.titleMedium,
-                                            text = task.question,
-                                            modifier = Modifier
-                                                .padding(horizontal = 10.dp),
-                                            textAlign = TextAlign.Center,
-                                        )
-                                    }
-                                }
+                                TaskItemCard(
+                                    task = state.wrongAnswers[index],
+                                    onFavoriteTaskClicked = { (viewModel::onFavoriteTaskClicked)(index) }
+                                )
                             }
                             item {
                                 Spacer(modifier = Modifier.height(16.dp))

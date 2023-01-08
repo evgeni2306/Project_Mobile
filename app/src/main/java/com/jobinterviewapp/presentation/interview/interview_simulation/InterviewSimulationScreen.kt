@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import com.jobinterviewapp.R
 import com.jobinterviewapp.presentation.Screen
 import com.jobinterviewapp.presentation.components.ErrorTextHandler
+import com.jobinterviewapp.presentation.components.TopBarTitleText
 import com.jobinterviewapp.presentation.interview.components.TaskCategoryElement
 import com.jobinterviewapp.presentation.interview.interview_simulation.components.EmployerAvatar
 import com.jobinterviewapp.presentation.interview.interview_simulation.components.LastQuestionDialog
@@ -39,10 +40,7 @@ fun InterviewSimulationScreen(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text(
-                        text = stringResource(R.string.interview_simulation_subtitle),
-                        style = MaterialTheme.typography.titleMedium,
-                    )
+                    TopBarTitleText(text = stringResource(R.string.interview_simulation_subtitle))
                 },
 
                 actions = {

@@ -61,6 +61,9 @@
     <string name="try_interview_again_button_text">Пройти ещё раз</string>
     <string name="saved_professions_placeholder">Пройдите своё первое собеседование, нажав кнопку \"%s\"</string>
     <string name="interview_result_done_button_text">Готово</string>
+    <string name="tasks_found_text">Найдено вопросов: %s</string>
+    <string name="default_search_placeholder_text">Поиск</string>
+    <string name="choose_profession_search_text">Выберите профессию</string>
 
 
 </resources>
