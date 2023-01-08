@@ -293,7 +293,7 @@ fun Navigation(navController: NavHostController, modifier: Modifier, userSetting
         composable(
             route = Screen.KnowledgeBaseScreen.route,
         ) {
-            KnowledgeBaseScreen(navController)
+            KnowledgeBaseScreen()
         }
         composable(
             route = Screen.SavedProfessionsScreen.route,
