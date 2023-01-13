@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">JobInterviewApp</string>
+    <string name="app_name">JobInterview</string>
 
     <!--    Errors    -->
     <string name="unknown_exception">Возникла неизвестная ошибка</string>

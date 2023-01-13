@@ -13,12 +13,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,7 +30,6 @@ fun KnowledgeBaseScreen(
     viewModel: KnowledgeBaseViewModel = hiltViewModel(),
 ) {
     val state = viewModel.state.collectAsState().value
-
     Scaffold(
         topBar = {
             DefaultTopBar(
@@ -166,7 +163,11 @@ fun KnowledgeBaseScreen(
                                     val task = state.currentProfessionTaskList[taskIndex]
                                     TaskItemCard(
                                         task = task,
-                                        onFavoriteTaskClicked = { (viewModel::onFavoriteTaskClicked)(taskIndex) }
+                                        onFavoriteTaskClicked = { (viewModel::onFavoriteTaskClicked)(taskIndex) },
+                                        modifier = Modifier
+                                            .clickable {
+                                                viewModel.onTaskClick(task, taskIndex)
+                                            }
                                     )
                                 }
                             }
@@ -176,6 +177,37 @@ fun KnowledgeBaseScreen(
             }
             if (state.isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
+
+            if(state.selectedTask != null) {
+                AlertDialog(
+                    onDismissRequest = viewModel::onDialogHideClick,
+                    title = {
+                        TaskItem(
+                            task = state.selectedTask,
+                            onFavoriteTaskClicked = { (viewModel::onFavoriteTaskClicked)(state.selectedIndex!!) },
+                        )
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = viewModel::onDialogHideClick,
+                            modifier = Modifier
+                                .align(Alignment.Center)
+                                .fillMaxWidth()
+                                ,
+                        ) {
+                            Text(
+                                text = "Ок"
+                            )
+                        }
+                    },
+                    text = {
+                        Text(
+                            text = state.selectedTask.answer,
+                            style = MaterialTheme.typography.bodyLarge,
+                        )
+                    }
+                )
             }
         }
     }

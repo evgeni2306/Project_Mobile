@@ -17,7 +17,8 @@ import com.jobinterviewapp.presentation.interview.components.TaskCategoryElement
 @Composable
 fun TaskItemCard(
     task: Task,
-    onFavoriteTaskClicked: () -> Unit
+    onFavoriteTaskClicked: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     ElevatedCard(
         modifier = Modifier
@@ -25,7 +26,7 @@ fun TaskItemCard(
         ,
     ) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .padding(
                     top = 9.dp,

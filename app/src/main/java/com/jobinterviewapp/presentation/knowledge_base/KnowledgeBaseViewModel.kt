@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.jobinterviewapp.core.util.Resource
 import com.jobinterviewapp.data.remote.dto.ProfessionDto
 import com.jobinterviewapp.di.AppModule
+import com.jobinterviewapp.domain.models.Task
 import com.jobinterviewapp.domain.use_case.knowledge_base.GetProfessionListUseCase
 import com.jobinterviewapp.domain.use_case.knowledge_base.GetProfessionTaskListUseCase
 import com.jobinterviewapp.domain.use_case.user.AddTaskToFavoritesUseCase
@@ -121,6 +122,28 @@ class KnowledgeBaseViewModel @Inject constructor(
         }
     }
 
+    fun onTaskClick(task: Task, taskIndex: Int) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    selectedTask = task,
+                    selectedIndex = taskIndex,
+                )
+            }
+        }
+    }
+
+    fun onDialogHideClick() {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    selectedTask = null,
+                    selectedIndex = null,
+                )
+            }
+        }
+    }
+
     private fun getProfessionList() {
         viewModelScope.launch {
             _state.update {
@@ -169,6 +192,7 @@ class KnowledgeBaseViewModel @Inject constructor(
     fun onFavoriteTaskClicked(taskIndex: Int) {
         viewModelScope.launch {
             val userKey = state.value.userKey ?: return@launch
+            var newTask: Task? = null
             val taskList = state.value.currentProfessionTaskList
                 .mapIndexed { index, task ->
                     if (index == taskIndex) {
@@ -192,6 +216,10 @@ class KnowledgeBaseViewModel @Inject constructor(
                                     }
                                 }
                             }
+                            newTask = task.copy(
+                                isFavorite = false,
+                                favoriteId = null,
+                            )
                             task.copy(
                                 isFavorite = false,
                                 favoriteId = null,
@@ -207,6 +235,10 @@ class KnowledgeBaseViewModel @Inject constructor(
                                     }
                                 }
                             }
+                            newTask = task.copy(
+                                favoriteId = newFavoriteId,
+                                isFavorite = true
+                            )
                             task.copy(
                                 favoriteId = newFavoriteId,
                                 isFavorite = true
@@ -216,6 +248,14 @@ class KnowledgeBaseViewModel @Inject constructor(
                         task
                     }
                 }
+            val selectedTask = state.value.selectedTask
+            if(selectedTask != null && newTask != null) {
+                _state.update {
+                    it.copy(
+                        selectedTask = newTask
+                    )
+                }
+            }
             _state.update {
                 it.copy(
                     currentProfessionTaskList = taskList
