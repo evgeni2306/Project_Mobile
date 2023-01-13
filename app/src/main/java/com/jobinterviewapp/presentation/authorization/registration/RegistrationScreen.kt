@@ -26,6 +26,7 @@ import com.jobinterviewapp.R
 import com.jobinterviewapp.presentation.Screen
 import com.jobinterviewapp.presentation.authorization.AuthUiEvent
 import com.jobinterviewapp.presentation.authorization.components.AuthTextField
+import com.jobinterviewapp.presentation.components.FullLogo
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalComposeUiApi::class,
@@ -82,16 +83,11 @@ fun RegistrationScreen(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    val logoPadding = if(keyboardMode) 20.dp else 40.dp
-                    Text(
-                        text = "ЛОГОТИП",
-                        style = MaterialTheme.typography.titleLarge,
+                    val logoPadding = if(keyboardMode) 10.dp else 50.dp
+                    FullLogo(
                         modifier = Modifier
-                            .animateContentSize()
-                            .padding(vertical = logoPadding)
                             .align(Alignment.CenterHorizontally),
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary,
+                        logoPadding
                     )
                     AuthTextField(
                         modifier = Modifier.fillMaxWidth(),

@@ -1,6 +1,7 @@
 package com.jobinterviewapp.presentation.authorization.sign_in
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -25,6 +26,7 @@ import com.jobinterviewapp.R
 import com.jobinterviewapp.presentation.Screen
 import com.jobinterviewapp.presentation.authorization.AuthUiEvent
 import com.jobinterviewapp.presentation.authorization.components.AuthTextField
+import com.jobinterviewapp.presentation.components.FullLogo
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
@@ -85,14 +87,10 @@ fun SignInScreen(
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Column {
-                    Text(
-                        text = "ЛОГОТИП",
-                        style = MaterialTheme.typography.titleLarge,
+                    FullLogo(
                         modifier = Modifier
-                            .padding(vertical = 40.dp)
                             .align(Alignment.CenterHorizontally),
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.Bold,
+                        50.dp
                     )
                     AuthTextField(
                         modifier = Modifier.fillMaxWidth(),
