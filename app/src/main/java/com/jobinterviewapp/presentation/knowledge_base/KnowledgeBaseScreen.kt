@@ -16,7 +16,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -179,13 +178,13 @@ fun KnowledgeBaseScreen(
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
 
-            if(state.selectedTask != null) {
+            if(state.openedTask != null) {
                 AlertDialog(
                     onDismissRequest = viewModel::onDialogHideClick,
                     title = {
                         TaskItem(
-                            task = state.selectedTask,
-                            onFavoriteTaskClicked = { (viewModel::onFavoriteTaskClicked)(state.selectedIndex!!) },
+                            task = state.openedTask,
+                            onFavoriteTaskClicked = { (viewModel::onFavoriteTaskClicked)(state.openedTaskIndex!!) },
                         )
                     },
                     confirmButton = {
@@ -197,13 +196,13 @@ fun KnowledgeBaseScreen(
                                 ,
                         ) {
                             Text(
-                                text = "Ок"
+                                text = stringResource(R.string.ok_text)
                             )
                         }
                     },
                     text = {
                         Text(
-                            text = state.selectedTask.answer,
+                            text = state.openedTask.answer,
                             style = MaterialTheme.typography.bodyLarge,
                         )
                     }

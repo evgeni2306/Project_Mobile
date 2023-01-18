@@ -12,6 +12,6 @@ data class KnowledgeBaseState(
     val currentProfession: ProfessionDto? = null,
     val currentProfessionTaskList: List<Task> = emptyList(),
     val searchValue: String = "",
-    val selectedTask: Task? = null,
-    val selectedIndex: Int? = null,
+    val openedTask: Task? = null,
+    val openedTaskIndex: Int? = null,
 )

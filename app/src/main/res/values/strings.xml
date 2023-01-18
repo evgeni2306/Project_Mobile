@@ -30,6 +30,7 @@
     <string name="knowledge_base_screen_name">База знаний</string>
     <string name="interview_preview_screen_name">Предпросмотр собеседования</string>
     <string name="interview_simulation_screen_name">Собеседование</string>
+    <string name="favorite_tasks_screen_name">Избранное</string>
 
     <string name="field_of_activity_screen_placeholder">Выберите IT-направление, в котором хотите пройти собеседование</string>
     <string name="direction_of_field_screen_placeholder">Выберите направление разработки</string>
@@ -64,6 +65,7 @@
     <string name="tasks_found_text">Найдено вопросов: %s</string>
     <string name="default_search_placeholder_text">Поиск</string>
     <string name="choose_profession_search_text">Выберите профессию</string>
+    <string name="ok_text">Ок</string>
 
 
 </resources>

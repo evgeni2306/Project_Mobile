@@ -70,6 +70,11 @@ class MainActivity : ComponentActivity() {
                                     iconOutlinedId = R.drawable.ic_interview_outlined,
                                     iconFilledId = R.drawable.ic_interview_filled,
                                 ),
+                                BottomNavItem(
+                                    screen = Screen.FavoriteTasksScreen,
+                                    iconOutlinedId = R.drawable.ic_favorite_border,
+                                    iconFilledId = R.drawable.ic_favorite_filled,
+                                ),
                             ),
                             navController = navController,
                         )

@@ -11,10 +11,8 @@ import com.jobinterviewapp.domain.use_case.knowledge_base.GetProfessionTaskListU
 import com.jobinterviewapp.domain.use_case.user.AddTaskToFavoritesUseCase
 import com.jobinterviewapp.domain.use_case.user.DeleteTaskFromFavoritesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -126,8 +124,8 @@ class KnowledgeBaseViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    selectedTask = task,
-                    selectedIndex = taskIndex,
+                    openedTask = task,
+                    openedTaskIndex = taskIndex,
                 )
             }
         }
@@ -137,8 +135,8 @@ class KnowledgeBaseViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    selectedTask = null,
-                    selectedIndex = null,
+                    openedTask = null,
+                    openedTaskIndex = null,
                 )
             }
         }
@@ -248,11 +246,11 @@ class KnowledgeBaseViewModel @Inject constructor(
                         task
                     }
                 }
-            val selectedTask = state.value.selectedTask
+            val selectedTask = state.value.openedTask
             if(selectedTask != null && newTask != null) {
                 _state.update {
                     it.copy(
-                        selectedTask = newTask
+                        openedTask = newTask
                     )
                 }
             }

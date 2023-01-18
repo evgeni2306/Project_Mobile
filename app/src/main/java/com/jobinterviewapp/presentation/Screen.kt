@@ -51,6 +51,10 @@ enum class Screen(val route: String, val screenName: UiText, val subRoutes: List
         "InterviewResultScreen",
         UiText.StringResource(R.string.interview_simulation_screen_name),
     ),
+    FavoriteTasksScreen(
+        "FavoriteTasksScreen",
+        UiText.StringResource(R.string.favorite_tasks_screen_name),
+    ),
     ;
 
     fun withArgs(vararg args: String): String {

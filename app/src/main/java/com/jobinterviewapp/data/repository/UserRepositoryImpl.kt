@@ -8,6 +8,7 @@ import com.jobinterviewapp.domain.models.Credential
 import com.jobinterviewapp.domain.repository.UserRepository
 import com.jobinterviewapp.core.util.Resource
 import com.jobinterviewapp.core.util.UiText
+import com.jobinterviewapp.data.remote.dto.FavoriteTaskDto
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -53,6 +54,14 @@ class UserRepositoryImpl @Inject constructor(
         emit(safeApiCall {
             api.deleteTaskFromFavorites(
                 favoriteId = favoriteId,
+                userKey = userKey,
+            )
+        })
+    }.flowOn(Dispatchers.IO)
+
+    override fun getFavoriteTaskList(userKey: String): Flow<Resource<List<FavoriteTaskDto>>> = flow {
+        emit(safeApiCall {
+            api.getFavoriteTaskList(
                 userKey = userKey,
             )
         })

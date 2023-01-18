@@ -105,6 +105,11 @@ interface InterviewServiceApi {
         @Query("profId") profId: Int,
     ): List<TaskDto>
 
+    @POST("question/favorite/list")
+    suspend fun getFavoriteTaskList(
+        @Query("authKey") userKey: String,
+    ): List<FavoriteTaskDto>
+
     companion object {
         const val BASE_URL = "http://server2306.site/"
     }
