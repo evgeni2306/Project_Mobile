@@ -3,13 +3,9 @@ package com.jobinterviewapp.presentation.interview.interview_simulation
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -204,7 +200,6 @@ fun InterviewSimulationScreen(
                                                         .padding(10.dp),
                                                     text = currentTask.answer,
                                                     style = MaterialTheme.typography.bodyLarge,
-                                                    textAlign = TextAlign.Center,
                                                 )
                                                 Spacer(modifier = Modifier.height(10.dp))
                                                 Text(

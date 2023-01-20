@@ -160,13 +160,15 @@ fun InterviewResultScreen(
                         }
                     }
 
-                    Text(
-                        text = stringResource(R.string.wrong_answers_title),
-                        style = MaterialTheme.typography.titleMedium,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier
-                            .padding(vertical = 16.dp)
-                    )
+                    if(state.wrongAnswers.isNotEmpty()) {
+                        Text(
+                            text = stringResource(R.string.wrong_answers_title),
+                            style = MaterialTheme.typography.titleMedium,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .padding(vertical = 16.dp)
+                        )
+                    }
                     CompositionLocalProvider(
                         LocalOverscrollConfiguration provides OverscrollConfiguration(
                             glowColor = MaterialTheme.colorScheme.background,
