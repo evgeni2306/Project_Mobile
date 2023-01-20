@@ -35,17 +35,26 @@ fun InterviewPreviewScreen(
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
+                        TopBarTitleText(text = stringResource(R.string.interview_simulation_subtitle))
                         state.previewName?.let { previewName ->
-                            TopBarTitleText(previewName)
+                            Text(
+                                text = previewName,
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.SemiBold,
+                            )
                         }
-                        Text(
-                            text = stringResource(R.string.interview_simulation_subtitle),
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.SemiBold,
+                    }
+                },
+                actions = {
+                    IconButton(
+                        onClick = {}
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_profile),
+                            contentDescription = null,
                         )
                     }
                 },
-                onProfileClick = {},
                 navigationIcon = {
                     IconButton(
                         onClick = {

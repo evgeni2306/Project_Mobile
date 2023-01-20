@@ -4,47 +4,140 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jobinterviewapp.core.util.Resource
 import com.jobinterviewapp.di.AppModule
+import com.jobinterviewapp.domain.use_case.user.DeleteTaskFromFavoritesUseCase
 import com.jobinterviewapp.domain.use_case.user.GetFavoriteTaskListUseCase
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.update
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
+@HiltViewModel
 class FavoriteTasksViewModel @Inject constructor(
     private val getFavoriteTaskListUseCase: GetFavoriteTaskListUseCase,
+    private val deleteTaskFromFavoritesUseCase: DeleteTaskFromFavoritesUseCase,
     private val dataStoreManager: AppModule.DataStoreManager,
 ): ViewModel() {
     private val _state = MutableStateFlow(FavoriteTasksScreenState())
 
     val state = _state.asStateFlow()
 
+    init {
+        loadTaskList()
+    }
+
     fun onTaskClick(index: Int) {
+        viewModelScope.launch {
+            if(state.value.selectedTasksIdList.isNotEmpty()) {
+                onLongClick(index)
+            }
+            else {
+                _state.update {
+                    it.copy(
+                        openedTaskIndex = index,
+                        openedTask = it.taskList[index],
+                    )
+                }
+            }
+        }
+    }
+
+    fun onLongClick(index: Int) {
+        viewModelScope.launch {
+            val state = state.value
+            val task = state.taskList[index]
+            _state.update {
+                it.copy(
+                    selectedTasksIdList = if(!task.isSelected)
+                        state.selectedTasksIdList.plus(task.favoriteId)
+                    else
+                        state.selectedTasksIdList.minus(task.favoriteId)
+                )
+            }
+            val newTaskList = state.taskList.mapIndexed { taskIndex, favoriteTask ->
+                if(index == taskIndex) {
+                    favoriteTask.copy(
+                        isSelected = !favoriteTask.isSelected
+                    )
+                }
+                else {
+                    favoriteTask
+                }
+            }
+
+            _state.update {
+                it.copy(
+                    taskList = newTaskList,
+                )
+            }
+        }
+    }
+
+    fun onDeleteConfirmClick() {
+        val state = state.value
+        if(state.userKey == null)
+            return
+        val newTaskList = state.taskList.filter { task ->
+            !state.selectedTasksIdList.contains(task.favoriteId)
+        }
+
+        _state.update {
+            it.copy(
+                taskList = newTaskList,
+                openedTask = null,
+                isOpenedDeleteDialog = false
+            )
+        }
+        viewModelScope.launch {
+            deleteTaskFromFavoritesUseCase(
+                userKey = state.userKey,
+                favoriteIdList = state.selectedTasksIdList
+            ).collect { result ->
+                when(result) {
+                    is Resource.Success -> {
+                        _state.update {
+                            it.copy(
+                                selectedTasksIdList = emptyList()
+                            )
+                        }
+                    }
+                    is Resource.Error -> {
+                        _state.update {
+                            it.copy(
+                                error = result.message
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun onDeleteDialogHideClick() {
         viewModelScope.launch {
             _state.update {
                 it.copy(
-                    openedTaskIndex = index,
-                    openedTask = it.taskList[index],
+                    isOpenedDeleteDialog = false,
                 )
             }
         }
     }
 
     fun onDialogHideClick() {
-        viewModelScope.launch {
-            _state.update {
-                it.copy(
-                    openedTask = null,
-                    openedTaskIndex = null,
-                )
-            }
+        _state.update {
+            it.copy(
+                openedTask = null,
+            )
         }
     }
 
-    fun onTaskDelete(index: Int) {
-        viewModelScope.launch {
-
+    fun onTaskDelete(index: Int? = null) {
+        _state.update {
+            it.copy(
+                isOpenedDeleteDialog = true,
+                selectedTasksIdList = if(index == null)
+                    it.selectedTasksIdList
+                else
+                    it.selectedTasksIdList.plus(it.taskList[index].favoriteId)
+            )
         }
     }
 

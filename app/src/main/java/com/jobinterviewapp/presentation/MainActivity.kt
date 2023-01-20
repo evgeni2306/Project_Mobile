@@ -29,6 +29,7 @@ import com.jobinterviewapp.presentation.authorization.sign_in.SignInScreen
 import com.jobinterviewapp.core.presentation.ui.theme.JobInterviewAppTheme
 import com.jobinterviewapp.di.AppModule
 import com.jobinterviewapp.presentation.components.BottomNavigationBar
+import com.jobinterviewapp.presentation.favorite_tasks.FavoriteTasksScreen
 import com.jobinterviewapp.presentation.interview.interview_configuration.directions.DirectionsOfFieldScreen
 import com.jobinterviewapp.presentation.interview.interview_configuration.fields.FieldsOfActivityScreen
 import com.jobinterviewapp.presentation.interview.interview_configuration.interview_preview.InterviewPreviewScreen
@@ -326,6 +327,11 @@ fun Navigation(navController: NavHostController, modifier: Modifier, userSetting
             )
         ) {
             InterviewResultScreen(navController)
+        }
+        composable(
+            route = Screen.FavoriteTasksScreen.route,
+        ) {
+            FavoriteTasksScreen()
         }
     }
 }

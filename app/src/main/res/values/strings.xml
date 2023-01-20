@@ -36,7 +36,8 @@
     <string name="direction_of_field_screen_placeholder">Выберите направление разработки</string>
     <string name="technology_of_direction_screen_placeholder">Выберите стэк технологий</string>
     <string name="profession_of_technology_screen_placeholder">Выберите профессию</string>
-    <string name="interview_simulation_subtitle">Тренировочное собеседование</string>
+    <string name="interview_simulation_subtitle">Собеседование</string>
+    <string name="interview_simulation_results">Результаты</string>
     <string name="questions_count">%s вопросов</string>
     <string name="questions_count_content">Тренировочное собеседование состоит из %s вопросов персонального, ситуационного и технического характера.</string>
     <string name="tip_number_1">Продумывайте и проговаривайте ответы</string>
@@ -66,6 +67,10 @@
     <string name="default_search_placeholder_text">Поиск</string>
     <string name="choose_profession_search_text">Выберите профессию</string>
     <string name="ok_text">Ок</string>
+    <string name="delete_task_dialog_text">Вы действительно хотите удалить выбранные элементы?</string>
+    <string name="delete_task_dialog_title">Удалить из избранного</string>
+    <string name="cancel_button_text">Отмена</string>
+    <string name="delete_confirm_text">Удалить</string>
 
 
 </resources>

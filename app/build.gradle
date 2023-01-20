@@ -47,6 +47,7 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    namespace 'com.jobinterviewapp'
 }
 
 dependencies {
@@ -60,8 +61,8 @@ dependencies {
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.27.0"
 
     // Material 3
-    implementation "androidx.compose.material3:material3:1.1.0-alpha03"
-    implementation "androidx.compose.material3:material3-window-size-class:1.1.0-alpha03"
+    implementation "androidx.compose.material3:material3:1.1.0-alpha04"
+    implementation "androidx.compose.material3:material3-window-size-class:1.1.0-alpha04"
 
     //Swipe refresh
     implementation "com.google.accompanist:accompanist-swiperefresh:0.27.0"
@@ -80,13 +81,13 @@ dependencies {
     implementation "com.google.accompanist:accompanist-navigation-animation:0.27.0"
 
     // Compose additional
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0-alpha03"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0-alpha04"
     implementation "androidx.navigation:navigation-compose:2.5.3"
     implementation "com.google.accompanist:accompanist-flowlayout:0.27.0"
 
     // Origin
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'

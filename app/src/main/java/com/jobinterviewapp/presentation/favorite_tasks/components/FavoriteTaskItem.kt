@@ -10,24 +10,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.jobinterviewapp.data.remote.dto.FavoriteTaskDto
+import com.jobinterviewapp.domain.models.FavoriteTask
 import com.jobinterviewapp.presentation.interview.components.TaskCategoryElement
 
 @Composable
 fun FavoriteTaskItem(
-    task: FavoriteTaskDto,
+    task: FavoriteTask,
     onDeleteTaskClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                top = 9.dp,
-                bottom = 20.dp,
-                start = 16.dp,
-                end = 16.dp,
-            ),
+            .fillMaxWidth(),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -46,7 +40,8 @@ fun FavoriteTaskItem(
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = null
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.error
                 )
             }
         }

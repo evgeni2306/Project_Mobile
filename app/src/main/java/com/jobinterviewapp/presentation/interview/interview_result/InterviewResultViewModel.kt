@@ -43,7 +43,7 @@ class InterviewResultViewModel @Inject constructor(
                             }
                             deleteTaskFromFavoritesUseCase(
                                 userKey,
-                                task.favoriteId
+                                listOf(task.favoriteId)
                             ).collect { result ->
                                 when (result) {
                                     is Resource.Error -> {

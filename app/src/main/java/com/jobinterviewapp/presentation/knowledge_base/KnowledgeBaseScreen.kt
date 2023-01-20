@@ -16,6 +16,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -35,7 +36,16 @@ fun KnowledgeBaseScreen(
                 title = {
                     TopBarTitleText(Screen.KnowledgeBaseScreen.screenName.asString())
                 },
-                onProfileClick = {},
+                actions = {
+                    IconButton(
+                        onClick = {}
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_profile),
+                            contentDescription = null,
+                        )
+                    }
+                },
             )
         }
     ) { innerPadding ->
@@ -47,6 +57,7 @@ fun KnowledgeBaseScreen(
             ErrorTextHandler(
                 error = state.error,
                 modifier = Modifier
+                    .padding(16.dp)
                     .align(Alignment.Center),
                 onRefreshClick = viewModel::onRefreshPage
             )

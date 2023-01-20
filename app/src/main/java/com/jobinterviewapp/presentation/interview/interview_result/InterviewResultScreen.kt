@@ -5,6 +5,8 @@ import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.OverscrollConfiguration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -15,14 +17,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Popup
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.jobinterviewapp.R
 import com.jobinterviewapp.presentation.Screen
 import com.jobinterviewapp.presentation.components.ErrorTextHandler
 import com.jobinterviewapp.presentation.components.TaskItemCard
-import com.jobinterviewapp.presentation.interview.components.TaskCategoryElement
+import com.jobinterviewapp.presentation.components.TopBarTitleText
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -32,6 +33,36 @@ fun InterviewResultScreen(
 ) {
     val state = viewModel.state.collectAsState().value
     Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = {
+                    TopBarTitleText(text = stringResource(R.string.interview_simulation_results))
+                },
+
+                actions = {
+                    IconButton(
+                        onClick = {}
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_profile),
+                            contentDescription = null,
+                        )
+                    }
+                },
+                navigationIcon = {
+                    IconButton(
+                        onClick = {
+                            navController.navigateUp()
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = null,
+                        )
+                    }
+                }
+            )
+        },
         bottomBar = {
             if(!state.isLoading && state.error == null) {
                 Column(

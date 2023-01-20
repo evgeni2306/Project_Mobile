@@ -2,7 +2,6 @@ package com.jobinterviewapp.presentation.authorization.registration
 
 import android.app.Activity
 import android.content.pm.ActivityInfo
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -65,15 +64,15 @@ fun RegistrationScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-    ) {
+    ) { innerPadding ->
         val keyboardMode = WindowInsets.isImeVisible
         val keyboardController = LocalSoftwareKeyboardController.current
         Box(
             modifier = Modifier
+                .padding(innerPadding)
                 .statusBarsPadding()
                 .fillMaxSize(),
         ) {
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()

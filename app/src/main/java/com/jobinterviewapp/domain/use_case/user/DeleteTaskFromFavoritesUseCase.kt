@@ -8,7 +8,7 @@ import javax.inject.Inject
 class DeleteTaskFromFavoritesUseCase @Inject constructor(
     private val repository: UserRepository,
 ) {
-    operator fun invoke(userKey: String, favoriteId: Int): Flow<Resource<Int>> {
-        return repository.deleteTaskFromFavorites(userKey, favoriteId)
+    operator fun invoke(userKey: String, favoriteIdList: List<Int>): Flow<Resource<Unit>> {
+        return repository.deleteTaskFromFavorites(userKey, favoriteIdList)
     }
 }
