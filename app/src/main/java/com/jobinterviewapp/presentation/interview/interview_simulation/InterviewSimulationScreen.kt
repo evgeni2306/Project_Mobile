@@ -4,6 +4,8 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
@@ -103,7 +105,8 @@ fun InterviewSimulationScreen(
                             Column(
                                 modifier = Modifier
                                     .padding(20.dp)
-                                    .fillMaxWidth(),
+                                    .fillMaxWidth()
+                                    .verticalScroll(rememberScrollState()),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                             ) {
                                 if(state.isLoading) {

@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.jobinterviewapp.R
@@ -71,6 +72,19 @@ fun FavoriteTasksScreen(
                 top = innerPadding.calculateTopPadding(),
             )
         ) {
+            if(state.taskList.isEmpty()) {
+                Text(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(30.dp)
+                    ,
+                    text = stringResource(
+                        id = R.string.favorite_task_list_place_holder,
+                    ),
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center,
+                )
+            }
             if(state.error == null && !state.isLoading) {
                 LazyColumn(
                     modifier = Modifier

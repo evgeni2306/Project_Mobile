@@ -2,6 +2,7 @@ package com.jobinterviewapp.presentation.authorization.registration
 
 import android.app.Activity
 import android.content.pm.ActivityInfo
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -69,7 +70,6 @@ fun RegistrationScreen(
         val keyboardController = LocalSoftwareKeyboardController.current
         Box(
             modifier = Modifier
-                .padding(innerPadding)
                 .statusBarsPadding()
                 .fillMaxSize(),
         ) {
@@ -82,9 +82,10 @@ fun RegistrationScreen(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    val logoPadding = if(keyboardMode) 10.dp else 50.dp
+                    val logoPadding = if(keyboardMode) 0.dp else 50.dp
                     FullLogo(
                         modifier = Modifier
+                            .animateContentSize()
                             .align(Alignment.CenterHorizontally),
                         logoPadding
                     )
