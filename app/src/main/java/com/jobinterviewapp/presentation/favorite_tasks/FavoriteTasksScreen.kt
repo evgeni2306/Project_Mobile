@@ -140,7 +140,7 @@ fun FavoriteTasksScreen(
                         title = {
                             FavoriteTaskItem(
                                 task = state.openedTask,
-                                onDeleteTaskClick = { (viewModel::onTaskDelete)(state.openedTaskIndex!!) },
+                                onDeleteTaskClick = viewModel::onTaskDelete,
                             )
                         },
                         confirmButton = {

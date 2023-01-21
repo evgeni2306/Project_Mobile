@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jobinterviewapp.core.util.Resource
 import com.jobinterviewapp.di.AppModule
+import com.jobinterviewapp.domain.models.FavoriteTask
 import com.jobinterviewapp.domain.use_case.user.DeleteTaskFromFavoritesUseCase
 import com.jobinterviewapp.domain.use_case.user.GetFavoriteTaskListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -75,8 +76,12 @@ class FavoriteTasksViewModel @Inject constructor(
         val state = state.value
         if(state.userKey == null)
             return
-        val newTaskList = state.taskList.filter { task ->
-            !state.selectedTasksIdList.contains(task.favoriteId)
+        val newTaskList: List<FavoriteTask> = if(state.openedTask != null) {
+            state.taskList.minus(state.openedTask)
+        } else {
+            state.taskList.filter { task ->
+                !state.selectedTasksIdList.contains(task.favoriteId)
+            }
         }
 
         _state.update {
@@ -89,7 +94,9 @@ class FavoriteTasksViewModel @Inject constructor(
         viewModelScope.launch {
             deleteTaskFromFavoritesUseCase(
                 userKey = state.userKey,
-                favoriteIdList = state.selectedTasksIdList
+                favoriteIdList = if(state.openedTask == null)
+                    state.selectedTasksIdList
+                else listOf(state.openedTask.favoriteId)
             ).collect { result ->
                 when(result) {
                     is Resource.Success -> {
@@ -129,14 +136,10 @@ class FavoriteTasksViewModel @Inject constructor(
         }
     }
 
-    fun onTaskDelete(index: Int? = null) {
+    fun onTaskDelete() {
         _state.update {
             it.copy(
                 isOpenedDeleteDialog = true,
-                selectedTasksIdList = if(index == null)
-                    it.selectedTasksIdList
-                else
-                    it.selectedTasksIdList.plus(it.taskList[index].favoriteId)
             )
         }
     }
